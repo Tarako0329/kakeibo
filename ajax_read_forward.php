@@ -1,10 +1,11 @@
 <?php
 require "functions.php";
-$contents = file("マネーフォワード ME.html");
+$contents = file("upload/マネーフォワード ME.html");
 $write = false;
 $next=false;//次行の書き出し
 $create=false;
 $x = 0;
+$rcount = 1;
 foreach ($contents as $number => $content) {
     $fileNumber = $number + 1;
     $content = str_replace(["\r","\n","\r\n"], '', $content);
@@ -23,9 +24,11 @@ foreach ($contents as $number => $content) {
       $write=true;
     }else if(preg_match( '/^<td class="date" data-table-sortable-value="*/', $content)){
       $content = substr($content,44,10);// 日付：yyyy/mm/dd（カードなどの自動計上）
+      $content = str_replace(["/"], '-', $content);
       $write=true;
     }else if(preg_match( '/^<td class="date form-switch-td" data-table-sortable-value="*/', $content)){
       $content = substr($content,59,10);// 日付：yyyy/mm/dd（手入力）
+      $content = str_replace(["/"], '-', $content);
       $write=true;
     }else if(substr($content,0,21)==='<span class="offset">'){
       $write=true;//金額
@@ -52,8 +55,10 @@ foreach ($contents as $number => $content) {
       $row[] = tagClear($content);
 
       if($x>=7){
+        $row["No"] = $rcount;
         $data[] = $row;
         $row=[];
+        $rcount = $rcount + 1;
       }
       $x = ($x>=7)?0:$x+1;
     }
@@ -62,13 +67,18 @@ foreach ($contents as $number => $content) {
 }
 log_writer("",$data);
 
+//jsonとして出力
+header('Content-type: application/json');
+echo json_encode($data, JSON_UNESCAPED_UNICODE);
+
+
 function tagClear($str){
   $str = substr($str,strpos($str,">"));
 
   if(strpos($str,"<")<>false){
     $str = substr($str,1,strpos($str,"<")-1);
   }
-  $str = str_replace(["<",">"], '', $str);
+  $str = str_replace(["<",">",","], '', $str);
   //log_writer("",$str.",");
   //echo $str."<br>"
 
