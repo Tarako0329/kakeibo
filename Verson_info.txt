@@ -1,0 +1,13 @@
+ver0.01.1:my first commit
+ver0.01.2:開発済：under development
+
+
+【Issues】
+
+ローカルからテスト環境へ
+cd /home/pcntfsrg/public_html/v-pool
+git fetch --all
+git reset --hard origin/main
+
+git clone
+git pull origin master
