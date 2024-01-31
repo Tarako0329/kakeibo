@@ -1,8 +1,11 @@
 <?php
 date_default_timezone_set('Asia/Tokyo'); 
+
 //ini_set('max_execution_time', -1);
 //ini_set('max_input_time', -1);
 require "./vendor/autoload.php";
+require "functions.php";
+
 //.envの取得
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -13,7 +16,7 @@ define("ROOT_URL",$_ENV["HTTP"]);
 session_start();
 //$_SESSION = [];
 
-require "functions.php";
+
 
 if(MAIN_DOMAIN==="localhost:81"){
   $time=date('Ymd-His');
@@ -37,7 +40,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
 define("SAVEDIR", $_ENV["SAVEDIR"]);
 define("NOM", $_ENV["SIO"]);
-
+/*
 if(!empty($_GET["v"])){
   setCookie("vpool", $_GET["v"], time()+60*60*24*7, "/", "",true,true);
   $token = $_GET["v"];
@@ -81,4 +84,5 @@ if($_SESSION["MSG"] <> "ログオフしました"){
     }
   }
 }
+*/
 ?>

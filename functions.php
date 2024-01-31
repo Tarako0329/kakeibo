@@ -177,14 +177,7 @@ function secho($s) {
     return htmlspecialchars($s, ENT_QUOTES, "UTF-8");
 }
 
-// =========================================================
-// PDO の接続オプション取得
-// =========================================================
-function get_pdo_options() {
-  return array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-               PDO::MYSQL_ATTR_MULTI_STATEMENTS => false,   //sqlの複文禁止 "select * from hoge;delete from hoge"みたいなの
-               PDO::ATTR_EMULATE_PREPARES => false);        //同上
-}
+
 
 
 
@@ -286,7 +279,41 @@ function getFileList($dir) {
     }
     return $list;
 }
+// =========================================================
+// PDO の接続オプション取得
+// =========================================================
+function get_pdo_options() {
+    return array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                 PDO::MYSQL_ATTR_MULTI_STATEMENTS => false,   //sqlの複文禁止 "select * from hoge;delete from hoge"みたいなの
+                 PDO::ATTR_EMULATE_PREPARES => false);        //同上
+  }
+// =========================================================
+// 月度設定
+// =========================================================
+function upd_getudo($pdo_h) {
+    $sql = "select * from user where uid = :uid";
+    $stmt = $pdo_h->prepare($sql);
+    $stmt->bindValue("uid", "tarako", PDO::PARAM_STR);
+    $stmt->execute();
+    $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    $date = date('w', strtotime('20170402'));
+
+    $sy=2000;
+    $sm="01";
+    $ey=date('Y');
+    $shukujitu = file_get_contents('https://s-proj.com/utils/checkHoliday.php?kind=h&date=20110611');
+    log_writer("\$shukujitu",$shukujitu);
+    //開始日の判定
+    /*
+    while($sy <= $ey){
+        $startdate = $sy.$sm.$row[0]["getudomatu"];
+        date('w', strtotime($startdate));
+
+        $sy=$sy + 1;
+    }
+    */
+}
 
 
 

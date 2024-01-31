@@ -15,6 +15,7 @@
   }else{
     $mode = "ippan";
   }
+  upd_getudo($pdo_h);
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
