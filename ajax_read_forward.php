@@ -65,7 +65,7 @@ foreach ($contents as $number => $content) {
 
     $write = false;
 }
-log_writer("",$data);
+//log_writer("",$data);
 
 //jsonとして出力
 header('Content-type: application/json');
