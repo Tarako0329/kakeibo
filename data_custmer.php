@@ -2,7 +2,7 @@
   require "php_header.php";
   if(empty($_GET)){
     //一般公開・マネーフォワードCSV変換モード
-    $title="MoneyFoward csv output";
+    $title="MoneyFoward csv convert";
     $mode = "ippan";
   }else if($_GET["m"]==="imp"){
     //データインポートモード
@@ -12,6 +12,8 @@
     //登録済みデータ更新モード
     $title="データ修正モード";
     $mode = "update";
+  }else{
+    $mode = "ippan";
   }
 ?>
 <!DOCTYPE html>
@@ -22,14 +24,15 @@
     include "head_bs5.php" 
     ?>
     <script src="./script/flow.js"></script>
-    <TITLE>家計簿</TITLE>
+    <TITLE><?php echo $title;?></TITLE>
 </head>
 <BODY id = 'body' style='background:black;' >
   <div id='app'>
     <HEADER class='text-center' style='color:#FFA400'>
         <h1><?php echo $title;?></h1>
     </HEADER>
-    <MAIN class='container-fluid' style='color:#fff;'>
+    <!--<MAIN class='container-fluid' style='color:#fff;'>-->
+    <MAIN class='container' style='color:#fff;'>
       <table class="table table-striped table-hover table-sm">
       <thead class='sticky-top'>
         <tr>
@@ -45,7 +48,7 @@
         <tr>
           <td></td>
           <td>
-            <select v-model='fl_date' class="form-select form-select-sm" placeholder="フィルタ">
+            <select v-model='fl_date' class="form-select form-select-sm input_date" placeholder="フィルタ">
               <option value=''>ﾌｨﾙﾀ解除</option>
               <template v-for='(list,index) in fl_date_lst' :key='list'>
                 <option :value='list'>{{list}}</option>
@@ -54,14 +57,6 @@
           </td>
           <td>
             <input v-model='fl_meisai' type="text" class='form-control form-control-sm' placeholder="フィルタ">
-            <!--
-            <select v-model='fl_meisai' class="form-select form-select-sm" placeholder="フィルタ">
-              <option value=''>ﾌｨﾙﾀ解除</option>
-              <template v-for='(list,index) in fl_meisai_lst' :key='list'>
-                <option :value='list'>{{list}}</option>
-              </template>
-            </select>
-            -->
           </td>
           <td><input v-model="fl_kin" class="form-control form-control-sm" type="number" placeholder="フィルタ"></td>
           <td>
@@ -100,8 +95,8 @@
         <tr>
           <td></td>
           <td>
-            <input type="date" id='cdate' class='form-control form-control-sm' placeholder="一括変更" style='margin-bottom:3px;'>
-            <button type='button' class='btn btn-success btn-sm' @click='hanei("cdate")'>↓反映</button>
+            <input type="date" id='cdate' class='form-control form-control-sm input_date' placeholder="一括変更" style='margin-bottom:3px;'>
+            <button type='button' class='btn btn-success btn-sm input_date' @click='hanei("cdate")'>↓反映</button>
           </td>
           <td>
             <input type="text" id='cmeisai' class='form-control form-control-sm' placeholder="一括変更" style='margin-bottom:3px;'>
@@ -133,7 +128,7 @@
         <template v-for='(list,index) in readdata_filter' :key="list.No">
           <tr>
           <td>{{list.No}}</td>
-          <td><input v-model='list[0]' class="form-control form-control-sm" type="date" placeholder=""></td>
+          <td><input v-model='list[0]' class="form-control form-control-sm input_date" type="date" placeholder=""></td>
           <td><input v-model='list[2]' class="form-control form-control-sm" type="text" placeholder=""></td>
           <td><input v-model='list[3]' class="form-control form-control-sm" type="number" placeholder=""></td>
           <td><input v-model='list[4]' class="form-control form-control-sm" type="text" placeholder=""></td>
@@ -148,7 +143,7 @@
     <FOOTER class='text-center'>
       <input type="file" class="" name="user_file_name" style='width:25%;' id='file'>
       <button class='btn btn-primary' type='button' @click='uploadfile'>ファイル読込</button>
-      <button class='btn btn-primary' type='button' @click='savedata'>システム登録</button>
+      <button v-if='mode!=="ippan"' class='btn btn-primary' type='button' @click='savedata'>システム登録</button>
       <button class='btn btn-primary' type='button' @click='savecsv'>CSV出力</button>
     </FOOTER>
   </div>
@@ -156,18 +151,24 @@
       const { createApp, ref, onMounted, computed,watch } = Vue;
       createApp({
         setup() {
-          const mode = '<?php echo $mode;?>'
+          const mode = ref('<?php echo $mode;?>')
           const readdata = ref([])
           const readfilename = ref('')
+          const filetype = ref('')
           const read_html_moneyforward = () => {//アップロード後の分類等未設定の動画一覧を取得
             axios
-            .get(`ajax_read_forward.php?lv=${readfilename.value}`)
+            .get(`ajax_read_forward.php?fn=${readfilename.value}`)
             .then((response) => {
-              readdata.value = [...response.data]
+              readdata.value = []
+              filetype.value = ''
+              console_log(response.data)
+              readdata.value = [...response.data.data]
+              filetype.value = response.data.type
               console_log('read_html_moneyforward succsess')
             })
             .catch((error) => console.log(error));
           }
+
           const uploadfile = () =>{
             const file = document.getElementById('file').files[0];
             const params = new FormData();
@@ -175,7 +176,13 @@
             axios.post("ajax_loader.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
             .then((response)=>{
               console_log(response.data)
-              read_html_moneyforward()
+              if(response.data.status==="success"){
+                readfilename.value = response.data.filename
+                read_html_moneyforward()
+              }else{
+
+              }
+              
             })
             .catch((response)=>{
               console_log(response.data)
@@ -231,14 +238,14 @@
                 //return ( );
 			    	  });
             }
-              response.data.forEach((row)=>{
-                if(fl_date_lst.value.includes(row[0])===false){fl_date_lst.value.push(row[0])}
-                if(fl_meisai_lst.value.includes(row[2])===false){fl_meisai_lst.value.push(row[2])}
-                if(fl_shuppimoto_lst.value.includes(row[4])===false){fl_shuppimoto_lst.value.push(row[4])}
-                if(fl_dai_ko_lst.value.includes(row[5])===false){fl_dai_ko_lst.value.push(row[5])}
-                if(fl_chuu_ko_lst.value.includes(row[6])===false){fl_chuu_ko_lst.value.push(row[6])}
-                if(fl_memo_lst.value.includes(row[7])===false){fl_memo_lst.value.push(row[7])}
-              })
+            response.data.forEach((row)=>{
+              if(fl_date_lst.value.includes(row[0])===false){fl_date_lst.value.push(row[0])}
+              if(fl_meisai_lst.value.includes(row[2])===false){fl_meisai_lst.value.push(row[2])}
+              if(fl_shuppimoto_lst.value.includes(row[4])===false){fl_shuppimoto_lst.value.push(row[4])}
+              if(fl_dai_ko_lst.value.includes(row[5])===false){fl_dai_ko_lst.value.push(row[5])}
+              if(fl_chuu_ko_lst.value.includes(row[6])===false){fl_chuu_ko_lst.value.push(row[6])}
+              if(fl_memo_lst.value.includes(row[7])===false){fl_memo_lst.value.push(row[7])}
+            })
 			    })
 
           watch(readdata_filter,()=>{
@@ -264,10 +271,10 @@
           })
 
           onMounted(()=>{
-            read_html_moneyforward()
+            //read_html_moneyforward()
           })
 
-          const savedata = () =>{
+          const savedata = () =>{//データベース登録
             const csv = readdata.value
             const params = new FormData();
             let start = '2099-12-31'
@@ -298,6 +305,9 @@
             axios.post(url,params, {headers: {'Content-Type': 'application/json'}})
             .then((response)=>{
               console_log(response.data)
+              if(response.data==="success"){
+                readdata.value = []
+              }
             })
             .catch((response)=>{
               console_log(response.data)
@@ -307,7 +317,7 @@
           }
 
 
-          const savecsv = () =>{
+          const savecsv = () =>{//CSVしゅつりょく
             //type (databese or csv)
             const csv = readdata.value
             const form = document.createElement('form');
@@ -384,7 +394,7 @@
             form.submit();
           }
 
-          const hanei = (id) => {
+          const hanei = (id) => {//一括変更
             console_log('hanei start')
             let val = document.getElementById(id).value
             console_log(val)
@@ -422,6 +432,8 @@
             savedata,
             savecsv,
             hanei,
+            filetype,
+            mode,
           }
         }
       }).mount('#app');

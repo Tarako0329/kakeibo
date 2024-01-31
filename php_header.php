@@ -50,7 +50,7 @@ if($_SESSION["MSG"] <> "ログオフしました"){
     //ログイン継続・期間延長
 
     setCookie("vpool", $token, time()+60*60*24*7, "/", "", TRUE, TRUE);//1week
-    log_writer("login延長",time()+60*60*24*7);
+    //log_writer("login延長",time()+60*60*24*7);
     try{
       $pdo_h->beginTransaction();
       $sql = "update loginkeeper set keepdatetime =:kdatetime where uid =:id and token =:token)";

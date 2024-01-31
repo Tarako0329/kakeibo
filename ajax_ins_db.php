@@ -6,6 +6,7 @@
   $dataset = $_POST["csv"];
   $start = $_POST["start"];
   $end = $_POST["end"];
+  $return = "false";
   try{
     $pdo_h->beginTransaction();
     $stmt = $pdo_h->prepare("delete from kakeibo where date between :start and :end");
@@ -31,19 +32,14 @@
   
     }
     $pdo_h->commit();
+    $return = "success";
   }catch(Exception $e){
     log_writer("Exception \$e",$e);
     $pdo_h->rollBack();
   }
+  //jsonとして出力
+  header('Content-type: application/json');
+  echo json_encode($return, JSON_UNESCAPED_UNICODE);
 
 
-  $fp = fopen('./test.csv', 'w');
- 
-  // foreach文の繰り返し処理で連想配列を書き込む
-  foreach($fruites as $key => $value){
-    fputcsv($fp, array($key, $value));
-  }
-   
-  // ファイルを閉じる
-  fclose($hp);
 ?>
