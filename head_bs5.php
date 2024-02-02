@@ -1,5 +1,8 @@
 <!-- headタグの共通部分 -->
-
+<!--
+    MITライセンス
+    祝日判定web API:https://s-proj.com/utils/holiday.html
+-->
     <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
     <META http-equiv='Content-Type' content='text/html; charset=UTF-8'>
     <link rel='apple-touch-icon' href='apple-touch-icon.png'>

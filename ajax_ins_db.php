@@ -32,6 +32,7 @@
   
     }
     $pdo_h->commit();
+    upd_getudo($pdo_h);
     $return = "success";
   }catch(Exception $e){
     log_writer("Exception \$e",$e);

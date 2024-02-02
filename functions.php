@@ -297,22 +297,78 @@ function upd_getudo($pdo_h) {
     $stmt->execute();
     $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $date = date('w', strtotime('20170402'));
+    //$date = date('w', strtotime('20170402'));
 
-    $sy=2000;
-    $sm="01";
-    $ey=date('Y');
-    $shukujitu = file_get_contents('https://s-proj.com/utils/checkHoliday.php?kind=h&date=20110611');
-    log_writer("\$shukujitu",$shukujitu);
-    //開始日の判定
-    /*
-    while($sy <= $ey){
-        $startdate = $sy.$sm.$row[0]["getudomatu"];
-        date('w', strtotime($startdate));
+    $sql = "update kakeibo set getudo = :getudo where uid = :uid and date between :sdate and :edate";
+    $sym="200001";
+    $sd=$row[0]["kisanbi"];
+    $eym=date('Y')."12";
 
-        $sy=$sy + 1;
+    while($sym <= $eym){
+        //開始日の判定(31=月末)
+        $sd=$row[0]["kisanbi"];
+        $sd=($sd==="31")?date('Ymd',strtotime($sym.' last day of this month')):$sd;
+        $shukujitu = "holiday";
+        $startdate = $sym.$sd;
+        while($shukujitu === "holiday"){
+            if($row[0]["shukuzitu"]===0){
+                break;
+            }
+            
+            if(MAIN_DOMAIN==="localhost:81"){
+                $shukujitu = date('w', strtotime($startdate))==="6" || date('w', strtotime($startdate))==="0"?"holiday":"else";
+            }else{
+                $shukujitu = file_get_contents('https://s-proj.com/utils/checkHoliday.php?kind=h&date='.$startdate);
+            }
+
+            if($shukujitu==="else"){
+                break;
+            }else if($row[0]["shukuzitu"]===1){
+                $startdate=date("Ymd", strtotime($startdate." -1 day")); 
+            }else{
+                $startdate=date("Ymd", strtotime($startdate." 1 day")); 
+            }
+        }
+ 
+        //終了日の判定
+        $sd=$row[0]["kisanbi"];
+        $sd=($sd==="31")?date('Ymd',strtotime($sym.' last day of this month')):$sd;
+        $shukujitu = "holiday";
+        $enddate = date("Ym", strtotime($sym.$sd." 1 month")).$sd;   //１か月後の
+        while($shukujitu === "holiday"){
+            if($row[0]["shukuzitu"]===0){
+                $enddate=date("Ymd", strtotime($enddate." -1 day"));            //１日前
+                break;
+            }
+            
+            if(MAIN_DOMAIN==="localhost:81"){
+                $shukujitu = date('w', strtotime($enddate))==="6" || date('w', strtotime($enddate))==="0"?"holiday":"else";
+            }else{
+                $shukujitu = file_get_contents('https://s-proj.com/utils/checkHoliday.php?kind=h&date='.$enddate);
+            }
+            
+            if($shukujitu==="else"){
+                $enddate=date("Ymd", strtotime($enddate." -1 day"));            //１日前
+                break;
+            }else if($row[0]["shukuzitu"]===1){
+                $enddate=date("Ymd", strtotime($enddate." -1 day")); 
+            }else{
+                $enddate=date("Ymd", strtotime($enddate." 1 day")); 
+            }
+        }
+        //log_writer("月度期間",$sym."：".$startdate."-".$enddate);
+
+        //データ更新
+        $stmt = $pdo_h->prepare($sql);
+        $stmt->bindValue("getudo", $sym, PDO::PARAM_INT);
+        $stmt->bindValue("uid", "tarako", PDO::PARAM_STR);
+        $stmt->bindValue("sdate", date("Y-m-d", strtotime($startdate)), PDO::PARAM_STR);
+        $stmt->bindValue("edate", date("Y-m-d", strtotime($enddate)), PDO::PARAM_STR);
+        $stmt->execute();
+    
+        //次月セット
+        $sym = date("Ym", strtotime($sym."01 1 month"));
     }
-    */
 }
 
 

@@ -8,14 +8,10 @@
     //データインポートモード
     $title="MoneyFoward IMPORT";
     $mode = "import";
-  }else if($_GET["m"]==="upd"){
-    //登録済みデータ更新モード
-    $title="データ修正モード";
-    $mode = "update";
   }else{
     $mode = "ippan";
   }
-  upd_getudo($pdo_h);
+  
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
@@ -129,13 +125,13 @@
         <template v-for='(list,index) in readdata_filter' :key="list.No">
           <tr>
           <td>{{list.No}}</td>
-          <td><input v-model='list[0]' class="form-control form-control-sm input_date" type="date" placeholder=""></td>
-          <td><input v-model='list[2]' class="form-control form-control-sm" type="text" placeholder=""></td>
-          <td><input v-model='list[3]' class="form-control form-control-sm" type="number" placeholder=""></td>
-          <td><input v-model='list[4]' class="form-control form-control-sm" type="text" placeholder=""></td>
-          <td><input v-model='list[5]' class="form-control form-control-sm" type="text" placeholder=""></td>
-          <td><input v-model='list[6]' class="form-control form-control-sm" type="text" placeholder=""></td>
-          <td><input v-model='list[7]' class="form-control form-control-sm" type="text" placeholder=""></td>
+          <td><input v-model='list.date' class="form-control form-control-sm input_date" type="date" placeholder=""></td>
+          <td><input v-model='list.meisai' class="form-control form-control-sm" type="text" placeholder=""></td>
+          <td><input v-model='list.kin' class="form-control form-control-sm" type="number" placeholder=""></td>
+          <td><input v-model='list.shuppimoto' class="form-control form-control-sm" type="text" placeholder=""></td>
+          <td><input v-model='list.daikoumoku' class="form-control form-control-sm" type="text" placeholder=""></td>
+          <td><input v-model='list.chuukoumoku' class="form-control form-control-sm" type="text" placeholder=""></td>
+          <td><input v-model='list.memo' class="form-control form-control-sm" type="text" placeholder=""></td>
           </tr>
         </template>
       </tbody>
@@ -148,15 +144,18 @@
       <button class='btn btn-primary' type='button' @click='savecsv'>CSV出力</button>
     </FOOTER>
   </div>
-    <script>
-      const { createApp, ref, onMounted, computed,watch } = Vue;
-      createApp({
-        setup() {
-          const mode = ref('<?php echo $mode;?>')
-          const readdata = ref([])
-          const readfilename = ref('')
-          const filetype = ref('')
-          const read_html_moneyforward = () => {//アップロード後の分類等未設定の動画一覧を取得
+  <script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>
+  <script>
+    dataset('<?php echo $mode;?>').mount('#app');
+    /*
+    const { createApp, ref, onMounted, computed,watch } = Vue;
+    createApp({
+      setup() {
+        const mode = ref('')
+        const readdata = ref([])
+        const readfilename = ref('')
+        const filetype = ref('')
+        const read_html_moneyforward = () => {//アップロード後の分類等未設定の動画一覧を取得
             axios
             .get(`ajax_read_forward.php?fn=${readfilename.value}`)
             .then((response) => {
@@ -168,9 +167,8 @@
               console_log('read_html_moneyforward succsess')
             })
             .catch((error) => console.log(error));
-          }
-
-          const uploadfile = () =>{
+        }
+        const uploadfile = () =>{
             const file = document.getElementById('file').files[0];
             const params = new FormData();
             params.append('user_file_name', file);
@@ -189,9 +187,9 @@
               console_log(response.data)
             })
             console_log(file)
-          }
-          
-          //フィルターワード
+        }
+        
+        //フィルターワード
             const fl_date       = ref('')
             const fl_meisai     = ref('')
             const fl_kin        = ref('')
@@ -199,7 +197,7 @@
             const fl_dai_ko     = ref('')
             const fl_chuu_ko    = ref('')
             const fl_memo       = ref('')
-          //フィルターのセレクトリスト
+        //フィルターのセレクトリスト
             const fl_date_lst   = ref([])
             const fl_meisai_lst = ref([])
             const fl_shuppimoto_lst = ref([])
@@ -207,49 +205,48 @@
             const fl_chuu_ko_lst    = ref([])
             const fl_memo_lst       = ref([])
           
-          const sum_kingaku = ref(0)
-          const readdata_filter = computed(() => {
-			    	//let searchWord = over_cate.value.toString().trim();
-            /*
-			    	shouhinMS.value.sort((a,b) => {
-			    		return (a.category > b.category?1:-1)
-			    		return (a.shouhinNM > b.shouhinNM?1:-1)
-			    		return 0
-			    	})
-            */
-            //console_log(readdata.value.length)
-			    	if (readdata.value.length===0) {return readdata.value}
-            else{
-			    	  return readdata.value.filter((record) => {
-			    	    return (
-                  record[0].includes(fl_date.value.toString().trim())
-                  &&
-                  record[2].includes(fl_meisai.value.toString().trim())
-                  &&
-                  record[3].toString().includes(fl_kin.value.toString().trim())
-                  &&
-                  record[4].includes(fl_shuppimoto.value.toString().trim())
-                  &&
-                  record[5].includes(fl_dai_ko.value.toString().trim())
-                  &&
-                  record[6].includes(fl_chuu_ko.value.toString().trim())
-                  &&
-                  record[7].includes(fl_memo.value.toString().trim()) 
-                  );
-                //return ( );
-			    	  });
-            }
-            response.data.forEach((row)=>{
-              if(fl_date_lst.value.includes(row[0])===false){fl_date_lst.value.push(row[0])}
-              if(fl_meisai_lst.value.includes(row[2])===false){fl_meisai_lst.value.push(row[2])}
-              if(fl_shuppimoto_lst.value.includes(row[4])===false){fl_shuppimoto_lst.value.push(row[4])}
-              if(fl_dai_ko_lst.value.includes(row[5])===false){fl_dai_ko_lst.value.push(row[5])}
-              if(fl_chuu_ko_lst.value.includes(row[6])===false){fl_chuu_ko_lst.value.push(row[6])}
-              if(fl_memo_lst.value.includes(row[7])===false){fl_memo_lst.value.push(row[7])}
-            })
-			    })
-
-          watch(readdata_filter,()=>{
+        const sum_kingaku = ref(0)
+        const readdata_filter = computed(() => {
+		    	//let searchWord = over_cate.value.toString().trim();
+          
+		    	//shouhinMS.value.sort((a,b) => {
+		    	//	return (a.category > b.category?1:-1)
+		    	//	return (a.shouhinNM > b.shouhinNM?1:-1)
+		    	//	return 0
+		    	//})
+          
+          //console_log(readdata.value.length)
+		    	if (readdata.value.length===0) {return readdata.value}
+          else{
+		    	  return readdata.value.filter((record) => {
+		    	    return (
+                record[0].includes(fl_date.value.toString().trim())
+                &&
+                record[2].includes(fl_meisai.value.toString().trim())
+                &&
+                record[3].toString().includes(fl_kin.value.toString().trim())
+                &&
+                record[4].includes(fl_shuppimoto.value.toString().trim())
+                &&
+                record[5].includes(fl_dai_ko.value.toString().trim())
+                &&
+                record[6].includes(fl_chuu_ko.value.toString().trim())
+                &&
+                record[7].includes(fl_memo.value.toString().trim()) 
+                );
+              //return ( );
+		    	  });
+          }
+          response.data.forEach((row)=>{
+            if(fl_date_lst.value.includes(row[0])===false){fl_date_lst.value.push(row[0])}
+            if(fl_meisai_lst.value.includes(row[2])===false){fl_meisai_lst.value.push(row[2])}
+            if(fl_shuppimoto_lst.value.includes(row[4])===false){fl_shuppimoto_lst.value.push(row[4])}
+            if(fl_dai_ko_lst.value.includes(row[5])===false){fl_dai_ko_lst.value.push(row[5])}
+            if(fl_chuu_ko_lst.value.includes(row[6])===false){fl_chuu_ko_lst.value.push(row[6])}
+            if(fl_memo_lst.value.includes(row[7])===false){fl_memo_lst.value.push(row[7])}
+          })
+		    })
+        watch(readdata_filter,()=>{
             console_log('watch')
             fl_date_lst.value=[]
             fl_meisai_lst.value=[]
@@ -269,13 +266,11 @@
               }
             )
             console_log(sum_kingaku.value)
-          })
-
-          onMounted(()=>{
-            //read_html_moneyforward()
-          })
-
-          const savedata = () =>{//データベース登録
+        })
+        onMounted(()=>{
+          //read_html_moneyforward()
+        })
+        const savedata = () =>{//データベース登録
             const csv = readdata.value
             const params = new FormData();
             let start = '2099-12-31'
@@ -315,10 +310,8 @@
             })
             //console_log(csv)
 
-          }
-
-
-          const savecsv = () =>{//CSVしゅつりょく
+        }
+        const savecsv = () =>{//CSVしゅつりょく
             //type (databese or csv)
             const csv = readdata.value
             const form = document.createElement('form');
@@ -393,9 +386,8 @@
 
             document.body.appendChild(form);
             form.submit();
-          }
-
-          const hanei = (id) => {//一括変更
+        }
+        const hanei = (id) => {//一括変更
             console_log('hanei start')
             let val = document.getElementById(id).value
             console_log(val)
@@ -409,35 +401,35 @@
               if(id==="cchukou"){list[6] = val}
               if(id==="cmemo"){list[7] = val}
             })
-          }
-
-          return{
-            readdata,
-            readfilename,
-            uploadfile,
-            fl_date,      
-            fl_meisai,    
-            fl_kin,       
-            fl_shuppimoto,
-            fl_dai_ko,    
-            fl_chuu_ko,   
-            fl_memo,      
-            readdata_filter,
-            fl_date_lst,
-            fl_meisai_lst,
-            fl_shuppimoto_lst,
-            fl_dai_ko_lst,
-            fl_chuu_ko_lst,
-            fl_memo_lst,
-            sum_kingaku,
-            savedata,
-            savecsv,
-            hanei,
-            filetype,
-            mode,
-          }
         }
-      }).mount('#app');
-    </script>
+        return{
+          readdata,
+          readfilename,
+          uploadfile,
+          fl_date,      
+          fl_meisai,    
+          fl_kin,       
+          fl_shuppimoto,
+          fl_dai_ko,    
+          fl_chuu_ko,   
+          fl_memo,      
+          readdata_filter,
+          fl_date_lst,
+          fl_meisai_lst,
+          fl_shuppimoto_lst,
+          fl_dai_ko_lst,
+          fl_chuu_ko_lst,
+          fl_memo_lst,
+          sum_kingaku,
+          savedata,
+          savecsv,
+          hanei,
+          filetype,
+          mode,
+        }
+      }
+    }).mount('#app');
+    */
+  </script>
 </BODY>
 </html>

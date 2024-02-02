@@ -13,7 +13,7 @@ $type="";
 if(substr($filepass,-3)==="csv"){
   $type="csv";
   $contents = fopen($filepass, 'r');
-  log_writer("\$content csv",$contents);
+  log_writer("\$contents csv",$contents);
   $i=0;
   $j=0;
   while($content = fgetcsv($contents)){
@@ -21,8 +21,19 @@ if(substr($filepass,-3)==="csv"){
       $i=$i+1;
       continue;
     }
-    $data[] = mb_convert_encoding($content, "UTF-8", "SJIS");
-    $data[$j][0] = str_replace("/", '-', $data[$j][1]);
+    //log_writer("\$content =>",mb_convert_encoding($content, "UTF-8", "SJIS"));
+    //$data[] = mb_convert_encoding($content, "UTF-8", "SJIS");
+    $data[] = array(
+      "date" => mb_convert_encoding($content[1], "UTF-8", "SJIS")
+      ,"meisai" => mb_convert_encoding($content[2], "UTF-8", "SJIS")
+      ,"kin" => mb_convert_encoding($content[3], "UTF-8", "SJIS")
+      ,"shuppimoto" => mb_convert_encoding($content[4], "UTF-8", "SJIS")
+      ,"daikoumoku" => mb_convert_encoding($content[5], "UTF-8", "SJIS")
+      ,"chuukoumoku" => mb_convert_encoding($content[6], "UTF-8", "SJIS")
+      ,"memo" => mb_convert_encoding($content[7], "UTF-8", "SJIS")
+      ,"No" => $j
+    );
+    $data[$j]["date"] = str_replace("/", '-', $data[$j]["date"]);
     $j=$j+1;
   }
   
@@ -84,7 +95,19 @@ if(substr($filepass,-3)==="csv"){
   
         if($x>=7){
           $row["No"] = $rcount;
-          $data[] = $row;
+          log_writer("\$row html",$row);
+          //$data[] = $row;
+          $data[] = array(
+            "date" => $row[0]
+            ,"meisai" => $row[2]
+            ,"kin" => $row[3]
+            ,"shuppimoto" => $row[4]
+            ,"daikoumoku" => $row[5]
+            ,"chuukoumoku" => $row[6]
+            ,"memo" => $row[7]
+            ,"No" => $row["No"]
+          );
+      
           $row=[];
           $rcount = $rcount + 1;
         }

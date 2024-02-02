@@ -11,6 +11,6 @@ xxx*
 .ini
 *.MOV
 *.mp4
-.htaccess
-.csv
-.html
+*.htaccess
+*.csv
+*.html
