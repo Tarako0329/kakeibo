@@ -313,7 +313,7 @@ const dataset = (test) => createApp({
           element_c.chuukei += current.kin; // sum
         }else{
           result.push({
-            sort:("0" + current.sort).substr(-2),
+            sort:("00" + current.sort).substr(-3),
             daikoumoku: current.daikoumoku,
             chuukoumoku: current.chuukoumoku,
             daichuukou:current.daikoumoku + ">" + current.chuukoumoku,
@@ -327,7 +327,7 @@ const dataset = (test) => createApp({
           element_d.daikei += current.kin; // sum
         }else{
           result.push({
-            sort:("0" + current.sort).substr(-2),
+            sort:("00" + current.sort).substr(-3),
             daikoumoku: current.daikoumoku,
             chuukoumoku: "",
             daichuukou:current.daikoumoku,
