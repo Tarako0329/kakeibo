@@ -89,6 +89,8 @@ if(substr($filepass,-3)==="csv"){
         $write=true;//出費元
       }else if(substr($content,0,72)==='<a class="btn btn-small dropdown-toggle v_l_ctg" data-toggle="dropdown">'){
         $next = true;//大項目
+      }else if(substr($content,0,83)==='<a class="btn btn-small dropdown-toggle v_l_ctg btn-danger" data-toggle="dropdown">'){
+        $next = true;//大項目(未分類)
       }else if(substr($content,0,72)==='<a class="btn btn-small dropdown-toggle v_m_ctg" data-toggle="dropdown">'){
         $next = true;//中項目
       }else if(substr($content,0,20)==='<div class="offset">'){
