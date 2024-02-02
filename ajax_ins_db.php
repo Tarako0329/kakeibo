@@ -2,18 +2,33 @@
   require "php_header.php";
   $return_satas = "success";
   log_writer("\$POST",$_POST);
+  //log_writer("\$POST csv",json_decode($_POST["csv"], true));
 
-  $dataset = $_POST["csv"];
+  $dataset = json_decode($_POST["csv"], true);
   $start = $_POST["start"];
-  $end = $_POST["end"];
+  $end = (empty($_POST["end"]))?$_POST["start"]:$_POST["end"];
+
+  if(strlen($start)===6){//[yyyymm]
+    $flg="getudo";
+  }else if(strlen($start)===10){//[yyyy-mm-dd]
+    $flg="import";
+  }else{
+    exit();
+  }
+
   $return = "false";
   try{
     $pdo_h->beginTransaction();
-    $stmt = $pdo_h->prepare("delete from kakeibo where date between :start and :end");
+    if($flg==="getudo"){
+      $stmt = $pdo_h->prepare("delete from kakeibo where getudo between :start and :end");
+    }else{
+      $stmt = $pdo_h->prepare("delete from kakeibo where date between :start and :end");
+    }
+    
     $stmt->bindValue("start", $start, PDO::PARAM_STR);
     $stmt->bindValue("end", $end, PDO::PARAM_STR);
     $stmt->execute();
-
+    
     $sql = "insert into kakeibo(uid,guid,date,meisai,kin,shuppimoto,daikoumoku,chuukoumoku,memo) values(:uid,:guid,:date,:meisai,:kin,:shuppimoto,:daikoumoku,:chuukoumoku,:memo)";
     $stmt = $pdo_h->prepare($sql);
     foreach($dataset as $row){
@@ -25,12 +40,13 @@
       $stmt->bindValue("meisai", $row["meisai"], PDO::PARAM_STR);
       $stmt->bindValue("kin", $row["kin"]+0, PDO::PARAM_INT);
       $stmt->bindValue("shuppimoto", $row["shuppimoto"], PDO::PARAM_STR);
-      $stmt->bindValue("daikoumoku", $row["daikou"], PDO::PARAM_STR);
-      $stmt->bindValue("chuukoumoku", $row["chuukou"], PDO::PARAM_STR);
+      $stmt->bindValue("daikoumoku", $row["daikoumoku"], PDO::PARAM_STR);
+      $stmt->bindValue("chuukoumoku", $row["chuukoumoku"], PDO::PARAM_STR);
       $stmt->bindValue("memo", empty($row["memo"])?"":$row["memo"], PDO::PARAM_STR);
       $stmt->execute();
   
     }
+    
     $pdo_h->commit();
     upd_getudo($pdo_h);
     $return = "success";

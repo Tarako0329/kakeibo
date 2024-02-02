@@ -123,44 +123,55 @@ const dataset = (test) => createApp({
     onMounted(()=>{
       //read_html_moneyforward()
     })
+    const from = ref('')
+    const to = ref('')
 
     const savedata = () =>{//データベース登録
-      //const csv = readdata.value
       const params = new FormData();
-      let start = '2099-12-31'
-      let end = '2000-01-01'
-      //params.append('csv', csv);
+      const csv = readdata.value
+      params.append('csv', JSON.stringify(csv));
 
-      readdata.value.forEach((row,index)=>{
-        //console_log(row)
-        if(start > row.date){
-          start = row.date
-        }
-        if(end < row.date){
-          end = row.date
-        }
-        params.append(`csv[${index}][date]`, row.date)
-        params.append(`csv[${index}][meisai]`, row.meisai)
-        params.append(`csv[${index}][kin]`, row.kin)
-        params.append(`csv[${index}][shuppimoto]`, row.shuppimoto)
-        params.append(`csv[${index}][daikou]`, row.daikoumoku)
-        params.append(`csv[${index}][chuukou]`, row.chuukoumoku)
-        params.append(`csv[${index}][memo]`, row.memo)
-      })
+      let start = ''
+      let end = ''
+
+      if(from.value===''){
+        start = '2099-12-31'
+        end = '2000-01-01'
+        readdata.value.forEach((row,index)=>{
+          if(start > row.date){
+            start = row.date
+          }
+          if(end < row.date){
+            end = row.date
+          }
+        })
+      }else{
+        start = from.value
+        end = to.value
+      }
       params.append(`start`, start)
       params.append(`end`, end)
-
+      
+      console_log(`${start} ～ ${end}`)
+      //console_log(csv)
+      
       let url="ajax_ins_db.php"
 
       axios.post(url,params, {headers: {'Content-Type': 'application/json'}})
       .then((response)=>{
         console_log(response.data)
         if(response.data==="success"){
+          search_disable.value = false
+          meisai_disable.value  = true
           readdata.value = []
+          alert('システムに登録しました')
+        }else{
+          alert('登録できませんでした')
         }
       })
       .catch((response)=>{
         console_log(response.data)
+        alert('登録できませんでした')
       })
       //console_log(csv)
 
@@ -175,7 +186,6 @@ const dataset = (test) => createApp({
 
       let start = '2099-12-31'
       let end = '2000-01-01'
-      //params.append('csv', csv);
 
       readdata.value.forEach((row,index)=>{
         //console_log(row)
@@ -259,8 +269,6 @@ const dataset = (test) => createApp({
       })
     }
 
-    const from = ref('20210')
-    const to = ref('202102')
     const read_db_meisai = () => {
       axios
       .get(`ajax_read_db_meisai.php?fm=${from.value}&to=${to.value}`)
@@ -268,6 +276,8 @@ const dataset = (test) => createApp({
         readdata.value = []
         //console_log(response.data)
         readdata.value = [...response.data]
+        search_disable.value = false
+        meisai_disable.value  = true
         console_log('read_db_meisai succsess')
       })
       .catch((error) => console.log(error));

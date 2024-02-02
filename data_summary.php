@@ -45,7 +45,7 @@
           <button class='btn btn-outline-primary btn-sm' type='button' @click='cgmode'>修正モード</button>
         </div>
         <div class='col-1'>
-          <button class='btn btn-outline-primary btn-sm' type='button' @click='updater'>登録</button>
+          <button class='btn btn-outline-primary btn-sm' type='button' @click='savedata'>登録</button>
         </div>
         <div class='col-1'>
           <button class='btn btn-outline-primary btn-sm' type='button' @click='read_db_meisai'>キャンセル</button>
