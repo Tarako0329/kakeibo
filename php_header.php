@@ -15,7 +15,7 @@ define("ROOT_URL",$_ENV["HTTP"]);
 //$rtn=session_set_cookie_params(24*60*60*24*3,'/',MAIN_DOMAIN,true,true);
 session_start();
 //$_SESSION = [];
-
+$_SESSION["uid"]="tarako";
 
 
 if(MAIN_DOMAIN==="localhost:81"){
@@ -30,7 +30,7 @@ if(MAIN_DOMAIN==="localhost:81"){
 
 
 //$pass=dirname(__FILE__);
-
+$title="APP NAME";
 
 // DBとの接続
 define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8");

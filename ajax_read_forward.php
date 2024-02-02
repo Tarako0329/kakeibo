@@ -4,10 +4,9 @@ if(empty($_GET["fn"])){
   exit;
 }else{
   $filepass = $_GET["fn"];
-  //$filepass = "upload/マネーフォワード ME.html";
 }
 log_writer("\$filepass",$filepass);
-//$contents = file("./upload/マネーフォワード ME.html");
+
 
 $type="";
 if(substr($filepass,-3)==="csv"){

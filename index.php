@@ -7,7 +7,7 @@
 	  header("Location: login.php");
 	  exit();
 	}
-	setCookie("vpool_usage", "on", time()+60*60*24*1825, "/", "",true,true);
+	
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
@@ -22,24 +22,16 @@
 <BODY id = 'body' style='background:black;' >
 	<div id = 'app' style='width:100%;height:100%;'>
 	<HEADER class='text-center' style='color:#FFA400;height:130px;'>
-		<h1>Video Uploader</h1>
+		<h1><?php echo $title;?></h1>
 		<div class='youkoso'><?php echo "ID:".$_SESSION["uid"];?></div>
 		<div class='logoff'><a href="logoff.php" class='a_none'>logoff</a></div>
-		<div class='row'><!--送信ボタン-->
-			<div class='col-1'></div>
-			<div class='col-10'>
-				<form action='V-uploader.php' style='width:100%'>
-					<button class='btn btn-primary btn-lg' style='width:100%'>動画アップロード</button>
-				</form>
-			</div>
-			<div class='col-1'></div>
-		</div><!--送信ボタン-->
 	</HEADER>
 	<MAIN class='container' style='color:#fff;padding-top:130px;padding-bottom:10px;'>
-		<div style='width:100%;height:100%;' id='Vmanager' scrolling="no">
-      <iframe src="V-manager-iframe.php?lv=%" width="100%" height="100%" id='Vmanager-frame'></iframe>
-    </div>
-
+		<div class='row'>
+			<form method='get' action='data_custmer.php'><button type='submit' class='btn btn-outline-primary' name='m' value='imp'>データインポート</button></form>
+			<form method='get' action='data_summary.php'><button type='submit' class='btn btn-outline-primary'>入出金明細</button></form>
+			<form method='get' action=''><button type='submit' class='btn btn-outline-primary'>期間推移</button></form>
+		</div>
 	</MAIN>
 	<!--<FOOTER>
 	</FOOTER>-->
