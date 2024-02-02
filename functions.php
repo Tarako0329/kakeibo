@@ -300,7 +300,7 @@ function upd_getudo($pdo_h) {
     //$date = date('w', strtotime('20170402'));
 
     $sql = "update kakeibo set getudo = :getudo where uid = :uid and date between :sdate and :edate";
-    $sym="200001";
+    $sym="201912";
     $sd=$row[0]["kisanbi"];
     $eym=date('Y')."12";
 
