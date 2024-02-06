@@ -195,6 +195,7 @@ const dataset = (test) => createApp({
         if(end < row[0]){
           end = row[0]
         }
+        /*
         const hiddenField1 = document.createElement('input');
         hiddenField1.type = 'hidden';
         hiddenField1.name = `csv[${index}][date]`;
@@ -236,6 +237,7 @@ const dataset = (test) => createApp({
         hiddenField7.name = `csv[${index}][memo]`;
         hiddenField7.value = row[7];
         form.appendChild(hiddenField7);
+        */
       })
       const hiddenField8 = document.createElement('input');
       hiddenField8.type = 'hidden';
@@ -248,6 +250,12 @@ const dataset = (test) => createApp({
       hiddenField9.name = `end`;
       hiddenField9.value = end;
       form.appendChild(hiddenField9);
+
+      const hiddenField1 = document.createElement('input');
+      hiddenField1.type = 'hidden';
+      hiddenField1.name = `csv`;
+      hiddenField1.value = JSON.stringify(csv);
+      form.appendChild(hiddenField1);
 
       document.body.appendChild(form);
       form.submit();

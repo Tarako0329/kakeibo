@@ -5,14 +5,14 @@ if(empty($_GET["fn"])){
 }else{
   $filepass = $_GET["fn"];
 }
-log_writer("\$filepass",$filepass);
+//log_writer("\$filepass",$filepass);
 
 
 $type="";
 if(substr($filepass,-3)==="csv"){
   $type="csv";
   $contents = fopen($filepass, 'r');
-  log_writer("\$contents csv",$contents);
+  //log_writer("\$contents csv",$contents);
   $i=0;
   $j=0;
   while($content = fgetcsv($contents)){
@@ -110,18 +110,44 @@ if(substr($filepass,-3)==="csv"){
   
         if($x>=7){
           $row["No"] = $rcount;
-          log_writer("\$row html",$row);
+          //log_writer("\$row html",$row);
           //$data[] = $row;
-          $data[] = array(
-            "date" => $row[0]
-            ,"meisai" => $row[2]
-            ,"kin" => $row[3]
-            ,"shuppimoto" => $row[4]
-            ,"daikoumoku" => $row[5]
-            ,"chuukoumoku" => $row[6]
-            ,"memo" => $row[7]
-            ,"No" => $row["No"]
-          );
+
+          if($row[4]==="振替"){
+            $data[] = array(
+              "date" => $row[0]
+              ,"meisai" => $row[2]
+              ,"kin" => $row[3]
+              ,"shuppimoto" => $row[5]
+              ,"daikoumoku" => ""
+              ,"chuukoumoku" => ""
+              ,"memo" => "振替"
+              ,"No" => $rcount
+            );
+            $rcount = $rcount + 1;
+            $data[] = array(
+              "date" => $row[0]
+              ,"meisai" => $row[2]
+              ,"kin" => $row[3] * (-1)
+              ,"shuppimoto" => $row[6]
+              ,"daikoumoku" => ""
+              ,"chuukoumoku" => ""
+              ,"memo" => "振替"
+              ,"No" => $rcount
+            );
+          }else{
+            $data[] = array(
+              "date" => $row[0]
+              ,"meisai" => $row[2]
+              ,"kin" => $row[3]
+              ,"shuppimoto" => $row[4]
+              ,"daikoumoku" => $row[5]
+              ,"chuukoumoku" => $row[6]
+              ,"memo" => $row[7]
+              ,"No" => $rcount
+            );
+  
+          }
       
           $row=[];
           $rcount = $rcount + 1;
