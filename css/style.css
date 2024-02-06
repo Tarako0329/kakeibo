@@ -1,6 +1,9 @@
 html,body,main{
   height:100%;
 }
+a{
+  color:inherit;
+}
 header{
   position: fixed;
   top:0;
@@ -12,7 +15,10 @@ header{
   z-index: 100;
 }
 .sticky-top{
-  top:80px;
+  top:0px;
+}
+.table-h-full{
+  height: 700px;
 }
 main{
   padding-top:80px;

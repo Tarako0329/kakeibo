@@ -90,7 +90,7 @@ const dataset = (test) => createApp({
             record.memo.includes(fl_memo.value.toString().trim()) 
             );
         });
-      }
+      } 
     })
 
 
@@ -111,11 +111,11 @@ const dataset = (test) => createApp({
           if(fl_dai_ko_lst.value.includes(row.daikoumoku)===false){fl_dai_ko_lst.value.push(row.daikoumoku)}
           if(fl_chuu_ko_lst.value.includes(row.chuukoumoku)===false){fl_chuu_ko_lst.value.push(row.chuukoumoku)}
           if(fl_memo_lst.value.includes(row.memo)===false){fl_memo_lst.value.push(row.memo)}
-          sum_kingaku.value = Number(sum_kingaku.value) + Number(row[3])
+          sum_kingaku.value = Number(sum_kingaku.value) + Number(row.kin)
         }
       )
       
-      //console_log(`watch readdata_filter sum: ${sum_kingaku.value}`)
+      console_log(`watch readdata_filter sum: ${sum_kingaku.value}`)
       //readdata_summary.value = []
       //readdata_summary.value = read_db_meisai_summury(readdata.value)
     })
@@ -339,12 +339,14 @@ const dataset = (test) => createApp({
         return result;
       }, []).sort((a,b)=>{return (a.sort+a.daichuukou > b.sort+b.daichuukou ?1:-1)})
     })
-    /*
+    
     watch(readdata,()=>{
       console_log('watch readdata')
-      //read_db_meisai_summury()
+      readdata.value.forEach((row)=>{
+        sum_kingaku2.value = Number(sum_kingaku2.value) + Number(row.kin)
+      })
     })
-    */
+    
     //データ編集モードの切り替え
     const search_disable = ref(false)
     const meisai_disable = ref(true)

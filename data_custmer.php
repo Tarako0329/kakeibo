@@ -6,7 +6,7 @@
     $mode = "ippan";
   }else if($_GET["m"]==="imp"){
     //データインポートモード
-    $title="MoneyFoward IMPORT";
+    $title="IMPORT";
     $mode = "import";
   }else{
     $mode = "ippan";
@@ -24,12 +24,13 @@
     <TITLE><?php echo $title;?></TITLE>
 </head>
 <BODY id = 'body' style='background:black;' >
-  <div id='app'>
+  <div id='app' style='height:100%;'>
     <HEADER class='text-center' style='color:#FFA400'>
-        <h1><?php echo $title;?></h1>
+      <a href='index.php'><h1><?php echo $title;?></h1></a>
     </HEADER>
-    <!--<MAIN class='container-fluid' style='color:#fff;'>-->
-    <MAIN class='container' style='color:#fff;'>
+    <!--<MAIN class='container-fluid' style='color:#fff;'> class="table-responsive" -->
+    <MAIN class='container table-responsive' style='color:#fff;'>
+    <div class="table-responsive table-h-full" style='width:100%;'>
       <table class="table table-striped table-hover table-sm">
       <thead class='sticky-top'>
         <tr>
@@ -127,7 +128,7 @@
           <td>{{list.No}}</td>
           <td><input v-model='list.date' class="form-control form-control-sm input_date" type="date" placeholder=""></td>
           <td><input v-model='list.meisai' class="form-control form-control-sm" type="text" placeholder=""></td>
-          <td><input v-model='list.kin' class="form-control form-control-sm" type="number" placeholder=""></td>
+          <td><input v-model='list.kin' class="form-control form-control-sm text-end" type="number" placeholder=""></td>
           <td><input v-model='list.shuppimoto' class="form-control form-control-sm" type="text" placeholder=""></td>
           <td><input v-model='list.daikoumoku' class="form-control form-control-sm" type="text" placeholder=""></td>
           <td><input v-model='list.chuukoumoku' class="form-control form-control-sm" type="text" placeholder=""></td>
@@ -135,7 +136,20 @@
           </tr>
         </template>
       </tbody>
+      <tfoot class='sticky-bottom'>
+        <tr class='table-success'>
+          <td></td>
+          <td></td>
+          <td class='text-center'>合計</td>
+          <td class='text-end'>{{Number(sum_kingaku).toLocaleString()}}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
       </table>
+    </div>
     </MAIN>
     <FOOTER class='text-center'>
       <input type="file" class="" name="user_file_name" style='width:25%;' id='file'>

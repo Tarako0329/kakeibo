@@ -34,7 +34,7 @@
 <BODY id = 'body' style='background:black;' >
   <div id='app' style='height:100%;'>
     <HEADER class=' row' style='color:#FFA400;'>
-        <div class='col-4 text-center'><h3><?php echo $title;?></h3></div>
+        <div class='col-4 text-center'><a href='index.php'><h3><?php echo $title;?></h3></a></div>
         <div class='col-1'>
           <input v-model='from' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control form-control-sm' placeholder="期間FROM YYYYMM">
         </div>
@@ -52,7 +52,7 @@
         </div>
     </HEADER>
     
-    <MAIN class='container-fluid' style='color:#fff;height:100%;padding-left:20px;padding-right:20px;'>
+    <MAIN class='container-fluid' style='color:#fff;padding-left:20px;padding-right:20px;'>
     <div class='row' style='height:100%;'>
       <div class='col-xl-4'>
         <div class="table-responsive" style='width:100%;height:800px;'>
@@ -68,17 +68,23 @@
                 <template v-if='index===0 || (index!==0 && list["daikoumoku"]!==cp_readdata_summary[index -1]["daikoumoku"])'>
                   <tr class="table-info" roll='button' @click='setfilter(list["daikoumoku"],"")'>
                     <td>{{list["daikoumoku"]}}</td>
-                    <td>{{Number(list.daikei).toLocaleString()}}</td>
+                    <td class='text-end'>{{Number(list.daikei).toLocaleString()}}</td>
                   </tr>
                 </template>
                 <template v-if='index!==0 && list["daikoumoku"]===cp_readdata_summary[index -1]["daikoumoku"]'>
                   <tr roll='button' @click='setfilter(list["daikoumoku"],list["chuukoumoku"])'>
                     <td>　{{list["chuukoumoku"]}}</td>
-                    <td>{{Number(list.chuukei).toLocaleString()}}</td>
+                    <td class='text-end'>{{Number(list.chuukei).toLocaleString()}}</td>
                   </tr>
                 </template>
               </template>
             </tbody>
+            <tfoot class='sticky-bottom'>
+              <tr class='table-success'>
+                <td class='text-center'>入出金計</td>
+                <td class='text-end'>{{Number(sum_kingaku2).toLocaleString()}}</td>
+              </tr>
+            </tfoot>
           </table>
         </div>
       </div>
@@ -179,7 +185,7 @@
                 <td>{{list.No}}</td>
                 <td><input v-model='list.date' :disabled='meisai_disable' class="form-control form-control-sm input_date" type="date" placeholder=""></td>
                 <td><input v-model='list.meisai' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
-                <td><input v-model='list.kin' :disabled='meisai_disable' class="form-control form-control-sm" type="number" placeholder=""></td>
+                <td><input v-model='list.kin' :disabled='meisai_disable' class="form-control form-control-sm text-end" type="number" placeholder=""></td>
                 <td><input v-model='list.shuppimoto' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
                 <td><input v-model='list.daikoumoku' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
                 <td><input v-model='list.chuukoumoku' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
@@ -187,6 +193,18 @@
                 </tr>
               </template>
             </tbody>
+            <tfoot class='sticky-bottom'>
+              <tr class='table-success'>
+                <td></td>
+                <td></td>
+                <td class='text-center'>合計</td>
+                <td class='text-end'>{{Number(sum_kingaku).toLocaleString()}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tfoot>
           </table>
         </div>
       </div>
