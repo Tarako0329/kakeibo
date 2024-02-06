@@ -293,7 +293,7 @@ function get_pdo_options() {
 function upd_getudo($pdo_h) {
     $sql = "select * from user where uid = :uid";
     $stmt = $pdo_h->prepare($sql);
-    $stmt->bindValue("uid", "tarako", PDO::PARAM_STR);
+    $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
     $stmt->execute();
     $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -361,7 +361,7 @@ function upd_getudo($pdo_h) {
         //データ更新
         $stmt = $pdo_h->prepare($sql);
         $stmt->bindValue("getudo", $sym, PDO::PARAM_INT);
-        $stmt->bindValue("uid", "tarako", PDO::PARAM_STR);
+        $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
         $stmt->bindValue("sdate", date("Y-m-d", strtotime($startdate)), PDO::PARAM_STR);
         $stmt->bindValue("edate", date("Y-m-d", strtotime($enddate)), PDO::PARAM_STR);
         $stmt->execute();

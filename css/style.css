@@ -38,7 +38,22 @@ footer{
   color:#FFA400;
   margin:0;
 }
-.input_date{
+.wd80{
+  width: 80px;
+}
+.wd90{
+  width: 90px;
+}
+.wd100{
+  width: 100px;
+}
+.wd110{
+  width: 110px;
+}
+.wd120{
+  width: 120px;
+}
+.wd130{
   width: 130px;
 }
 .form-control-sm

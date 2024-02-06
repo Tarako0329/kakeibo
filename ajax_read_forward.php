@@ -109,7 +109,7 @@ if(substr($filepass,-3)==="csv"){
         $row[] = tagClear($content);
   
         if($x>=7){
-          $row["No"] = $rcount;
+          //$row["No"] = $rcount;
           //log_writer("\$row html",$row);
           //$data[] = $row;
 

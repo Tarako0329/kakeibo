@@ -30,7 +30,7 @@
 		<div class='row'>
 			<form method='get' action='data_custmer.php'><button type='submit' class='btn btn-outline-primary' name='m' value='imp'>データインポート</button></form>
 			<form method='get' action='data_summary.php'><button type='submit' class='btn btn-outline-primary'>入出金明細</button></form>
-			<form method='get' action=''><button type='submit' class='btn btn-outline-primary'>期間推移</button></form>
+			<form method='get' action='data_comparison.php'><button type='submit' class='btn btn-outline-primary'>期間推移</button></form>
 		</div>
 	</MAIN>
 	<!--<FOOTER>

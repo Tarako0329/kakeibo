@@ -5,6 +5,7 @@ const dataset = (test) => createApp({
     const readdata = ref([])
     const readdata_summary = ref([])
     const readdata_monthly_summary = ref([])
+    const daikoumoku_ms = ref([])
     
     const readfilename = ref('')
     const filetype = ref('')
@@ -120,9 +121,6 @@ const dataset = (test) => createApp({
       //readdata_summary.value = read_db_meisai_summury(readdata.value)
     })
 
-    onMounted(()=>{
-      //read_html_moneyforward()
-    })
     const from = ref('')
     const to = ref('')
 
@@ -283,9 +281,11 @@ const dataset = (test) => createApp({
       .then((response) => {
         readdata.value = []
         //console_log(response.data)
-        readdata.value = [...response.data]
+        readdata.value = [...response.data.meisai]
+        daikoumoku_ms.value = [...response.data.daikou_ms]
         search_disable.value = false
         meisai_disable.value  = true
+        console_log(get_sortNO("収入"))
         console_log('read_db_meisai succsess')
       })
       .catch((error) => console.log(error));
@@ -295,12 +295,23 @@ const dataset = (test) => createApp({
       .get(`ajax_read_db_summury.php?fm=${from.value}&to=${to.value}`)
       .then((response) => {
         readdata_summary.value = []
-        //console_log(response.data)
+        console_log(response.data)
         readdata_summary.value = [...response.data]
         console_log('read_db_meisai succsess')
       })
       .catch((error) => console.log(error));
 
+    }
+    const read_db_comparison = () => {
+      axios
+      .get(`ajax_read_db_summury_comparison.php?fm=${from.value}&to=${to.value}`)
+      .then((response) => {
+        readdata_summary.value = []
+        console_log(response.data)
+        readdata_summary.value = [...response.data]
+        console_log('read_db_meisai succsess')
+      })
+      .catch((error) => console.log(error));
     }
     const read_db_meisai_and_summury = () => {
       console_log('read_db_meisai_and_summury start')
@@ -313,15 +324,22 @@ const dataset = (test) => createApp({
       fl_chuu_ko.value = chuu
 
     }
+    const get_sortNO = (name) =>{
+      //console_log('start get_sortNO')  
+      result = daikoumoku_ms.value.filter((low)=>low.daikoumoku.includes(name))
+      //console_log(result)
+      return result[0].sort
+    }
     const cp_readdata_summary = computed(() => {
-      console_log('start computed read_db_meisai_summury')  
+      console_log('start computed read_db_meisai_summury')
       return readdata.value.reduce((result, current) => {
         const element_c = result.find((p) => p.daikoumoku === current.daikoumoku && p.chuukoumoku === current.chuukoumoku);
         if (element_c) {
           element_c.chuukei += current.kin; // sum
-        }else{
+        }else if(current.daikoumoku!==""){
           result.push({
-            sort:("00" + current.sort).substr(-3),
+            //sort:("00" + current.sort).substr(-3),
+            sort:("00" + get_sortNO(current.daikoumoku)).substr(-3),
             daikoumoku: current.daikoumoku,
             chuukoumoku: current.chuukoumoku,
             daichuukou:current.daikoumoku + ">" + current.chuukoumoku,
@@ -333,9 +351,10 @@ const dataset = (test) => createApp({
         const element_d = result.find((p) => p.daichuukou === current.daikoumoku);
         if(element_d){
           element_d.daikei += current.kin; // sum
-        }else{
+        }else if(current.daikoumoku!==""){
           result.push({
-            sort:("00" + current.sort).substr(-3),
+            //sort:("00" + current.sort).substr(-3),
+            sort:("00" + get_sortNO(current.daikoumoku)).substr(-3),
             daikoumoku: current.daikoumoku,
             chuukoumoku: "",
             daichuukou:current.daikoumoku,
@@ -363,11 +382,17 @@ const dataset = (test) => createApp({
       meisai_disable.value  = false
     }
 
+    onMounted(()=>{
+      //read_html_moneyforward()
+      //read_db_summury()
+    })
+
     return{
       readdata,
       cp_readdata_summary,
       readdata_summary,
       readdata_monthly_summary,
+      daikoumoku_ms,
       readfilename,
       uploadfile,
       fl_date,      
@@ -393,6 +418,7 @@ const dataset = (test) => createApp({
       mode,
       read_db_meisai,
       read_db_summury,
+      read_db_comparison,
       read_db_meisai_and_summury,
       //read_db_meisai_summury,
       from,

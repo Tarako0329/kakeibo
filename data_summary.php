@@ -23,9 +23,6 @@
     <script src="./script/flow.js"></script>
     <TITLE><?php echo $title;?></TITLE>
     <style>
-      .sticky-top{
-        top:0px
-      }
       button{
         width: 95%;
       }
@@ -105,7 +102,7 @@
               <tr>
                 <td></td>
                 <td>
-                  <select v-model='fl_date' class="form-select form-select-sm input_date" placeholder="フィルタ">
+                  <select v-model='fl_date' class="form-select form-select-sm wd90" placeholder="フィルタ">
                     <option value=''>ﾌｨﾙﾀ解除</option>
                     <template v-for='(list,index) in fl_date_lst' :key='list'>
                       <option :value='list'>{{list}}</option>
@@ -113,7 +110,7 @@
                   </select>
                 </td>
                 <td><input v-model='fl_meisai' type="text" class='form-control form-control-sm' placeholder="フィルタ"></td>
-                <td><input v-model="fl_kin" class="form-control form-control-sm" type="number" placeholder="フィルタ"></td>
+                <td><input v-model="fl_kin" class="form-control form-control-sm wd100" type="number" placeholder="フィルタ"></td>
                 <td>
                   <select v-model='fl_shuppimoto' class="form-select form-select-sm" placeholder="フィルタ">
                     <option value=''>ﾌｨﾙﾀ解除</option>
@@ -150,16 +147,16 @@
               <tr>
                 <td></td>
                 <td>
-                  <input type="date" id='cdate' class='form-control form-control-sm input_date' placeholder="一括変更" style='margin-bottom:3px;'>
-                  <button type='button' class='btn btn-success btn-sm input_date' @click='hanei("cdate")'>↓反映</button>
+                  <input type="date" id='cdate' class='form-control form-control-sm wd90' placeholder="一括変更" style='margin-bottom:3px;'>
+                  <button type='button' class='btn btn-success btn-sm wd90' @click='hanei("cdate")'>↓反映</button>
                 </td>
                 <td>
                   <input type="text" id='cmeisai' class='form-control form-control-sm' placeholder="一括変更" style='margin-bottom:3px;'>
                   <button type='button' class='btn btn-success btn-sm' @click='hanei("cmeisai")'>↓反映</button>
                 </td>
                 <td>
-                  <input type="number" id='ckin' class='form-control form-control-sm' placeholder="一括変更" style='margin-bottom:3px;'>
-                  <button type='button' class='btn btn-success btn-sm' @click='hanei("ckin")'>↓反映</button>
+                  <input type="number" id='ckin' class='form-control form-control-sm wd100' placeholder="一括変更" style='margin-bottom:3px;'>
+                  <button type='button' class='btn btn-success btn-sm wd100' @click='hanei("ckin")'>↓反映</button>
                 </td>
                 <td>
                   <input type="text" id='cshuppi' class='form-control form-control-sm' placeholder="一括変更" style='margin-bottom:3px;'>
@@ -183,9 +180,9 @@
               <template v-for='(list,index) in readdata_filter' :key="list.guid">
                 <tr>
                 <td>{{list.No}}</td>
-                <td><input v-model='list.date' :disabled='meisai_disable' class="form-control form-control-sm input_date" type="date" placeholder=""></td>
+                <td><input v-model='list.date' :disabled='meisai_disable' class="form-control form-control-sm wd90" type="date" placeholder=""></td>
                 <td><input v-model='list.meisai' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
-                <td><input v-model='list.kin' :disabled='meisai_disable' class="form-control form-control-sm text-end" type="number" placeholder=""></td>
+                <td><input v-model='list.kin' :disabled='meisai_disable' class="form-control form-control-sm text-end wd100" type="number" placeholder=""></td>
                 <td><input v-model='list.shuppimoto' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
                 <td><input v-model='list.daikoumoku' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
                 <td><input v-model='list.chuukoumoku' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
