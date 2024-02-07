@@ -157,6 +157,10 @@
       <button v-if='mode!=="ippan"' class='btn btn-primary' type='button' @click='savedata'>システム登録</button>
       <button class='btn btn-primary' type='button' @click='savecsv'>CSV出力</button>
     </FOOTER>
+    <div class="loader-wrap" v-show='loader'>
+		  <div class="loader">Loading...</div>
+	  </div>
+
   </div>
   <script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>
   <script>

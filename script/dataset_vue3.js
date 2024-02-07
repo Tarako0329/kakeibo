@@ -123,8 +123,10 @@ const dataset = (test) => createApp({
 
     const from = ref('')
     const to = ref('')
+    const loader = ref(false)
 
     const savedata = () =>{//データベース登録
+      loader.value = true
       const params = new FormData();
       const csv = readdata.value
       params.append('csv', JSON.stringify(csv));
@@ -170,6 +172,9 @@ const dataset = (test) => createApp({
       .catch((response)=>{
         console_log(response.data)
         alert('登録できませんでした')
+      })
+      .finaly(()=>{
+        loader.value = false
       })
       //console_log(csv)
 
@@ -427,6 +432,7 @@ const dataset = (test) => createApp({
       search_disable,
       meisai_disable,
       cgmode,
+      loader,
     }
   }
 });
