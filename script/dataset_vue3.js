@@ -173,7 +173,7 @@ const dataset = (test) => createApp({
         console_log(response.data)
         alert('登録できませんでした')
       })
-      .finaly(()=>{
+      .finally(()=>{
         loader.value = false
       })
       //console_log(csv)
