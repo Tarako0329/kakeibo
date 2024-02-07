@@ -370,6 +370,9 @@ const dataset = (test) => createApp({
 
     }
     const read_db_comparison = () => {
+      if(to.value===''){
+        to.value='m'
+      }
       axios
       .get(`ajax_read_db_summury_comparison.php?fm=${from.value}&to=${to.value}`)
       .then((response) => {

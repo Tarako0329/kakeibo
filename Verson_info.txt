@@ -3,7 +3,7 @@ ver0.01.2:開発中：under development
 ver0.02.0:運用開始
 ver0.02.1:運用開始
 ver0.02.2:運用開始bugfix
-ver0.02.3:運用開始bugfix
+ver0.02.4:運用開始bugfix
 
 【Issues】
 

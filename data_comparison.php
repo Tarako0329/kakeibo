@@ -53,8 +53,10 @@
             <thead class='sticky-top'>
               <tr class="table-info">
                 <th scope="col">大中項目</th>
-                <th scope="col">合計金額</th>
-                <th scope="col">合計金額</th>
+                <th v-if='to==="m"' scope="col">前月金額</th>
+                <th v-else-if='to==="y"' scope="col">前年金額</th>
+                <th v-else></th>
+                <th scope="col">[{{from}}]金額</th>
                 <th scope="col">増減額</th>
               </tr>
             </thead>
