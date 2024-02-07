@@ -369,6 +369,19 @@ const dataset = (test) => createApp({
       .catch((error) => console.log(error));
 
     }
+    const comparison_sum_val = ref([])
+    const comparison_sum = () =>{
+      console_log('comparison_sum start')
+      comparison_sum_val.value["zen"]=0
+      comparison_sum_val.value["tou"]=0
+      comparison_sum_val.value["sa"]=0
+      readdata_summary.value.forEach((row)=>{
+        comparison_sum_val.value["zen"] = comparison_sum_val.value["zen"] + row.hikaku_chuukei
+        comparison_sum_val.value["tou"] = comparison_sum_val.value["tou"] + row.moto_chuukei
+      })
+      comparison_sum_val.value["sa"] = comparison_sum_val.value["tou"] - comparison_sum_val.value["zen"]
+      console_log(comparison_sum_val.value)
+    }
     const read_db_comparison = () => {
       if(to.value===''){
         to.value='m'
@@ -379,7 +392,8 @@ const dataset = (test) => createApp({
         readdata_summary.value = []
         console_log(response.data)
         readdata_summary.value = [...response.data]
-        console_log('read_db_meisai succsess')
+        comparison_sum()
+        console_log('read_db_comparison succsess')
       })
       .catch((error) => console.log(error));
     }
@@ -491,6 +505,7 @@ const dataset = (test) => createApp({
       read_db_meisai,
       read_db_summury,
       read_db_comparison,
+      comparison_sum_val,
       read_db_meisai_and_summury,
       //read_db_meisai_summury,
       from,

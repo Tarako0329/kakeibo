@@ -92,9 +92,9 @@
             <tfoot class='sticky-bottom'>
               <tr class='table-success'>
                 <td class='text-center'>入出金計</td>
-                <td class='text-end'>{{Number(sum_kingaku2).toLocaleString()}}</td>
-                <td class='text-end'>{{Number(sum_kingaku2).toLocaleString()}}</td>
-                <td class='text-end'>{{Number(sum_kingaku2).toLocaleString()}}</td>
+                <td class='text-end'>{{Number(comparison_sum_val["zen"]).toLocaleString()}}</td>
+                <td class='text-end'>{{Number(comparison_sum_val["tou"]).toLocaleString()}}</td>
+                <td class='text-end'>{{Number(comparison_sum_val["sa"]).toLocaleString()}}</td>
               </tr>
             </tfoot>
           </table>
