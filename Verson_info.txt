@@ -2,6 +2,7 @@ ver0.01.1:my first commit
 ver0.01.2:開発中：under development
 ver0.02.0:運用開始
 ver0.02.1:運用開始
+ver0.02.2:運用開始bugfix
 
 
 【Issues】

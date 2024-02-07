@@ -152,7 +152,7 @@
     </div>
     </MAIN>
     <FOOTER class='text-center'>
-      <input type="file" class="" name="user_file_name" style='width:25%;' id='file'>
+      <input type="file" class="" name="user_file_name" style='width:25%;' id='file'@change='uploadfile'>
       <button class='btn btn-primary' type='button' @click='uploadfile'>ファイル読込</button>
       <button v-if='mode!=="ippan"' class='btn btn-primary' type='button' @click='savedata'>システム登録</button>
       <button class='btn btn-primary' type='button' @click='savecsv'>CSV出力</button>

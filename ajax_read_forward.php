@@ -20,9 +20,10 @@ if(substr($filepass,-3)==="csv"){
       $i=$i+1;
       continue;
     }
-    //log_writer("\$content =>",mb_convert_encoding($content, "UTF-8", "SJIS"));mb_detect_encoding
-    //log_writer("\$content 文字CD =>",mb_detect_encoding($content[2]));
+    //log_writer("\$content =>",mb_convert_encoding($content, "UTF-8", "SJIS"));
+    //log_writer("\$content 文字CD =>",mb_detect_encoding($content[4],['JIS','SJIS','ASCII', 'UTF-8'], false));
     //$data[] = mb_convert_encoding($content, "UTF-8", "SJIS");
+    /*
     if(mb_detect_encoding($content[4])==="SJIS"){
       $data[] = array(
         "date" => mb_convert_encoding($content[1], "UTF-8", "SJIS")
@@ -46,6 +47,19 @@ if(substr($filepass,-3)==="csv"){
         ,"No" => $j
       );
     }
+    */
+    $basecd = mb_detect_encoding($content[4],['JIS','SJIS','ASCII', 'UTF-8'], false);
+    $data[] = array(
+      "date" => mb_convert_encoding($content[1], "UTF-8", $basecd)
+      ,"meisai" => mb_convert_encoding($content[2], "UTF-8", $basecd)
+      ,"kin" => mb_convert_encoding($content[3], "UTF-8", $basecd)
+      ,"shuppimoto" => mb_convert_encoding($content[4], "UTF-8", $basecd)
+      ,"daikoumoku" => mb_convert_encoding($content[5], "UTF-8", $basecd)
+      ,"chuukoumoku" => mb_convert_encoding($content[6], "UTF-8", $basecd)
+      ,"memo" => mb_convert_encoding($content[7], "UTF-8", $basecd)
+      ,"No" => $j
+    );
+
     $data[$j]["date"] = str_replace("/", '-', $data[$j]["date"]);
     $j=$j+1;
   }
@@ -165,7 +179,7 @@ $return = array(
   "data" => $data
   ,"type" => $type
 );
-//log_writer("\$data",$data);
+log_writer("\$data",$data);
 
 //jsonとして出力
 header('Content-type: application/json');
