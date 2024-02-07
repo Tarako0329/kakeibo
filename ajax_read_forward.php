@@ -179,7 +179,7 @@ $return = array(
   "data" => $data
   ,"type" => $type
 );
-log_writer("\$data",$data);
+//log_writer("\$data",$data);
 
 //jsonとして出力
 header('Content-type: application/json');

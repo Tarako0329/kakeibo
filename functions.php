@@ -290,20 +290,34 @@ function get_pdo_options() {
 // =========================================================
 // 月度設定
 // =========================================================
-function upd_getudo($pdo_h) {
+function upd_getudo($pdo_h,$symd,$eymd) {
+    
+    $return_val = "success";
     $sql = "select * from user where uid = :uid";
     $stmt = $pdo_h->prepare($sql);
     $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
     $stmt->execute();
     $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    //$date = date('w', strtotime('20170402'));
+    //$symd の月度を算出
+    if(empty($symd)){
+        $sym="201812";
+    }else{
+        $sym = $row[0]["kisanbi"]<=substr($symd,-2)?substr(str_replace("-","",$symd),0,6):date("Ym", strtotime($symd." -1 month"));
+    }
+
+    //$eymd の月度を算出
+    if(empty($symd)){
+        $eym=date('Y')."12";
+    }else{
+        $eym = $row[0]["kisanbi"]<=substr($eymd,-2)?substr(str_replace("-","",$eymd),0,6):date("Ym", strtotime($eymd." -1 month"));
+    }
+
+    //log_writer("月度期間","：".$sym."-".$eym);
 
     $sql = "update kakeibo set getudo = :getudo where uid = :uid and date between :sdate and :edate";
-    $sym="201912";
+    
     $sd=$row[0]["kisanbi"];
-    $eym=date('Y')."12";
-
     while($sym <= $eym){
         //開始日の判定(31=月末)
         $sd=$row[0]["kisanbi"];
@@ -359,18 +373,25 @@ function upd_getudo($pdo_h) {
         //log_writer("月度期間",$sym."：".$startdate."-".$enddate);
 
         //データ更新
-        $stmt = $pdo_h->prepare($sql);
-        $stmt->bindValue("getudo", $sym, PDO::PARAM_INT);
-        $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
-        $stmt->bindValue("sdate", date("Y-m-d", strtotime($startdate)), PDO::PARAM_STR);
-        $stmt->bindValue("edate", date("Y-m-d", strtotime($enddate)), PDO::PARAM_STR);
-        $stmt->execute();
+        try{
+            $pdo_h->beginTransaction();
+            $stmt = $pdo_h->prepare($sql);
+            $stmt->bindValue("getudo", $sym, PDO::PARAM_INT);
+            $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
+            $stmt->bindValue("sdate", date("Y-m-d", strtotime($startdate)), PDO::PARAM_STR);
+            $stmt->bindValue("edate", date("Y-m-d", strtotime($enddate)), PDO::PARAM_STR);
+            $stmt->execute();
+            $pdo_h->commit();
+        }catch(Exception $e){
+            $pdo_h->rollback();
+            log_writer("func[upd_getudo] Exception \$e",$e);
+            $return_val = $e;
+            return $return_val;
+        }
     
         //次月セット
         $sym = date("Ym", strtotime($sym."01 1 month"));
     }
+    return $return_val;
 }
-
-
-
 ?>

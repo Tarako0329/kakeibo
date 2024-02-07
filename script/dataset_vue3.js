@@ -18,6 +18,7 @@ const dataset = (test) => createApp({
         console_log(response.data)
         readdata.value = [...response.data.data]
         filetype.value = response.data.type
+        
         console_log('read_html_moneyforward succsess')
       })
       .catch((error) => console.log(error));
@@ -133,24 +134,29 @@ const dataset = (test) => createApp({
 
       let start = ''
       let end = ''
+      let mode = ''
 
+      start = '2099-12-31'
+      end = '2000-01-01'
+      readdata.value.forEach((row,index)=>{
+        if(start > row.date){
+          start = row.date
+        }
+        if(end < row.date){
+          end = row.date
+        }
+      })
+    
       if(from.value===''){
-        start = '2099-12-31'
-        end = '2000-01-01'
-        readdata.value.forEach((row,index)=>{
-          if(start > row.date){
-            start = row.date
-          }
-          if(end < row.date){
-            end = row.date
-          }
-        })
+        mode = 'ins'
       }else{
-        start = from.value
-        end = to.value
+        mode = 'upd'
+        params.append(`startYM`, from.value)  //デリインの月度範囲
+        params.append(`endYM`, to.value)      //デリインの月度範囲
       }
-      params.append(`start`, start)
-      params.append(`end`, end)
+      params.append(`start`, start) //月度算出対象範囲
+      params.append(`end`, end)     //月度算出対象範囲
+      params.append(`mode`, mode)
       
       console_log(`${start} ～ ${end}`)
       //console_log(csv)
@@ -159,26 +165,82 @@ const dataset = (test) => createApp({
 
       axios.post(url,params, {headers: {'Content-Type': 'application/json'}})
       .then((response)=>{
-        console_log(response.data)
-        if(response.data==="success"){
+        console_log(response.data.status)
+        if(response.data.status === 'success'){
           search_disable.value = false
           meisai_disable.value  = true
           readdata.value = []
+          document.getElementById('file').value = ''
           alert('システムに登録しました')
         }else{
+          console_log('else')
           alert('登録できませんでした')
         }
       })
-      .catch((response)=>{
-        console_log(response.data)
-        alert('登録できませんでした')
+      .catch((error)=>{
+        console_log('ajax_ins_db.php ERROR')
+        console_log(error)
+        alert('リターンエラー：登録できませんでした')
       })
       .finally(()=>{
         loader.value = false
       })
-      //console_log(csv)
-
     }
+
+    const upddata = () =>{//データベース登録(デリイン)
+      if(from.value===''){
+        console_log('期間未指定です')
+        return
+      }
+      loader.value = true
+      const params = new FormData();
+      //const csv = readdata.value
+      params.append('csv', JSON.stringify(readdata.value));
+
+      let start = ''
+      let end = ''
+
+      start = '2099-12-31'
+      end = '2000-01-01'
+      readdata.value.forEach((row,index)=>{
+        if(start > row.date){
+          start = row.date
+        }
+        if(end < row.date){
+          end = row.date
+        }
+      })
+    
+      params.append(`startYM`, from.value)  //デリインの月度範囲
+      params.append(`endYM`, to.value)      //デリインの月度範囲
+      params.append(`start`, start) //月度算出対象範囲
+      params.append(`end`, end)     //月度算出対象範囲
+      
+      console_log(`${start} ～ ${end}`)
+
+      axios.post("ajax_delins_db.php",params, {headers: {'Content-Type': 'application/json'}})
+      .then((response)=>{
+        console_log(response.data.status)
+        if(response.data.status === 'success'){
+          search_disable.value = false
+          meisai_disable.value  = true
+          //readdata.value = []
+          alert('システムに登録しました')
+        }else{
+          console_log('else')
+          alert('登録できませんでした')
+        }
+      })
+      .catch((error)=>{
+        console_log('ajax_ins_db.php ERROR')
+        console_log(error)
+        alert('リターンエラー：登録できませんでした')
+      })
+      .finally(()=>{
+        loader.value = false
+      })
+    }
+
 
     const savecsv = () =>{//CSVしゅつりょく
       //type (databese or csv)
@@ -374,6 +436,7 @@ const dataset = (test) => createApp({
     
     watch(readdata,()=>{
       console_log('watch readdata')
+      sum_kingaku2.value = 0
       readdata.value.forEach((row)=>{
         sum_kingaku2.value = Number(sum_kingaku2.value) + Number(row.kin)
       })
@@ -417,6 +480,7 @@ const dataset = (test) => createApp({
       sum_kingaku,
       sum_kingaku2,
       savedata,
+      upddata,
       savecsv,
       hanei,
       filetype,

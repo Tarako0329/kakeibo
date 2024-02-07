@@ -4,34 +4,29 @@
   if(empty($_POST)){
     exit();
   }
+  //log_writer("\$POST",$_POST);
 
   $dataset = json_decode($_POST["csv"], true);
   $start_date = $_POST["start"];
   $end_date = $_POST["end"];
+  $start_YM = $_POST["startYM"];
+  $end_YM = (empty($_POST["endYM"]))?$_POST["startYM"]:$_POST["endYM"];
 
+  
   try{
     $pdo_h->beginTransaction();
 
-    $stmt = $pdo_h->prepare("delete from kakeibo_plus where guid in ( select guid from kakeibo where date between :start and :end)");
-    $stmt->bindValue("start", $start_date, PDO::PARAM_STR);
-    $stmt->bindValue("end", $end_date, PDO::PARAM_STR);
-    $stmt->execute();
+    $stmt = $pdo_h->prepare("delete from kakeibo where getudo between :start and :end");
+    $stmt->bindValue("start", $start_YM, PDO::PARAM_STR);
+    $stmt->bindValue("end", $end_YM, PDO::PARAM_STR);
   
-    $stmt = $pdo_h->prepare("delete from kakeibo where date between :start and :end");
-    $stmt->bindValue("start", $start_date, PDO::PARAM_STR);
-    $stmt->bindValue("end", $end_date, PDO::PARAM_STR);
     $stmt->execute();
     
     $sql = "insert into kakeibo(uid,guid,date,meisai,kin,shuppimoto,daikoumoku,chuukoumoku,memo) values(:uid,:guid,:date,:meisai,:kin,:shuppimoto,:daikoumoku,:chuukoumoku,:memo)";
     $stmt = $pdo_h->prepare($sql);
-    $sql2 = "insert into kakeibo_plus(uid,guid,cus_1,cus_2) values(:uid,:guid,:daikoumoku,:chuukoumoku)";
-    $stmt2 = $pdo_h->prepare($sql2);
     foreach($dataset as $row){
       //log_writer("\$row[date]",$row[0]);
       $guid = empty($row["guid"])?getGUID():$row["guid"];
-      //log_writer("\$row",$row);
-      //log_writer("\$_SESSION[uid]",$_SESSION["uid"]);
-      //log_writer("\$guid",$guid);
 
       $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
       $stmt->bindValue("guid", $guid, PDO::PARAM_STR);
@@ -43,12 +38,6 @@
       $stmt->bindValue("chuukoumoku", $row["chuukoumoku"], PDO::PARAM_STR);
       $stmt->bindValue("memo", empty($row["memo"])?"":$row["memo"], PDO::PARAM_STR);
       $stmt->execute();
-
-      $stmt2->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
-      $stmt2->bindValue("guid", $guid, PDO::PARAM_STR);
-      $stmt2->bindValue("daikoumoku", $row["daikoumoku"], PDO::PARAM_STR);
-      $stmt2->bindValue("chuukoumoku", $row["chuukoumoku"], PDO::PARAM_STR);
-      $stmt2->execute();
     }
     
     $pdo_h->commit();
