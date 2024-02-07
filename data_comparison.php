@@ -59,7 +59,7 @@
               </tr>
             </thead>
             <tbody>
-              <template v-for='(list,index) in readdata_summary' :key="list.sort">
+              <template v-for='(list,index) in readdata_summary' :key="list.sort+list.chuukoumoku">
                 <template v-if='index===0 || (index!==0 && list["daikoumoku"]!==readdata_summary[index -1]["daikoumoku"])'>
                   <tr class="table-info" roll='button' @click='setfilter(list["daikoumoku"],"")'>
                     <td>{{list["daikoumoku"]}}</td>
