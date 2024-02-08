@@ -206,7 +206,10 @@
         </div>
       </div>
     </div>
-    </MAIN>
+    </MAIN> 
+    <div class="loader-wrap" v-show='loader'>
+		  <div class="loader">Loading...</div>
+	  </div>
   </div>
   
   <script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>

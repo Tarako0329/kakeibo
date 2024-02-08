@@ -470,6 +470,9 @@ const dataset = (test) => createApp({
     onMounted(()=>{
       //read_html_moneyforward()
       //read_db_summury()
+      comparison_sum_val.value["zen"]=0
+      comparison_sum_val.value["tou"]=0
+      comparison_sum_val.value["sa"]=0
     })
 
     return{
