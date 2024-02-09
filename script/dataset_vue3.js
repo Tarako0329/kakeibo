@@ -106,6 +106,13 @@ const dataset = (test) => createApp({
       fl_chuu_ko.value    = ''
       fl_memo.value       = ''
     }
+    const filseted = computed(()=>{
+      if(fl_date.value + fl_meisai.value + fl_kin.value + fl_shuppimoto.value + fl_dai_ko.value + fl_chuu_ko.value + fl_memo.value !== ''){
+        return true
+      }else{
+        return false
+      }
+    })
 
     watch(readdata_filter,()=>{//明細のフィルタリングに合わせて、フィルタ選択肢を絞る
       console_log('watch readdata_filter')
@@ -501,6 +508,7 @@ const dataset = (test) => createApp({
       fl_dai_ko,    
       fl_chuu_ko,   
       fl_memo,      
+      filseted,
       filter_reset,
       readdata_filter,
       fl_date_lst,

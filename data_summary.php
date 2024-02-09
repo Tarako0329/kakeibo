@@ -31,7 +31,7 @@
 <BODY id = 'body' style='background:black;' >
   <div id='app' style='height:100%;'>
     <HEADER class=' row' style='color:#FFA400;'>
-        <div class='col-4 text-center'><a href='index.php'  data-bs-toggle='tooltip' data-bs-title='フィルタ一括解除'><h3><?php echo $title;?></h3></a></div>
+        <div class='col-4 text-center'><a href='index.php'><h3><?php echo $title;?></h3></a></div>
         <div class='col-1'>
           <input v-model='from' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control form-control-sm' placeholder="期間FROM YYYYMM">
         </div>
@@ -100,7 +100,9 @@
                 <th scope="col">メモ</th>
               </tr>
               <tr>
-                <td role='button' @click='filter_reset'><i class="bi bi-funnel-fill" style="font-size: 1rem; color: #FFA400;"></i></td>
+                <td role='button' @click='filter_reset'>
+                  <i v-if='filseted' class="bi bi-funnel-fill" style="font-size: 1rem; color: #FFA400;" data-bs-toggle="tooltip" title="Some tooltip text!"></i>
+                </td>
                 <td>
                   <select v-model='fl_date' class="form-select form-select-sm wd90" placeholder="フィルタ">
                     <option value=''>ﾌｨﾙﾀ解除</option>
@@ -212,8 +214,8 @@
 	  </div>
   </div>
   <script>
-    //const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    //const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
   </script>
   <script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>
   <script>
