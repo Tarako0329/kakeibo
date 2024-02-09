@@ -12,11 +12,22 @@
   try{
     $pdo_h->beginTransaction();
 
+    $stmt = $pdo_h->prepare("select guid from kakeibo where date between :start and :end");
+    $stmt->bindValue("start", $start_date, PDO::PARAM_STR);
+    $stmt->bindValue("end", $end_date, PDO::PARAM_STR);
+    $stmt->execute();
+    $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach($stmt as $row){
+      $stmt2 = $pdo_h->prepare("delete from kakeibo_plus where guid = :guid");
+      $stmt2->bindValue("guid", $row["guid"], PDO::PARAM_STR);
+      $stmt2->execute();
+    }
+    /*
     $stmt = $pdo_h->prepare("delete from kakeibo_plus where guid in ( select guid from kakeibo where date between :start and :end)");
     $stmt->bindValue("start", $start_date, PDO::PARAM_STR);
     $stmt->bindValue("end", $end_date, PDO::PARAM_STR);
     $stmt->execute();
-  
+    */
     $stmt = $pdo_h->prepare("delete from kakeibo where date between :start and :end");
     $stmt->bindValue("start", $start_date, PDO::PARAM_STR);
     $stmt->bindValue("end", $end_date, PDO::PARAM_STR);
