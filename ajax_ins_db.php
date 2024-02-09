@@ -12,14 +12,16 @@
   try{
     $pdo_h->beginTransaction();
 
-    $stmt = $pdo_h->prepare("select guid from kakeibo where date between :start and :end");
+    $stmt = $pdo_h->prepare("select guid from kakeibo where date between :start and :end and uid = :uid");
     $stmt->bindValue("start", $start_date, PDO::PARAM_STR);
     $stmt->bindValue("end", $end_date, PDO::PARAM_STR);
+    $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
     $stmt->execute();
     $stmt->fetchAll(PDO::FETCH_ASSOC);
     foreach($stmt as $row){
-      $stmt2 = $pdo_h->prepare("delete from kakeibo_plus where guid = :guid");
+      $stmt2 = $pdo_h->prepare("delete from kakeibo_plus where guid = :guid and uid = :uid");
       $stmt2->bindValue("guid", $row["guid"], PDO::PARAM_STR);
+      $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
       $stmt2->execute();
     }
     /*
@@ -28,9 +30,10 @@
     $stmt->bindValue("end", $end_date, PDO::PARAM_STR);
     $stmt->execute();
     */
-    $stmt = $pdo_h->prepare("delete from kakeibo where date between :start and :end");
+    $stmt = $pdo_h->prepare("delete from kakeibo where date between :start and :end and uid = :uid");
     $stmt->bindValue("start", $start_date, PDO::PARAM_STR);
     $stmt->bindValue("end", $end_date, PDO::PARAM_STR);
+    $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
     $stmt->execute();
     
     $sql = "insert into kakeibo(uid,guid,date,meisai,kin,shuppimoto,daikoumoku,chuukoumoku,memo) values(:uid,:guid,:date,:meisai,:kin,:shuppimoto,:daikoumoku,:chuukoumoku,:memo)";

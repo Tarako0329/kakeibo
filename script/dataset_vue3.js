@@ -97,7 +97,15 @@ const dataset = (test) => createApp({
         });
       } 
     })
-
+    const filter_reset = () =>{
+      fl_date.value       = ''
+      fl_meisai.value     = ''
+      fl_kin.value        = ''
+      fl_shuppimoto.value = ''
+      fl_dai_ko.value     = ''
+      fl_chuu_ko.value    = ''
+      fl_memo.value       = ''
+    }
 
     watch(readdata_filter,()=>{//明細のフィルタリングに合わせて、フィルタ選択肢を絞る
       console_log('watch readdata_filter')
@@ -409,7 +417,6 @@ const dataset = (test) => createApp({
       console_log(dai)
       fl_dai_ko.value = dai
       fl_chuu_ko.value = chuu
-
     }
     const get_sortNO = (name) =>{
       //console_log('start get_sortNO')  
@@ -494,6 +501,7 @@ const dataset = (test) => createApp({
       fl_dai_ko,    
       fl_chuu_ko,   
       fl_memo,      
+      filter_reset,
       readdata_filter,
       fl_date_lst,
       fl_meisai_lst,
