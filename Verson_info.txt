@@ -4,6 +4,7 @@ ver0.02.0:運用開始
 ver0.02.1:運用開始
 ver0.02.2:運用開始bugfix
 ver0.02.4:運用開始bugfix
+var1.00.0:デザイン修正
 
 【Issues】
 

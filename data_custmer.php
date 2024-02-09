@@ -2,7 +2,7 @@
   require "php_header.php";
   if(empty($_GET)){
     //一般公開・マネーフォワードCSV変換モード
-    $title="MoneyFoward csv convert";
+    $title="MoneyFoward CSV Convert";
     $mode = "ippan";
   }else if($_GET["m"]==="imp"){
     //データインポートモード
@@ -25,14 +25,24 @@
 </head>
 <BODY id = 'body' style='background:black;' >
   <div id='app' style='height:100%;'>
-    <HEADER class='text-center' style='color:#FFA400'>
-      <a href='index.php'><h1><?php echo $title;?></h1></a>
+    <HEADER style='color:#FFA400'>
+      <div class='container text-start'>
+        <div class='row'>
+          <div class='col-6'><a href='index.php'><h3><?php echo $title;?></h3></a></div>
+          <div class='col-6'>
+            <button class='btn btn-outline-primary' type='button' @click='input_file_btn'>ファイル選択</button>
+            <button v-if='mode!=="ippan"' class='btn btn-outline-primary' type='button' @click='savedata'>システム登録</button>
+            <button class='btn btn-outline-primary' type='button' @click='savecsv'>CSV出力</button>
+          </div>
+        </div>
+        <input type="file" class="" name="user_file_name" style='width:25%;display:none;' id='file' @change='uploadfile'>
+      </div>
     </HEADER>
     <!--<MAIN class='container-fluid' style='color:#fff;'> class="table-responsive" -->
     <MAIN class='container table-responsive' style='color:#fff;'>
-    <div class="table-responsive table-h-full" style='width:100%;'>
-      <table class="table table-striped table-hover table-sm">
-      <thead class='sticky-top'>
+      <div class="table-responsive table-h-full" style='width:100%;'>
+        <table class="table table-striped table-hover table-sm">
+        <thead class='sticky-top'>
         <tr>
           <th scope="col">#</th>
           <th scope="col">日付</th>
@@ -121,8 +131,8 @@
             <button type='button' class='btn btn-success btn-sm' @click='hanei("cmemo")'>↓反映</button>
           </td>
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
         <template v-for='(list,index) in readdata_filter' :key="list.No">
           <tr>
           <td>{{list.No}}</td>
@@ -135,8 +145,8 @@
           <td><input v-model='list.memo' class="form-control form-control-sm" type="text" placeholder=""></td>
           </tr>
         </template>
-      </tbody>
-      <tfoot class='sticky-bottom'>
+        </tbody>
+        <tfoot class='sticky-bottom'>
         <tr class='table-success'>
           <td></td>
           <td></td>
@@ -147,16 +157,10 @@
           <td></td>
           <td></td>
         </tr>
-      </tfoot>
-      </table>
-    </div>
+        </tfoot>
+        </table>
+      </div>
     </MAIN>
-    <FOOTER class='text-center'>
-      <input type="file" class="" name="user_file_name" style='width:25%;' id='file' @change='uploadfile'>
-      <button class='btn btn-primary' type='button' @click='uploadfile'>ファイル読込</button>
-      <button v-if='mode!=="ippan"' class='btn btn-primary' type='button' @click='savedata'>システム登録</button>
-      <button class='btn btn-primary' type='button' @click='savecsv'>CSV出力</button>
-    </FOOTER>
     <div class="loader-wrap" v-show='loader'>
 		  <div class="loader">Loading...</div>
 	  </div>

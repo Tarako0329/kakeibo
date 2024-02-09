@@ -51,8 +51,8 @@
     
     <MAIN class='container-fluid' style='color:#fff;padding-left:20px;padding-right:20px;'>
     <div class='row' style='height:100%;'>
-      <div class='col-xl-4'>
-        <div class="table-responsive" style='width:100%;height:800px;'>
+      <div class='col-xl-4' style='height:100%;'>
+        <div class="table-responsive table-h-full" style='width:100%;'>
           <table class="table table-hover table-sm">
             <thead class='sticky-top'>
               <tr class="table-info">
@@ -85,8 +85,8 @@
           </table>
         </div>
       </div>
-      <div class='col-xl-8'>
-        <div class="table-responsive" style='width:100%;height:800px;'><!---->
+      <div class='col-xl-8' style='height:100%;'>
+        <div class="table-responsive table-h-full" style='width:100%;'><!---->
           <table class="table table-striped table-hover table-sm">
             <thead class='sticky-top'><!--sticky-top-->
               <tr>

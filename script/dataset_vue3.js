@@ -6,16 +6,19 @@ const dataset = (test) => createApp({
     const readdata_summary = ref([])
     const readdata_monthly_summary = ref([])
     const daikoumoku_ms = ref([])
+    const input_file_btn = () =>{
+      document.getElementById('file').click()
+    }
     
     const readfilename = ref('')
     const filetype = ref('')
-    const read_html_moneyforward = () => {//アップロード後の分類等未設定の動画一覧を取得
+    const read_html_moneyforward = () => {//
       axios
       .get(`ajax_read_forward.php?fn=${readfilename.value}`)
       .then((response) => {
         readdata.value = []
         filetype.value = ''
-        console_log(response.data)
+        //console_log(response.data)
         readdata.value = [...response.data.data]
         filetype.value = response.data.type
         
@@ -26,23 +29,23 @@ const dataset = (test) => createApp({
 
     const uploadfile = () =>{
       const file = document.getElementById('file').files[0];
+      console_log(file.name)
       const params = new FormData();
       params.append('user_file_name', file);
       axios.post("ajax_loader.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
-        console_log(response.data)
+        //console_log(response.data)
         if(response.data.status==="success"){
           readfilename.value = response.data.filename
           read_html_moneyforward()
         }else{
 
         }
-        
       })
-      .catch((response)=>{
-        console_log(response.data)
+      .catch((error)=>{
+        console_log(error)
       })
-      console_log(file)
+      //console_log(file)
     }
     
     //フィルターワード
@@ -481,6 +484,7 @@ const dataset = (test) => createApp({
       readdata_summary,
       readdata_monthly_summary,
       daikoumoku_ms,
+      input_file_btn,
       readfilename,
       uploadfile,
       fl_date,      
