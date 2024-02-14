@@ -1,7 +1,7 @@
-const { createApp, ref, onMounted, computed,watch } = Vue;
-const dataset = (test) => createApp({
+const { createApp, ref, onMounted, onBeforeMount, computed,watch } = Vue;
+const dataset = (Where_to_use) => createApp({
   setup() {
-    const mode = ref(test)
+    const pagename = ref(Where_to_use)
     const readdata = ref([])
     const readdata_summary = ref([])
     const readdata_monthly_summary = ref([])
@@ -408,12 +408,35 @@ const dataset = (test) => createApp({
       .get(`ajax_read_db_summury_comparison.php?fm=${from.value}&to=${to.value}`)
       .then((response) => {
         readdata_summary.value = []
-        console_log(response.data)
+        //console_log(response.data)
         readdata_summary.value = [...response.data]
         comparison_sum()
         console_log('read_db_comparison succsess')
       })
       .catch((error) => console.log(error));
+    }
+    const hanni = ref('12m')
+    const read_db_summury_long = () => {
+      console_log('read_db_summury_long start')
+      axios
+      .get(`ajax_read_db_summury_${hanni.value}.php?fm=${from.value}`)
+      .then((response) => {
+        readdata_summary.value = []
+        console_log(response.data)
+        readdata_summary.value = response.data
+        create_graph(document.getElementById('myChart'))
+        console_log('read_db_summury_long succsess')
+      })
+      .catch((error) => console.log(error));
+    }
+    const open_fil = ref('')
+    const open_utiwake =(daikoumoku) =>{
+      if(open_fil.value === daikoumoku){
+        open_fil.value = ''
+      }else{
+        open_fil.value = daikoumoku
+      }
+      create_graph(document.getElementById('myChart'))
     }
     const read_db_meisai_and_summury = () => {
       console_log('read_db_meisai_and_summury start')
@@ -427,7 +450,7 @@ const dataset = (test) => createApp({
     }
     const get_sortNO = (name) =>{
       //console_log('start get_sortNO')  
-      result = daikoumoku_ms.value.filter((low)=>low.daikoumoku.includes(name))
+      result = daikoumoku_ms.value.filter((row)=>row.daikoumoku.includes(name))
       //console_log(result)
       return result[0].sort
     }
@@ -485,12 +508,86 @@ const dataset = (test) => createApp({
     }
 
     onMounted(()=>{
+      console_log("onMounted")
       //read_html_moneyforward()
       //read_db_summury()
       comparison_sum_val.value["zen"]=0
       comparison_sum_val.value["tou"]=0
       comparison_sum_val.value["sa"]=0
+      
+      if(pagename.value==="data_summary12m.php"){
+        //readdata_summary.value = {label:['-','-','-','-','-','-','-','-','-','-','-','-','-']}
+        //console_log(readdata_summary.value)
+      }
     })
+    onBeforeMount(()=>{
+      console_log("onBeforeMount:"+pagename.value)
+      if(pagename.value==="data_summary12m.php"){
+        readdata_summary.value = {
+          label:['----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--']
+          ,data:[]
+        }
+        console_log(readdata_summary.value)
+      }
+    })
+
+    //chartjs
+    const get_graph_data = (daikoumoku) => {
+      console_log("get_graph_data : daikoumoku")
+      console_log(daikoumoku)
+      let return_data = []
+      const data = readdata_summary.value.data.filter((row)=>{
+        return (row.daikoumoku.includes(daikoumoku))
+      })
+      //console_log(data)
+      data.forEach((row)=>{
+        return_data.push({
+          label : row.chuukoumoku
+          ,data : [row.m12c,row.m11c,row.m10c,row.m9c,row.m8c,row.m7c,row.m6c,row.m5c,row.m4c,row.m3c,row.m2c,row.m1c]
+          ,backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+        })
+      })
+      return return_data
+    }
+
+    var graph_obj
+    const create_graph = (ctx) =>{
+      console_log("create_graph : graph_data")
+      
+      const graph_data = {
+        labels    : readdata_summary.value.label
+        ,datasets : get_graph_data(open_fil.value)
+      }
+
+      if(graph_obj){
+        graph_obj.destroy()
+      }
+
+      graph_obj = new Chart(ctx, {
+        type : 'bar'
+        ,data: graph_data
+        ,options: {
+          plugins: {
+            title: {
+              display: true,
+              text: 'Chart.js Bar Chart - Stacked'
+            },
+          },
+          responsive: true,
+          scales: {
+            x: {
+              stacked: true,
+            },
+            y: {
+              stacked: true
+            }
+          }
+        }
+      })      
+    }
+
+
+
 
     return{
       readdata,
@@ -524,10 +621,12 @@ const dataset = (test) => createApp({
       savecsv,
       hanei,
       filetype,
-      mode,
+      pagename,
       read_db_meisai,
       read_db_summury,
       read_db_comparison,
+      read_db_summury_long,
+      hanni,
       comparison_sum_val,
       read_db_meisai_and_summury,
       //read_db_meisai_summury,
@@ -538,6 +637,8 @@ const dataset = (test) => createApp({
       meisai_disable,
       cgmode,
       loader,
+      open_fil,
+      open_utiwake
     }
   }
 });

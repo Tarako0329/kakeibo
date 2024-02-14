@@ -44,10 +44,16 @@ header{
   height: 80px;
   padding-top: 20px;
   background-color:black;
-  z-index: 100;
+  z-index: 120;
 }
 .sticky-top{
   top:0px;
+  z-index: 98;
+}
+.sticky-left{
+  left:0px;
+  position: sticky;
+  z-index: 99;
 }
 .table-h-full{
   min-height: 650px;
@@ -97,6 +103,7 @@ footer{
 }
 .table-sm>:not(caption)>*>*{
   padding:2px 4px 2px 4px;
+  font-size:12px;
 }
 .fbtn{
   font-size:32px;
