@@ -27,7 +27,7 @@
         display:inline-block;
         width: 120px;
       }
-      td > .btn{
+      td > .btn,.form-control,.form-select{
         width:95%;
       }
     </style>
