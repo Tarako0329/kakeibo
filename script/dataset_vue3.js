@@ -620,7 +620,7 @@ const dataset = (Where_to_use) => createApp({
           plugins: {
             title: {
               display: true,
-              text: 'Chart.js Bar Chart - Stacked'
+              text: open_fil.value
             },
           },
           responsive: true,
