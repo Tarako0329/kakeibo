@@ -412,7 +412,7 @@ const dataset = (Where_to_use) => createApp({
         daikoumoku_ms.value = [...response.data.daikou_ms]
         search_disable.value = false
         meisai_disable.value  = true
-        console_log(get_sortNO("収入"))
+        //console_log(get_sortNO("収入"))
         console_log('read_db_meisai succsess')
       })
       .catch((error) => console.log(error));
@@ -494,10 +494,14 @@ const dataset = (Where_to_use) => createApp({
       fl_chuu_ko.value = chuu
     }
     const get_sortNO = (name) =>{
-      //console_log('start get_sortNO')  
+      //console_log('start get_sortNO')
       result = daikoumoku_ms.value.filter((row)=>row.daikoumoku.includes(name))
       //console_log(result)
-      return result[0].sort
+      if(result.length===0){
+        return 999
+      }else{
+        return result[0].sort
+      }
     }
     const cp_readdata_summary = computed(() => {
       console_log('start computed read_db_meisai_summury')
@@ -563,6 +567,7 @@ const dataset = (Where_to_use) => createApp({
       if(pagename.value==="data_summary12m.php"){
         //readdata_summary.value = {label:['-','-','-','-','-','-','-','-','-','-','-','-','-']}
         //console_log(readdata_summary.value)
+        create_graph(document.getElementById('myChart'))
       }
     })
     onBeforeMount(()=>{

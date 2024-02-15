@@ -24,7 +24,7 @@
     $kikan[] = date("Y/m", strtotime($_GET["fm"]."01"." -".(12-$i)." month"));
   }
 
-  $sql = "select ms.sort ,temp.daikoumoku ,temp.chuukoumoku 
+  $sql = "select COALESCE(ms.sort,999) as sort ,temp.daikoumoku ,temp.chuukoumoku 
     ,sum(m12) as m12c 
     ,sum(sum(m12)) over(PARTITION BY daikoumoku) as m12d
     ,sum(m11) as m11c
@@ -98,10 +98,11 @@
       from kakeibo
       where uid = :uid12 and getudo = :baseYM12
     ) as temp
-    inner join daikoumoku_ms as ms
+    left join daikoumoku_ms as ms
     on temp.daikoumoku=ms.daikoumoku
-    group by ms.sort,temp.daikoumoku,temp.chuukoumoku 
-    order by ms.sort,chuukoumoku 
+    group by COALESCE(ms.sort,999),temp.daikoumoku,temp.chuukoumoku
+    having temp.daikoumoku <> ''
+    order by COALESCE(ms.sort,999),chuukoumoku 
     ";
 	$stmt = $pdo_h->prepare($sql);
 	$stmt->bindValue("uid1", $_SESSION["uid"], PDO::PARAM_STR);

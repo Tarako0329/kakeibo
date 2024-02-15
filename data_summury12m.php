@@ -38,9 +38,9 @@
     </HEADER>
     <!--<MAIN class='container-fluid' style='color:#fff;padding-left:60px;padding-right:60px;'>-->
     <MAIN class='container' style='color:#fff;'>
-    <div class='row' style='height:40%;min-height:240px;'>
-      <div class='col-xl-12' style='height:100%;'>
-        <div style="position:relative;width:100%;height:100%;">
+    <div class='row' style='min-height:240px;'>
+      <div class='col-xl-12' style='height:100%;display:flex;justify-content: center;'>
+        <div style="position:relative;max-width:900px;width:90%;height:100%;">
           <canvas id="myChart"></canvas>
         </div>
       </div>
