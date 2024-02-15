@@ -144,6 +144,48 @@ const dataset = (Where_to_use) => createApp({
     const to = ref('')
     const loader = ref(false)
 
+    const ym_next = (ym) =>{
+      if(ym.toString().length !== 6){
+        console_log('なにもしない')
+        return //yyyymm以外はなにもしない
+      }
+      if((ym + 1).toString().substr(-2)=="13"){
+        ym = Number(ym.toString().substr(0,4)) + Number(1)
+        console_log(ym)
+        ym = ym.toString() + "01"
+      }else{
+        ym = Number(ym) + Number(1)
+      }
+      return ym
+    }
+    const ym_back = (ym) =>{
+      if(ym.toString().length !== 6){
+        console_log('なにもしない')
+        return //yyyymm以外はなにもしない
+      }
+      if((ym - 1).toString().substr(-2)=="00"){
+        ym = Number(ym.toString().substr(0,4)) - Number(1)
+        console_log(ym)
+        ym = ym.toString() + "12"
+      }else{
+        ym = Number(ym) - Number(1)
+      }
+      return ym
+    }
+    const from_next = () =>{
+      from.value = ym_next(from.value)
+      if(pagename.value==="data_summary12m.php"){
+        read_db_summury_long()
+      }
+    }
+    const from_back = () =>{
+      from.value = ym_back(from.value)
+      if(pagename.value==="data_summary12m.php"){
+        read_db_summury_long()
+      }
+    }
+
+
     const savedata = () =>{//データベース登録
       loader.value = true
       const params = new FormData();
@@ -424,6 +466,9 @@ const dataset = (Where_to_use) => createApp({
         readdata_summary.value = []
         console_log(response.data)
         readdata_summary.value = response.data
+        if(open_fil.value === ''){
+          open_fil.value="収入"
+        }
         create_graph(document.getElementById('myChart'))
         console_log('read_db_summury_long succsess')
       })
@@ -632,6 +677,8 @@ const dataset = (Where_to_use) => createApp({
       //read_db_meisai_summury,
       from,
       to,
+      from_next,
+      from_back,
       setfilter,
       search_disable,
       meisai_disable,

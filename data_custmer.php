@@ -28,8 +28,8 @@
     <HEADER style='color:#FFA400'>
       <div class='container text-start'>
         <div class='row'>
-          <div class='col-6'><a href='index.php'><h3><?php echo $title;?></h3></a></div>
-          <div class='col-6'>
+          <div class='col-4'><a href='index.php'><h3><?php echo $title;?></h3></a></div>
+          <div class='col-8 text-end'>
             <button class='btn btn-outline-primary' type='button' @click='input_file_btn'>ファイル選択</button>
             <button v-if='mode!=="ippan"' class='btn btn-outline-primary' type='button' @click='savedata'>システム登録</button>
             <button class='btn btn-outline-primary' type='button' @click='savecsv'>CSV出力</button>

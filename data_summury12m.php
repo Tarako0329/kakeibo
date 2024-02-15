@@ -11,25 +11,30 @@
     <script src="./script/flow.js"></script>
     <TITLE><?php echo $title;?></TITLE>
     <style>
-      button{
-        width: 95%;
+      .form-control,.form-select{
+        display:inline-block;
+        width: 120px;
       }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <BODY id = 'body' style='background:black;' >
   <div id='app' style='height:100%;'>
-    <HEADER class=' row' style='color:#FFA400;'>
-        <div class='col-4 text-center'><a href='index.php'><h3><?php echo $title;?></h3></a></div>
-        <div class='col-1'>
-          <input v-model='from' :disabled='search_disable' @change='read_db_summury_long' type="number" class='form-control form-control-sm' placeholder="期間FROM YYYYMM">
+    <HEADER style='color:#FFA400;'>
+      <div class='container'>
+        <div class=' row' >
+          <div class='col-4 text-center'><a href='index.php'><h3><?php echo $title;?></h3></a></div>
+          <div class='col-8 '>
+            <input v-model='from' :disabled='search_disable' @change='read_db_summury_long' type="number" class='form-control form-control-sm' placeholder="期間FROM YYYYMM" style='margin-right:10px;'>
+            <button class='btn btn-outline-primary lbtn' style='margin-right:5px;' @click='from_back'>前月</button>
+            <button class='btn btn-outline-primary rbtn' style='margin-right:50px;' @click='from_next'>次月</button>
+            <select v-model='hanni' class='form-select form-select-sm' @change='read_db_summury_long'>
+              <option value='12m'>過去１２ヵ月</option>
+              <option value='5y'>過去５年</option>
+            </select>
+          </div>
         </div>
-        <div class='col-1'>
-          <select v-model='hanni' class='form-select form-select-sm' @change='read_db_summury_long'>
-            <option value='12m'>過去１２ヵ月</option>
-            <option value='5y'>過去５年</option>
-          </select>
-        </div>
+      </div>
     </HEADER>
     <!--<MAIN class='container-fluid' style='color:#fff;padding-left:60px;padding-right:60px;'>-->
     <MAIN class='container' style='color:#fff;'>

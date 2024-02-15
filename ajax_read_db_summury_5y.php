@@ -68,7 +68,7 @@
   $stmt->bindValue("baseYM10", date("Ym", strtotime($_GET["fm"]."01"." -48 month")), PDO::PARAM_STR);
 	$stmt->execute();
 	$dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+/*
   log_writer("baseYM1" ,date("Ym", strtotime($_GET["fm"]."01"." -11 month")));
   log_writer("baseYM2" ,$_GET["fm"]);
   log_writer("baseYM3" ,date("Ym", strtotime($_GET["fm"]."01"." -23 month")));
@@ -79,7 +79,7 @@
   log_writer("baseYM8" ,date("Ym", strtotime($_GET["fm"]."01"." -36 month")));
   log_writer("baseYM9" ,date("Ym", strtotime($_GET["fm"]."01"." -59 month")));
   log_writer("baseYM10",date("Ym", strtotime($_GET["fm"]."01"." -48 month")));
-
+*/
 
 
   $data = array(

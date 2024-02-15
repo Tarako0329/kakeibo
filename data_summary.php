@@ -23,30 +23,45 @@
     <script src="./script/flow.js"></script>
     <TITLE><?php echo $title;?></TITLE>
     <style>
-      button{
-        width: 95%;
+      .form-control{
+        display:inline-block;
+        width: 120px;
+      }
+      td > .btn{
+        width:95%;
       }
     </style>
 </head>
 <BODY id = 'body' style='background:black;' >
   <div id='app' style='height:100%;'>
-    <HEADER class=' row' style='color:#FFA400;'>
-        <div class='col-4 text-center'><a href='index.php'><h3><?php echo $title;?></h3></a></div>
-        <div class='col-1'>
-          <input v-model='from' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control form-control-sm' placeholder="期間FROM YYYYMM">
+    <HEADER style='color:#FFA400;padding-top:0;'>
+      <div  class='container'>
+      <div class='row'>
+        <div class='col-12'>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="index.php"><h3 style='color:#FFA400;'><?php echo $title;?></h3></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              </ul>
+              <div class="d-flex" style='padding:5px;'>
+                <input v-model='from' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control form-control-sm' placeholder="期間FROM YYYYMM">
+              </div>
+              <div class="d-flex" style='padding:5px;'>
+                <input v-model='to' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control form-control-sm' placeholder="期間TO YYYYMM">
+              </div>
+              <div class="d-flex" style='padding:5px;'><button class='btn btn-outline-primary btn-sm' type='button' @click='cgmode'>修正モード</button></div>
+              <div class="d-flex" style='padding:5px;'><button class='btn btn-outline-primary btn-sm' type='button' @click='upddata'>登録</button></div>
+              <div class="d-flex" style='padding:5px;'><button class='btn btn-outline-primary btn-sm' type='button' @click='read_db_meisai'>キャンセル</button></div>
+            </div>
+          </div>
+        </nav>
         </div>
-        <div class='col-1'>
-          <input v-model='to' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control form-control-sm' placeholder="期間TO YYYYMM">
-        </div>
-        <div class='col-1'>
-          <button class='btn btn-outline-primary btn-sm' type='button' @click='cgmode'>修正モード</button>
-        </div>
-        <div class='col-1'>
-          <button class='btn btn-outline-primary btn-sm' type='button' @click='upddata'>登録</button>
-        </div>
-        <div class='col-1'>
-          <button class='btn btn-outline-primary btn-sm' type='button' @click='read_db_meisai'>キャンセル</button>
-        </div>
+      </div>
+      </div>
     </HEADER>
     
     <MAIN class='container-fluid' style='color:#fff;padding-left:20px;padding-right:20px;'>

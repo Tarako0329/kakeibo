@@ -50,6 +50,9 @@ header{
   top:0px;
   z-index: 98;
 }
+.sticky-bottom{
+  z-index: 98;
+}
 .sticky-left{
   left:0px;
   position: sticky;
@@ -160,70 +163,18 @@ button{
 .v-leave-to {
   opacity: 0;
 }
-.ib{/*アイコンボタン*/
-  width:45px;
-  height: 35px;
-  padding:2px;
-  margin:5px 6px 5px 5px;
-  color:#FFA400;
-  border:none;
-  border-radius: 5px;
-  background-color:inherit;
+
+.lbtn{
+  padding:5px;
+  border-radius: 100% 0 0 100%;
+  width:50px;
+  font-size:12px;
 }
-#foldertree{
-  position: fixed;
-  top:50px;
-  left:10%;
-  width:85%;
-  height:85%;
-  border:solid 1px #FFA400;
-  border-radius: 5px;
-  background-color: black;
-  overflow:auto;
-  padding:8px;
-}
-#foldertree_close{
-  position: fixed;
-  top:55px;
-  right:6%;
-  border:none;
-  color:#FFA400;
-  padding:4px;
-  width: 70px;
-  height: 40px;
-}
-.treeil{
-  /*list-style-type:none;*/
-}
-.treei{
-  margin-right:5px;
-}
-.treeb{/*ツリーボタン*/
-  width:45px;
-  height: 35px;
-  padding:2px;
-  margin:5px;
-  margin-bottom: 5px;
-  color:#FFA400;
-  border:solid 1px #FFA400;
-}
-.tree_input{
-  width:100px;
-  height: 31px;
-  display:inline;
-  margin-left: 5px;;
-}
-.tree_choese{
-  background-color:yellow;
-  opacity:0.7;
-  color: black;
-}
-#folderopen{
-  position: fixed;
-  top:0px;
-  right:10px;
-  border:none;
-  color:#FFA400;
+.rbtn{
+  padding:5px;
+  border-radius: 0 100% 100% 0;
+  width:50px;
+  font-size:12px;
 }
 
 

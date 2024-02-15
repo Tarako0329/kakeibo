@@ -394,4 +394,71 @@ function upd_getudo($pdo_h,$symd,$eymd) {
     }
     return $return_val;
 }
+
+function get_getudo_kikan($pdo_h,$getudo){
+    //月度を指定すると期間を返す
+    //$getudo => yyyymm
+
+    //月度開始日の取得
+    $sql = "select * from user where uid = :uid";
+    $stmt = $pdo_h->prepare($sql);
+    $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
+    $stmt->execute();
+    $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $from_ymd = substr($getudo,0,4)."-".substr($getudo,-2)."-".$row[0]["kisanbi"];
+    $to_ymd = date("Y-m-d", strtotime($from_ymd." 1 month"));
+
+
+    $shukujitu = "holiday";
+    //$startdate = $sym.$sd;
+    while($shukujitu === "holiday"){
+        if($row[0]["shukuzitu"]===0){
+            break;
+        }
+        
+        if(MAIN_DOMAIN==="localhost:81"){
+            $shukujitu = date('w', strtotime($from_ymd))==="6" || date('w', strtotime($from_ymd))==="0"?"holiday":"else";
+        }else{
+            $shukujitu = file_get_contents('https://s-proj.com/utils/checkHoliday.php?kind=h&date='.$from_ymd);
+        }
+
+        if($shukujitu==="else"){
+            break;
+        }else if($row[0]["shukuzitu"]===1){
+            $from_ymd=date("Ymd", strtotime($from_ymd." -1 day")); 
+        }else{
+            $from_ymd=date("Ymd", strtotime($from_ymd." 1 day")); 
+        }
+    }
+
+    $shukujitu = "holiday";
+    //$startdate = $sym.$sd;
+    while($shukujitu === "holiday"){
+        if($row[0]["shukuzitu"]===0){
+            break;
+        }
+        
+        if(MAIN_DOMAIN==="localhost:81"){
+            $shukujitu = date('w', strtotime($to_ymd))==="6" || date('w', strtotime($to_ymd))==="0"?"holiday":"else";
+        }else{
+            $shukujitu = file_get_contents('https://s-proj.com/utils/checkHoliday.php?kind=h&date='.$to_ymd);
+        }
+
+        if($shukujitu==="else"){
+            break;
+        }else if($row[0]["shukuzitu"]===1){
+            $to_ymd=date("Ymd", strtotime($to_ymd." -1 day")); 
+        }else{
+            $to_ymd=date("Ymd", strtotime($to_ymd." 1 day")); 
+        }
+    }
+    $to_ymd=date("Ymd", strtotime($to_ymd." -1 day")); 
+
+    return array(
+        "from" => $from_ymd
+        ,"to" => $to_ymd
+        ,"fromTo" => $from_ymd." ～ ".$to_ymd
+    );
+    }
 ?>
