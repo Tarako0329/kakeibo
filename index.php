@@ -44,7 +44,7 @@
 									<a class='nav-link' href='data_comparison.php'>前月比・前年比</a>
 								</li>
 								<li class='nav-item'>
-									<a class='nav-link' href='data_summury12m.php'>入出金推移(月間・年間)</a>
+									<a class='nav-link' href='data_summary12m.php'>入出金推移(月間・年間)</a>
 								</li>
               </ul>
             </div>
@@ -65,7 +65,7 @@
 			<form method='get' action='data_custmer.php'><button type='submit' class='btn btn-outline-primary' name='m' value='imp'>データインポート</button></form>
 			<form method='get' action='data_summary.php'><button type='submit' class='btn btn-outline-primary'>入出金明細</button></form>
 			<form method='get' action='data_comparison.php'><button type='submit' class='btn btn-outline-primary'>期間推移</button></form>
-			<form method='get' action='data_summury12m.php'><button type='submit' class='btn btn-outline-primary'>期間推移2</button></form>
+			<form method='get' action='data_summary12m.php'><button type='submit' class='btn btn-outline-primary'>期間推移2</button></form>
 		</div>
 	</MAIN>
 	<!--<FOOTER>

@@ -137,7 +137,7 @@ const dataset = (Where_to_use) => createApp({
       
       console_log(`watch readdata_filter sum: ${sum_kingaku.value}`)
       //readdata_summary.value = []
-      //readdata_summary.value = read_db_meisai_summury(readdata.value)
+      //readdata_summary.value = read_db_meisai_summary(readdata.value)
     })
 
     const from = ref('')
@@ -175,7 +175,7 @@ const dataset = (Where_to_use) => createApp({
     const from_next = () =>{
       from.value = ym_next(from.value)
       if(pagename.value==="data_summary12m.php"){
-        read_db_summury_long()
+        read_db_summary_long()
       }else if(pagename.value==="data_comparison.php"){
         read_db_comparison()
       }
@@ -183,7 +183,7 @@ const dataset = (Where_to_use) => createApp({
     const from_back = () =>{
       from.value = ym_back(from.value)
       if(pagename.value==="data_summary12m.php"){
-        read_db_summury_long()
+        read_db_summary_long()
       }else if(pagename.value==="data_comparison.php"){
         read_db_comparison()
       }
@@ -425,9 +425,9 @@ const dataset = (Where_to_use) => createApp({
         console.log(error)
       });
     }
-    const read_db_summury = () => {
+    const read_db_summary = () => {
       axios
-      .get(`ajax_read_db_summury.php?fm=${from.value}&to=${to.value}`)
+      .get(`ajax_read_db_summary.php?fm=${from.value}&to=${to.value}`)
       .then((response) => {
         readdata_summary.value = []
         console_log(response.data)
@@ -459,7 +459,7 @@ const dataset = (Where_to_use) => createApp({
         to.value='m'
       }
       axios
-      .get(`ajax_read_db_summury_comparison.php?fm=${from.value}&to=${to.value}`)
+      .get(`ajax_read_db_summary_comparison.php?fm=${from.value}&to=${to.value}`)
       .then((response) => {
         readdata_summary.value = []
         //console_log(response.data)
@@ -471,10 +471,10 @@ const dataset = (Where_to_use) => createApp({
       .catch((error) => console.log(error));
     }
     const hanni = ref('12m')
-    const read_db_summury_long = () => {
-      console_log('read_db_summury_long start')
+    const read_db_summary_long = () => {
+      console_log('read_db_summary_long start')
       axios
-      .get(`ajax_read_db_summury_${hanni.value}.php?fm=${from.value}`)
+      .get(`ajax_read_db_summary_${hanni.value}.php?fm=${from.value}`)
       .then((response) => {
         readdata_summary.value = []
         console_log(response.data)
@@ -483,7 +483,7 @@ const dataset = (Where_to_use) => createApp({
           open_fil.value="収入"
         }
         create_graph(document.getElementById('myChart'))
-        console_log('read_db_summury_long succsess')
+        console_log('read_db_summary_long succsess')
       })
       .catch((error) => console.log(error));
     }
@@ -496,9 +496,9 @@ const dataset = (Where_to_use) => createApp({
       }
       create_graph(document.getElementById('myChart'))
     }
-    const read_db_meisai_and_summury = () => {
-      console_log('read_db_meisai_and_summury start')
-      read_db_summury()
+    const read_db_meisai_and_summary = () => {
+      console_log('read_db_meisai_and_summary start')
+      read_db_summary()
       read_db_meisai()
     }
     const setfilter = (dai,chuu) =>{
@@ -517,7 +517,7 @@ const dataset = (Where_to_use) => createApp({
       }
     }
     const cp_readdata_summary = computed(() => {
-      console_log('start computed read_db_meisai_summury')
+      console_log('start computed read_db_meisai_summary')
       return readdata.value.reduce((result, current) => {
         const element_c = result.find((p) => p.daikoumoku === current.daikoumoku && p.chuukoumoku === current.chuukoumoku);
         if (element_c) {
@@ -573,7 +573,7 @@ const dataset = (Where_to_use) => createApp({
     onMounted(()=>{
       console_log("onMounted")
       //read_html_moneyforward()
-      //read_db_summury()
+      //read_db_summary()
       comparison_sum_val.value["zen"]=0
       comparison_sum_val.value["tou"]=0
       comparison_sum_val.value["sa"]=0
@@ -587,8 +587,11 @@ const dataset = (Where_to_use) => createApp({
           ymlist.value = response.data
           from.value = ymlist.value.max_min[0].max_getudo
           console_log('ajax_read_db_meisai_ymlist succsess')
-          if(pagename.value==="data_summury12m.php"){
-            read_db_summury_long()
+          if(pagename.value==="data_summary12m.php"){
+            read_db_summary_long()
+          }
+          if(pagename.value==="data_summary.php"){
+            read_db_meisai()
           }
           if(pagename.value==="data_comparison.php"){
             console_log('data_comparison root')
@@ -603,7 +606,7 @@ const dataset = (Where_to_use) => createApp({
     })
     onBeforeMount(()=>{
       console_log("onBeforeMount:"+pagename.value)
-      if(pagename.value==="data_summury12m.php"){
+      if(pagename.value==="data_summary12m.php"){
         readdata_summary.value = {
           label:['----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--']
           ,data:[]
@@ -761,13 +764,13 @@ const dataset = (Where_to_use) => createApp({
       filetype,
       pagename,
       read_db_meisai,
-      read_db_summury,
+      read_db_summary,
       read_db_comparison,
-      read_db_summury_long,
+      read_db_summary_long,
       hanni,
       comparison_sum_val,
-      read_db_meisai_and_summury,
-      //read_db_meisai_summury,
+      read_db_meisai_and_summary,
+      //read_db_meisai_summary,
       from,
       to,
       from_next,

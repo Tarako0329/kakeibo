@@ -34,14 +34,14 @@
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               </ul>
               <div class="d-flex" style='padding:5px;'>
-              <input v-model='from' :disabled='search_disable' @change='read_db_summury_long' type="number" class='form-control' placeholder="期間FROM YYYYMM" style='margin-right:10px;'>
+              <input v-model='from' :disabled='search_disable' @change='read_db_summary_long' type="number" class='form-control' placeholder="期間FROM YYYYMM" style='margin-right:10px;'>
               </div>
               <div class="d-flex" style='padding:5px;'>
                 <button class='btn btn-outline-primary lbtn' style='margin-right:5px;' @click='from_back'>前月</button>
                 <button class='btn btn-outline-primary rbtn' style='margin-right:50px;' @click='from_next'>次月</button>
               </div>
               <div class="d-flex" style='padding:5px;'>
-              <select v-model='hanni' class='form-select' @change='read_db_summury_long'>
+              <select v-model='hanni' class='form-select' @change='read_db_summary_long'>
                 <option value='12m'>過去１２ヵ月</option>
                 <option value='5y'>過去５年</option>
               </select>
