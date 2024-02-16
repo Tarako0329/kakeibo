@@ -13,29 +13,48 @@
     <style>
       .form-control,.form-select{
         display:inline-block;
-        width: 120px;
+        width: 150px;
       }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <BODY id = 'body' style='background:black;' >
   <div id='app' style='height:100%;'>
-    <HEADER style='color:#FFA400;'>
-      <div class='container'>
-        <div class=' row' >
-          <div class='col-4 text-center'><a href='index.php'><h3><?php echo $title;?></h3></a></div>
-          <div class='col-8 '>
-            <input v-model='from' :disabled='search_disable' @change='read_db_summury_long' type="number" class='form-control form-control-sm' placeholder="期間FROM YYYYMM" style='margin-right:10px;'>
-            <button class='btn btn-outline-primary lbtn' style='margin-right:5px;' @click='from_back'>前月</button>
-            <button class='btn btn-outline-primary rbtn' style='margin-right:50px;' @click='from_next'>次月</button>
-            <select v-model='hanni' class='form-select form-select-sm' @change='read_db_summury_long'>
-              <option value='12m'>過去１２ヵ月</option>
-              <option value='5y'>過去５年</option>
-            </select>
+    <HEADER style='color:#FFA400;padding-top:0;'>
+      <div  class='container'>
+      <div class='row'>
+        <div class='col-12'>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="index.php"><h3 style='color:#FFA400;'><?php echo $title;?></h3></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              </ul>
+              <div class="d-flex" style='padding:5px;'>
+              <input v-model='from' :disabled='search_disable' @change='read_db_summury_long' type="number" class='form-control' placeholder="期間FROM YYYYMM" style='margin-right:10px;'>
+              </div>
+              <div class="d-flex" style='padding:5px;'>
+                <button class='btn btn-outline-primary lbtn' style='margin-right:5px;' @click='from_back'>前月</button>
+                <button class='btn btn-outline-primary rbtn' style='margin-right:50px;' @click='from_next'>次月</button>
+              </div>
+              <div class="d-flex" style='padding:5px;'>
+              <select v-model='hanni' class='form-select' @change='read_db_summury_long'>
+                <option value='12m'>過去１２ヵ月</option>
+                <option value='5y'>過去５年</option>
+              </select>
+              </div>
+            </div>
           </div>
+        </nav>
         </div>
       </div>
+      </div>
     </HEADER>
+
+
     <!--<MAIN class='container-fluid' style='color:#fff;padding-left:60px;padding-right:60px;'>-->
     <MAIN class='container' style='color:#fff;'>
     <div class='row' style='min-height:240px;'>
@@ -69,7 +88,7 @@
             <tbody>
               <template v-for='(list,index) in readdata_summary.data' :key="list.sort+list.chuukoumoku">
                 <template v-if='index===0 || (index!==0 && list["daikoumoku"]!==readdata_summary.data[index -1]["daikoumoku"])'>
-                  <tr class="table-info" roll='button' @click='open_utiwake(list.daikoumoku)'>
+                  <tr class="table-info" role='button' @click='open_utiwake(list.daikoumoku)'>
                     <td class='sticky-left'>{{list["daikoumoku"]}}</td>
                     <td class='text-end'>{{Number(list.m12d).toLocaleString()}}</td>
                     <td class='text-end'>{{Number(list.m11d).toLocaleString()}}</td>
@@ -138,7 +157,7 @@
   
   <script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>
   <script>
-    dataset('data_summary12m.php').mount('#app');
+    dataset('<?php echo basename(__FILE__);?>').mount('#app');
   </script>
 </BODY>
 </html>

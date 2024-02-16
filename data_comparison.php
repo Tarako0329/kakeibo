@@ -1,17 +1,5 @@
 <?php
   require "php_header.php";
-  if(empty($_GET)){
-    //一般公開・マネーフォワードCSV変換モード
-    $title="MFoward";
-    $mode = "ippan";
-  }else if($_GET["m"]==="imp"){
-    //データインポートモード
-    $title="MFoward";
-    $mode = "import";
-  }else{
-    $mode = "ippan";
-  }
-  
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
@@ -27,88 +15,123 @@
         width: 95%;
       }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <BODY id = 'body' style='background:black;' >
   <div id='app' style='height:100%;'>
-    <HEADER class=' row' style='color:#FFA400;'>
-        <div class='col-4 text-center'><a href='index.php'><h3><?php echo $title;?></h3></a></div>
-        <div class='col-1'>
-          <input v-model='from' :disabled='search_disable' @change='read_db_comparison' type="number" class='form-control form-control-sm' placeholder="期間FROM YYYYMM">
+    <HEADER style='color:#FFA400;padding-top:0;'>
+      <div  class='container'>
+      <div class='row'>
+        <div class='col-12'>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="index.php"><h3 style='color:#FFA400;'><?php echo $title;?></h3></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              </ul>
+              <div class="d-flex" style='padding:5px;'>
+                <input v-model='from' :disabled='search_disable' @change='read_db_comparison' type="number" class='form-control' placeholder="期間FROM YYYYMM">
+              </div>
+              <div class="d-flex" style='padding:5px;'>
+                <button class='btn btn-outline-primary lbtn' style='margin-right:5px;' @click='from_back'>前月</button>
+                <button class='btn btn-outline-primary rbtn' style='margin-right:50px;' @click='from_next'>次月</button>
+              </div>
+            </div>
+          </div>
+        </nav>
         </div>
-        <div class='col-1'>
-          <!--<input v-model='to' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control form-control-sm' placeholder="期間TO YYYYMM">-->
-          <select v-model='to' @change='read_db_comparison' class="form-select form-select-sm">
-            <option value = "m">前月比</option>
-            <option value = "y">前年比</option>
-          </select>
-        </div>
-
+      </div>
+      </div>
     </HEADER>
-    
     <MAIN class='container-fluid' style='color:#fff;padding-left:20px;padding-right:20px;'>
-    <div class='row' style='height:100%;'>
-      <div class='col-xl-4'>
-        <div class="table-responsive" style='width:100%;height:800px;'>
-          <table class="table table-hover table-sm">
-            <thead class='sticky-top'>
-              <tr class="table-info">
-                <th scope="col">大中項目</th>
-                <th v-if='to==="m"' scope="col">前月金額</th>
-                <th v-else-if='to==="y"' scope="col">前年金額</th>
-                <th v-else></th>
-                <th scope="col">[{{from}}]金額</th>
-                <th scope="col">増減額</th>
-              </tr>
-            </thead>
-            <tbody>
-              <template v-for='(list,index) in readdata_summary' :key="list.sort+list.chuukoumoku">
-                <template v-if='index===0 || (index!==0 && list["daikoumoku"]!==readdata_summary[index -1]["daikoumoku"])'>
-                  <tr class="table-info" roll='button' @click='setfilter(list["daikoumoku"],"")'>
-                    <td>{{list["daikoumoku"]}}</td>
-                    <td class='text-end'>{{Number(list.hikaku_daikei).toLocaleString()}}</td>
-                    <td class='text-end'>{{Number(list.moto_daikei).toLocaleString()}}</td>
-                    <td v-if='Number(list.moto_daikei) > Number(list.hikaku_daikei)' style='color:blue;' class='text-end'>{{(Number(list.moto_daikei) - Number(list.hikaku_daikei)).toLocaleString()}}</td>
-                    <td v-else style='color:red;' class='text-end'>{{(Number(list.moto_daikei) - Number(list.hikaku_daikei)).toLocaleString()}}</td>
-                  </tr>
-                  <tr roll='button' @click='setfilter(list["daikoumoku"],list["chuukoumoku"])'>
-                    <td>　{{list["chuukoumoku"]}}</td>
-                    <td class='text-end'>{{Number(list.hikaku_chuukei).toLocaleString()}}</td>
-                    <td class='text-end'>{{Number(list.moto_chuukei).toLocaleString()}}</td>
-                    <td v-if='Number(list.moto_chuukei) > Number(list.hikaku_chuukei)' style='color:blue;' class='text-end'>{{(Number(list.moto_chuukei) - Number(list.hikaku_chuukei)).toLocaleString()}}</td>
-                    <td v-else style='color:red;' class='text-end'>{{(Number(list.moto_chuukei) - Number(list.hikaku_chuukei)).toLocaleString()}}</td>
-                  </tr>
+      <div class='row' style='height:100%;'>
+        <div class='col-xl-4' style='height:100%;'>
+          <div class="table-responsive table-h-full" style='width:100%;'>
+            <table class="table table-hover table-sm table-bordered">
+              <thead class='sticky-top'>
+                <tr class="table-info">
+                  <th class='text-center' scope="col">大中項目</th>
+                  <th class='text-center' scope="col">前年金額</th>
+                  <th class='text-center' scope="col">前月金額</th>
+                  <th class='text-center border-primary'>　</th>
+                  <th class='text-center table-primary border-primary' scope="col">{{from}}</th>
+                  <th class='text-center'>　</th>
+                  <th class='text-center' scope="col">前年比</th>
+                  <th class='text-center' scope="col">前月比</th>
+                </tr>
+              </thead>
+              <tbody>
+                <template v-for='(list,index) in readdata_summary' :key="list.sort+list.chuukoumoku">
+                  <template v-if='index===0 || (index!==0 && list["daikoumoku"]!==readdata_summary[index -1]["daikoumoku"])'>
+                    <tr class="table-info">
+                      <td>{{list.daikoumoku}}</td>
+                      <td class='text-end'>{{Number(list.y_ago_daikei).toLocaleString()}}</td>
+                      <td class='text-end'>{{Number(list.m_ago_daikei).toLocaleString()}}</td>
+                      <th class='text-center border-primary'>　</th>
+                      <td class='text-end table-primary border-primary'>{{Number(list.moto_daikei).toLocaleString()}}</td>
+                      <th class='text-center'>　</th>
+                      <td v-if='Number(list.moto_daikei) > Number(list.y_ago_daikei)' style='color:blue;' class='text-end'>{{(Number(list.moto_daikei) - Number(list.y_ago_daikei)).toLocaleString()}}</td>
+                      <td v-else style='color:red;' class='text-end'>{{(Number(list.moto_daikei) - Number(list.y_ago_daikei)).toLocaleString()}}</td>
+                      <td v-if='Number(list.moto_daikei) > Number(list.m_ago_daikei)' style='color:blue;' class='text-end'>{{(Number(list.moto_daikei) - Number(list.m_ago_daikei)).toLocaleString()}}</td>
+                      <td v-else style='color:red;' class='text-end'>{{(Number(list.moto_daikei) - Number(list.m_ago_daikei)).toLocaleString()}}</td>
+                    </tr>
+                    <tr>
+                      <td>　{{list["chuukoumoku"]}}</td>
+                      <td class='text-end'>{{Number(list.y_ago_chuukei).toLocaleString()}}</td>
+                      <td class='text-end'>{{Number(list.m_ago_chuukei).toLocaleString()}}</td>
+                      <th class='text-center border-primary'>　</th>
+                      <td class='text-end border-primary'>{{Number(list.moto_chuukei).toLocaleString()}}</td>
+                      <th class='text-center'>　</th>
+                      <td v-if='Number(list.moto_chuukei) > Number(list.y_ago_chuukei)' style='color:blue;' class='text-end'>{{(Number(list.moto_chuukei) - Number(list.y_ago_chuukei)).toLocaleString()}}</td>
+                      <td v-else style='color:red;' class='text-end'>{{(Number(list.moto_chuukei) - Number(list.y_ago_chuukei)).toLocaleString()}}</td>
+                      <td v-if='Number(list.moto_chuukei) > Number(list.m_ago_chuukei)' style='color:blue;' class='text-end'>{{(Number(list.moto_chuukei) - Number(list.m_ago_chuukei)).toLocaleString()}}</td>
+                      <td v-else style='color:red;' class='text-end'>{{(Number(list.moto_chuukei) - Number(list.m_ago_chuukei)).toLocaleString()}}</td>
+                    </tr>
+                  </template>
+                  <template v-if='index!==0 && list["daikoumoku"]===readdata_summary[index -1]["daikoumoku"]'>
+                    <tr>
+                      <td>　{{list["chuukoumoku"]}}</td>
+                      <td class='text-end'>{{Number(list.y_ago_chuukei).toLocaleString()}}</td>
+                      <td class='text-end'>{{Number(list.m_ago_chuukei).toLocaleString()}}</td>
+                      <th class='text-center border-primary'>　</th>
+                      <td class='text-end border-primary'>{{Number(list.moto_chuukei).toLocaleString()}}</td>
+                      <th class='text-center'>　</th>
+                      <td v-if='Number(list.moto_chuukei) > Number(list.y_ago_chuukei)' style='color:blue;' class='text-end'>{{(Number(list.moto_chuukei) - Number(list.y_ago_chuukei)).toLocaleString()}}</td>
+                      <td v-else style='color:red;' class='text-end'>{{(Number(list.moto_chuukei) - Number(list.y_ago_chuukei)).toLocaleString()}}</td>
+                      <td v-if='Number(list.moto_chuukei) > Number(list.m_ago_chuukei)' style='color:blue;' class='text-end'>{{(Number(list.moto_chuukei) - Number(list.m_ago_chuukei)).toLocaleString()}}</td>
+                      <td v-else style='color:red;' class='text-end'>{{(Number(list.moto_chuukei) - Number(list.m_ago_chuukei)).toLocaleString()}}</td>
+                    </tr>
+                  </template>
                 </template>
-                <template v-if='index!==0 && list["daikoumoku"]===readdata_summary[index -1]["daikoumoku"]'>
-                  <tr roll='button' @click='setfilter(list["daikoumoku"],list["chuukoumoku"])'>
-                    <td>　{{list["chuukoumoku"]}}</td>
-                    <td class='text-end'>{{Number(list.hikaku_chuukei).toLocaleString()}}</td>
-                    <td class='text-end'>{{Number(list.moto_chuukei).toLocaleString()}}</td>
-                    <td v-if='Number(list.moto_chuukei) > Number(list.hikaku_chuukei)' style='color:blue;' class='text-end'>{{(Number(list.moto_chuukei) - Number(list.hikaku_chuukei)).toLocaleString()}}</td>
-                    <td v-else style='color:red;' class='text-end'>{{(Number(list.moto_chuukei) - Number(list.hikaku_chuukei)).toLocaleString()}}</td>
-                  </tr>
-                </template>
-              </template>
-            </tbody>
-            <tfoot class='sticky-bottom'>
-              <tr class='table-success'>
-                <td class='text-center'>入出金計</td>
-                <td class='text-end'>{{Number(comparison_sum_val["zen"]).toLocaleString()}}</td>
-                <td class='text-end'>{{Number(comparison_sum_val["tou"]).toLocaleString()}}</td>
-                <td class='text-end'>{{Number(comparison_sum_val["sa"]).toLocaleString()}}</td>
-              </tr>
-            </tfoot>
-          </table>
+              </tbody>
+              <tfoot class='sticky-bottom'>
+                <tr class='table-success'>
+                  <td class='text-center'>入出金計</td>
+                  <td class='text-end'>{{Number(comparison_sum_val["zen_y"]).toLocaleString()}}</td>
+                  <td class='text-end'>{{Number(comparison_sum_val["zen_m"]).toLocaleString()}}</td>
+                  <th class='text-center border-primary'>　</th>
+                  <td class='text-end border-primary'>{{Number(comparison_sum_val["tou"]).toLocaleString()}}</td>
+                  <th class='text-center'>　</th>
+                  <td class='text-end'>{{Number(comparison_sum_val["sa_y"]).toLocaleString()}}</td>
+                  <td class='text-end'>{{Number(comparison_sum_val["sa_m"]).toLocaleString()}}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <div class='col-xl-8'>
+          <canvas id="myChart2"></canvas>
         </div>
       </div>
-      <div class='col-xl-8'>
-      </div>
-    </div>
     </MAIN>
   </div>
   
   <script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>
   <script>
-    dataset('<?php echo $mode;?>').mount('#app');
+    dataset('<?php echo basename(__FILE__);?>').mount('#app');
   </script>
 </BODY>
 </html>

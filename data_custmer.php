@@ -6,7 +6,7 @@
     $mode = "ippan";
   }else if($_GET["m"]==="imp"){
     //データインポートモード
-    $title="IMPORT";
+    //$title="IMPORT";
     $mode = "import";
   }else{
     $mode = "ippan";
@@ -25,19 +25,37 @@
 </head>
 <BODY id = 'body' style='background:black;' >
   <div id='app' style='height:100%;'>
-    <HEADER style='color:#FFA400'>
-      <div class='container text-start'>
-        <div class='row'>
-          <div class='col-4'><a href='index.php'><h3><?php echo $title;?></h3></a></div>
-          <div class='col-8 text-end'>
-            <button class='btn btn-outline-primary' type='button' @click='input_file_btn'>ファイル選択</button>
-            <button v-if='mode!=="ippan"' class='btn btn-outline-primary' type='button' @click='savedata'>システム登録</button>
-            <button class='btn btn-outline-primary' type='button' @click='savecsv'>CSV出力</button>
+    <HEADER style='color:#FFA400;padding-top:0;'>
+      <div  class='container'>
+      <div class='row'>
+        <div class='col-12'>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="index.php"><h3 style='color:#FFA400;'><?php echo $title;?></h3></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              </ul>
+              <div class="d-flex" style='padding:5px;'>
+                <button class='btn btn-outline-primary' type='button' @click='input_file_btn'>ファイル選択</button>
+              </div>
+              <div v-if='pagename.includes("imp")' class="d-flex" style='padding:5px;'>
+                <button class='btn btn-outline-primary' type='button' @click='savedata'>システム登録</button>
+              </div>
+              <div class="d-flex" style='padding:5px;'>
+                <button class='btn btn-outline-primary' type='button' @click='savecsv'>CSV出力</button>
+              </div>
+            </div>
           </div>
+        </nav>
         </div>
-        <input type="file" class="" name="user_file_name" style='width:25%;display:none;' id='file' @change='uploadfile'>
+      </div>
       </div>
     </HEADER>
+
+
     <!--<MAIN class='container-fluid' style='color:#fff;'> class="table-responsive" -->
     <MAIN class='container table-responsive' style='color:#fff;'>
       <div class="table-responsive table-h-full" style='width:100%;'>
@@ -168,7 +186,7 @@
   </div>
   <script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>
   <script>
-    dataset('<?php echo $mode;?>').mount('#app');
+    dataset('<?php echo basename(__FILE__)."?m=".$_GET["m"];?>').mount('#app');
   </script>
 </BODY>
 </html>

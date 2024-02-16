@@ -176,12 +176,16 @@ const dataset = (Where_to_use) => createApp({
       from.value = ym_next(from.value)
       if(pagename.value==="data_summary12m.php"){
         read_db_summury_long()
+      }else if(pagename.value==="data_comparison.php"){
+        read_db_comparison()
       }
     }
     const from_back = () =>{
       from.value = ym_back(from.value)
       if(pagename.value==="data_summary12m.php"){
         read_db_summury_long()
+      }else if(pagename.value==="data_comparison.php"){
+        read_db_comparison()
       }
     }
 
@@ -403,6 +407,7 @@ const dataset = (Where_to_use) => createApp({
     }
 
     const read_db_meisai = () => {
+      console_log('read_db_meisai start')
       axios
       .get(`ajax_read_db_meisai.php?fm=${from.value}&to=${to.value}`)
       .then((response) => {
@@ -415,7 +420,10 @@ const dataset = (Where_to_use) => createApp({
         //console_log(get_sortNO("収入"))
         console_log('read_db_meisai succsess')
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console_log('read_db_meisai error')
+        console.log(error)
+      });
     }
     const read_db_summury = () => {
       axios
@@ -432,14 +440,18 @@ const dataset = (Where_to_use) => createApp({
     const comparison_sum_val = ref([])
     const comparison_sum = () =>{
       console_log('comparison_sum start')
-      comparison_sum_val.value["zen"]=0
+      comparison_sum_val.value["zen_m"]=0
+      comparison_sum_val.value["zen_y"]=0
       comparison_sum_val.value["tou"]=0
-      comparison_sum_val.value["sa"]=0
+      comparison_sum_val.value["sa_m"]=0
+      comparison_sum_val.value["sa_y"]=0
       readdata_summary.value.forEach((row)=>{
-        comparison_sum_val.value["zen"] = comparison_sum_val.value["zen"] + row.hikaku_chuukei
+        comparison_sum_val.value["zen_m"] = comparison_sum_val.value["zen_m"] + row.m_ago_chuukei
+        comparison_sum_val.value["zen_y"] = comparison_sum_val.value["zen_y"] + row.y_ago_chuukei
         comparison_sum_val.value["tou"] = comparison_sum_val.value["tou"] + row.moto_chuukei
       })
-      comparison_sum_val.value["sa"] = comparison_sum_val.value["tou"] - comparison_sum_val.value["zen"]
+      comparison_sum_val.value["sa_m"] = comparison_sum_val.value["tou"] - comparison_sum_val.value["zen_m"]
+      comparison_sum_val.value["sa_y"] = comparison_sum_val.value["tou"] - comparison_sum_val.value["zen_y"]
       console_log(comparison_sum_val.value)
     }
     const read_db_comparison = () => {
@@ -453,6 +465,7 @@ const dataset = (Where_to_use) => createApp({
         //console_log(response.data)
         readdata_summary.value = [...response.data]
         comparison_sum()
+        create_graph2(document.getElementById('myChart2'))
         console_log('read_db_comparison succsess')
       })
       .catch((error) => console.log(error));
@@ -556,6 +569,7 @@ const dataset = (Where_to_use) => createApp({
       meisai_disable.value  = false
     }
 
+    const ymlist = ref([])
     onMounted(()=>{
       console_log("onMounted")
       //read_html_moneyforward()
@@ -564,20 +578,37 @@ const dataset = (Where_to_use) => createApp({
       comparison_sum_val.value["tou"]=0
       comparison_sum_val.value["sa"]=0
       
-      if(pagename.value==="data_summary12m.php"){
-        //readdata_summary.value = {label:['-','-','-','-','-','-','-','-','-','-','-','-','-']}
-        //console_log(readdata_summary.value)
-        create_graph(document.getElementById('myChart'))
+      if(pagename.value!=="data_custmer.php"){
+        axios
+        .get(`ajax_read_db_meisai_ymlist.php`)
+        .then((response) => {
+          ymlist.value = []
+          //console_log(response.data)
+          ymlist.value = response.data
+          from.value = ymlist.value.max_min[0].max_getudo
+          console_log('ajax_read_db_meisai_ymlist succsess')
+          if(pagename.value==="data_summury12m.php"){
+            read_db_summury_long()
+          }
+          if(pagename.value==="data_comparison.php"){
+            console_log('data_comparison root')
+            to.value="m"
+            read_db_comparison()
+          }
+
+        })
+        .catch((error) => console.log(error));
       }
+
     })
     onBeforeMount(()=>{
       console_log("onBeforeMount:"+pagename.value)
-      if(pagename.value==="data_summary12m.php"){
+      if(pagename.value==="data_summury12m.php"){
         readdata_summary.value = {
           label:['----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--']
           ,data:[]
         }
-        console_log(readdata_summary.value)
+        //console_log(readdata_summary.value)
       }
     })
 
@@ -598,6 +629,29 @@ const dataset = (Where_to_use) => createApp({
         })
       })
       return return_data
+    }
+
+    const get_graph_data2 = () => {
+      console_log("get_graph_data2")
+      let d_list = []
+      let c_list = []
+      let nowitem = ''
+      readdata_summary.value.forEach((row)=>{
+        if(nowitem !== row.daikoumoku){
+          d_list.push({
+            label : row.daikoumoku
+            ,data : [row.y_ago_daikei,row.m_ago_daikei,row.moto_daikei]
+            ,backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+          })
+          nowitem = row.daikoumoku
+        }
+        c_list.push({
+          label : row.chuukoumoku
+          ,data : [row.y_ago_chuukei,row.m_ago_chuukei,row.moto_chuukei]
+          ,backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+        })
+      })
+      return d_list
     }
 
     var graph_obj
@@ -636,6 +690,40 @@ const dataset = (Where_to_use) => createApp({
       })      
     }
 
+    const create_graph2 = (ctx) =>{
+      console_log("create_graph2 : graph_data")
+      
+      const graph_data = {
+        labels    : ['前年','前月','当月']
+        ,datasets : get_graph_data2()
+      }
+
+      if(graph_obj){
+        graph_obj.destroy()
+      }
+
+      graph_obj = new Chart(ctx, {
+        type : 'bar'
+        ,data: graph_data
+        ,options: {
+          plugins: {
+            title: {
+              display: true,
+              text: '比較グラフ'
+            },
+          },
+          responsive: true,
+          scales: {
+            x: {
+              stacked: true,
+            },
+            y: {
+              stacked: true
+            }
+          }
+        }
+      })      
+    }
 
 
 
@@ -690,7 +778,8 @@ const dataset = (Where_to_use) => createApp({
       cgmode,
       loader,
       open_fil,
-      open_utiwake
+      open_utiwake,
+      ymlist
     }
   }
 });

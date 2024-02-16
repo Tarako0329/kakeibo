@@ -1,17 +1,5 @@
 <?php
   require "php_header.php";
-  if(empty($_GET)){
-    //一般公開・マネーフォワードCSV変換モード
-    $title="MFoward";
-    $mode = "ippan";
-  }else if($_GET["m"]==="imp"){
-    //データインポートモード
-    $title="MFoward";
-    $mode = "import";
-  }else{
-    $mode = "ippan";
-  }
-  
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
@@ -23,13 +11,12 @@
     <script src="./script/flow.js"></script>
     <TITLE><?php echo $title;?></TITLE>
     <style>
-      .form-control{
+      header > .form-control,header >.btn{
         display:inline-block;
         width: 120px;
       }
-      td > .btn,.form-control,.form-select{
-        width:95%;
-      }
+
+
     </style>
 </head>
 <BODY id = 'body' style='background:black;' >
@@ -48,10 +35,10 @@
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               </ul>
               <div class="d-flex" style='padding:5px;'>
-                <input v-model='from' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control form-control-sm' placeholder="期間FROM YYYYMM">
+                <input v-model='from' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control' placeholder="期間FROM YYYYMM">
               </div>
               <div class="d-flex" style='padding:5px;'>
-                <input v-model='to' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control form-control-sm' placeholder="期間TO YYYYMM">
+                <input v-model='to' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control' placeholder="期間TO YYYYMM">
               </div>
               <div class="d-flex" style='padding:5px;'><button class='btn btn-outline-primary btn-sm' type='button' @click='cgmode'>修正モード</button></div>
               <div class="d-flex" style='padding:5px;'><button class='btn btn-outline-primary btn-sm' type='button' @click='upddata'>登録</button></div>
@@ -78,13 +65,13 @@
             <tbody>
               <template v-for='(list,index) in cp_readdata_summary' :key="list.daichuukou">
                 <template v-if='index===0 || (index!==0 && list["daikoumoku"]!==cp_readdata_summary[index -1]["daikoumoku"])'>
-                  <tr class="table-info" roll='button' @click='setfilter(list["daikoumoku"],"")'>
+                  <tr role='button' class="table-info" @click='setfilter(list["daikoumoku"],"")'>
                     <td>{{list["daikoumoku"]}}</td>
                     <td class='text-end'>{{Number(list.daikei).toLocaleString()}}</td>
                   </tr>
                 </template>
                 <template v-if='index!==0 && list["daikoumoku"]===cp_readdata_summary[index -1]["daikoumoku"]'>
-                  <tr roll='button' @click='setfilter(list["daikoumoku"],list["chuukoumoku"])'>
+                  <tr role='button' @click='setfilter(list["daikoumoku"],list["chuukoumoku"])'>
                     <td>　{{list["chuukoumoku"]}}</td>
                     <td class='text-end'>{{Number(list.chuukei).toLocaleString()}}</td>
                   </tr>
@@ -234,7 +221,7 @@
   </script>
   <script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>
   <script>
-    dataset('<?php echo $mode;?>').mount('#app');
+    dataset('<?php echo basename(__FILE__);?>').mount('#app');
   </script>
 </BODY>
 </html>

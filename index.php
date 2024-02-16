@@ -17,15 +17,49 @@
 	include "head_bs5.php" 
 	?>
 	<script src="./script/flow.js"></script>
-	<TITLE>Video Uploader</TITLE>
+	<TITLE><?php echo $title;?></TITLE>
 </head>
 <BODY id = 'body' style='background:black;' >
 	<div id = 'app' style='width:100%;height:100%;'>
-	<HEADER class='text-center' style='color:#FFA400;height:130px;'>
-		<h1><?php echo $title;?></h1>
-		<div class='youkoso'><?php echo "ID:".$_SESSION["uid"];?></div>
-		<div class='logoff'><a href="logoff.php" class='a_none'>logoff</a></div>
-	</HEADER>
+
+	<HEADER style='color:#FFA400;padding-top:0;'>
+      <div  class='container'>
+      <div class='row'>
+        <div class='col-12'>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="index.php"><h3 style='color:#FFA400;'><?php echo $title;?></h3></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+							<li class='nav-item'>
+									<a class='nav-link' href='data_custmer.php?m=imp'>データインポート</a>
+								</li>
+								<li class='nav-item'>
+									<a class='nav-link' href='data_summary.php'>入出金明細</a>
+								</li>
+								<li class='nav-item'>
+									<a class='nav-link' href='data_comparison.php'>前月比・前年比</a>
+								</li>
+								<li class='nav-item'>
+									<a class='nav-link' href='data_summury12m.php'>入出金推移(月間・年間)</a>
+								</li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        </div>
+      </div>
+      </div>
+			<div class='youkoso'><?php echo "ID:".$_SESSION["uid"];?></div>
+			<div class='logoff'><a href="logoff.php" class='a_none'>logoff</a></div>
+    </HEADER>
+
+
+
+
 	<MAIN class='container' style='color:#fff;padding-top:130px;padding-bottom:10px;'>
 		<div class='row'>
 			<form method='get' action='data_custmer.php'><button type='submit' class='btn btn-outline-primary' name='m' value='imp'>データインポート</button></form>
