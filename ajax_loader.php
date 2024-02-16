@@ -1,7 +1,7 @@
 <?php
 require "php_header.php";
 
-//log_writer("\$_FILES",$_FILES);
+log_writer("\$_FILES",$_FILES);
 $tempfile = $_FILES['user_file_name']['tmp_name'];
 $filename = 'upload/' . $_FILES['user_file_name']['name'];
 $stats = "false";

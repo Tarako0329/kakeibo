@@ -34,17 +34,17 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-							<li class='nav-item'>
-									<a class='nav-link' href='data_custmer.php?m=imp'>データインポート</a>
+								<li class='nav-item'>
+									<a class='nav-link' href='data_custmer.php?m=imp'>データ取込</a>
 								</li>
 								<li class='nav-item'>
-									<a class='nav-link' href='data_summary.php'>入出金明細</a>
+									<a class='nav-link' href='data_summary.php'>入出金</a>
 								</li>
 								<li class='nav-item'>
 									<a class='nav-link' href='data_comparison.php'>前月比・前年比</a>
 								</li>
 								<li class='nav-item'>
-									<a class='nav-link' href='data_summary12m.php'>入出金推移(月間・年間)</a>
+									<a class='nav-link' href='data_summary12m.php'>推移(月間・年間)</a>
 								</li>
               </ul>
             </div>
@@ -61,12 +61,6 @@
 
 
 	<MAIN class='container' style='color:#fff;padding-top:130px;padding-bottom:10px;'>
-		<div class='row'>
-			<form method='get' action='data_custmer.php'><button type='submit' class='btn btn-outline-primary' name='m' value='imp'>データインポート</button></form>
-			<form method='get' action='data_summary.php'><button type='submit' class='btn btn-outline-primary'>入出金明細</button></form>
-			<form method='get' action='data_comparison.php'><button type='submit' class='btn btn-outline-primary'>期間推移</button></form>
-			<form method='get' action='data_summary12m.php'><button type='submit' class='btn btn-outline-primary'>期間推移2</button></form>
-		</div>
 	</MAIN>
 	<!--<FOOTER>
 	</FOOTER>-->

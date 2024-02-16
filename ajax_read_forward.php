@@ -1,11 +1,11 @@
 <?php
-require "functions.php";
+require "php_header.php";
 if(empty($_GET["fn"])){
   exit;
 }else{
   $filepass = $_GET["fn"];
 }
-//log_writer("\$filepass",$filepass);
+log_writer("\$filepass",$filepass);
 
 
 $type="";

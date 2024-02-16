@@ -27,31 +27,44 @@
   <div id='app' style='height:100%;'>
     <HEADER style='color:#FFA400;padding-top:0;'>
       <div  class='container'>
-      <div class='row'>
-        <div class='col-12'>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
-          <div class="container-fluid">
-            <a class="navbar-brand" href="index.php"><h3 style='color:#FFA400;'><?php echo $title;?></h3></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              </ul>
-              <div class="d-flex" style='padding:5px;'>
-                <button class='btn btn-outline-primary' type='button' @click='input_file_btn'>ファイル選択</button>
+        <div class='row'>
+          <div class='col-12'>
+            <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+              <div class="container-fluid">
+                <a class="navbar-brand" href="index.php"><h3 style='color:#FFA400;'><?php echo $title;?></h3></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class='nav-item'>
+			  	  					<a class='nav-link active' href='data_custmer.php?m=imp'>データ取込</a>
+			  	  				</li>
+			  	  				<li class='nav-item'>
+			  	  					<a class='nav-link' href='data_summary.php'>入出金</a>
+			  	  				</li>
+			  	  				<li class='nav-item'>
+			  	  					<a class='nav-link' href='data_comparison.php'>前月比・前年比</a>
+			  	  				</li>
+			  	  				<li class='nav-item'>
+			  	  					<a class='nav-link' href='data_summary12m.php'>推移(月間・年間)</a>
+			  	  				</li>
+                  </ul>
+                  <div class="d-flex" style='padding:5px;'>
+                    <button class='btn btn-outline-primary' type='button' @click='input_file_btn'>ファイル選択</button>
+                  </div>
+                  <div v-if='pagename.includes("imp")' class="d-flex" style='padding:5px;'>
+                    <button class='btn btn-outline-primary' type='button' @click='savedata'>システム登録</button>
+                  </div>
+                  <div class="d-flex" style='padding:5px;'>
+                    <button class='btn btn-outline-primary' type='button' @click='savecsv'>CSV出力</button>
+                  </div>
+                  <input type="file" class="" name="user_file_name" style='width:25%;display:none;' id='file' @change='uploadfile'>
+                </div>
               </div>
-              <div v-if='pagename.includes("imp")' class="d-flex" style='padding:5px;'>
-                <button class='btn btn-outline-primary' type='button' @click='savedata'>システム登録</button>
-              </div>
-              <div class="d-flex" style='padding:5px;'>
-                <button class='btn btn-outline-primary' type='button' @click='savecsv'>CSV出力</button>
-              </div>
-            </div>
+            </nav>
           </div>
-        </nav>
         </div>
-      </div>
       </div>
     </HEADER>
 

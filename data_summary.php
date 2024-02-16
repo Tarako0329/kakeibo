@@ -11,18 +11,15 @@
     <script src="./script/flow.js"></script>
     <TITLE><?php echo $title;?></TITLE>
     <style>
-      header > .form-control,header >.btn{
-        display:inline-block;
-        width: 120px;
+      .navbtn{
+        width:100px;
       }
-
-
     </style>
 </head>
 <BODY id = 'body' style='background:black;' >
   <div id='app' style='height:100%;'>
     <HEADER style='color:#FFA400;padding-top:0;'>
-      <div  class='container'>
+      <div  class='container-fluid'>
       <div class='row'>
         <div class='col-12'>
         <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
@@ -33,16 +30,30 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+								<li class='nav-item'>
+                  <a class='nav-link' href='data_custmer.php?m=imp'>データ取込</a>
+								</li>
+								<li class='nav-item'>
+									<a class='nav-link active' href='data_summary.php'>入出金</a>
+								</li>
+								<li class='nav-item'>
+									<a class='nav-link' href='data_comparison.php'>前月比・前年比</a>
+								</li>
+								<li class='nav-item'>
+									<a class='nav-link' href='data_summary12m.php'>推移(月間・年間)</a>
+								</li>
               </ul>
-              <div class="d-flex" style='padding:5px;'>
-                <input v-model='from' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control' placeholder="期間FROM YYYYMM">
+              <div class="d-flex" style='padding:5px;width: 240px;'>
+                <input v-model='from' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control' placeholder="YYYYMM">
+                <div style='padding:6px;font-weight:900;'>～</div>
+                <input v-model='to' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control' placeholder="YYYYMM">
               </div>
-              <div class="d-flex" style='padding:5px;'>
-                <input v-model='to' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control' placeholder="期間TO YYYYMM">
-              </div>
-              <div class="d-flex" style='padding:5px;'><button class='btn btn-outline-primary btn-sm' type='button' @click='cgmode'>修正モード</button></div>
-              <div class="d-flex" style='padding:5px;'><button class='btn btn-outline-primary btn-sm' type='button' @click='upddata'>登録</button></div>
-              <div class="d-flex" style='padding:5px;'><button class='btn btn-outline-primary btn-sm' type='button' @click='read_db_meisai'>キャンセル</button></div>
+              <!--<div class="d-flex navbtn" style='padding:5px;'>
+                <input v-model='to' :disabled='search_disable' @change='read_db_meisai' type="number" class='form-control' placeholder="YYYYMM">
+              </div>-->
+              <div class="d-flex" style='padding:5px;'><button class='btn btn-outline-primary btn-sm navbtn' type='button' @click='cgmode'>修正モード</button></div>
+              <div class="d-flex" style='padding:5px;'><button class='btn btn-outline-primary btn-sm navbtn' type='button' @click='upddata'>登録</button></div>
+              <div class="d-flex" style='padding:5px;'><button class='btn btn-outline-primary btn-sm navbtn' type='button' @click='read_db_meisai'>キャンセル</button></div>
             </div>
           </div>
         </nav>

@@ -572,8 +572,6 @@ const dataset = (Where_to_use) => createApp({
     const ymlist = ref([])
     onMounted(()=>{
       console_log("onMounted")
-      //read_html_moneyforward()
-      //read_db_summary()
       comparison_sum_val.value["zen"]=0
       comparison_sum_val.value["tou"]=0
       comparison_sum_val.value["sa"]=0
@@ -723,7 +721,8 @@ const dataset = (Where_to_use) => createApp({
             y: {
               stacked: true
             }
-          }
+          },
+          aspectRatio:'1'
         }
       })      
     }

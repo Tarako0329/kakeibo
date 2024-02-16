@@ -11,44 +11,54 @@
     <script src="./script/flow.js"></script>
     <TITLE><?php echo $title;?></TITLE>
     <style>
-      button{
-        width: 95%;
-      }
+
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <BODY id = 'body' style='background:black;' >
   <div id='app' style='height:100%;'>
     <HEADER style='color:#FFA400;padding-top:0;'>
-      <div  class='container'>
-      <div class='row'>
-        <div class='col-12'>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
-          <div class="container-fluid">
-            <a class="navbar-brand" href="index.php"><h3 style='color:#FFA400;'><?php echo $title;?></h3></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              </ul>
-              <div class="d-flex" style='padding:5px;'>
-                <input v-model='from' :disabled='search_disable' @change='read_db_comparison' type="number" class='form-control' placeholder="期間FROM YYYYMM">
+      <div class='container'>
+        <div class='row'>
+          <div class='col-12'>
+            <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+              <div class="container-fluid">
+                <a class="navbar-brand" href="index.php"><h3 style='color:#FFA400;'><?php echo $title;?></h3></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class='nav-item'>
+								    	<a class='nav-link' href='data_custmer.php?m=imp'>データ取込</a>
+								    </li>
+								    <li class='nav-item'>
+								    	<a class='nav-link' href='data_summary.php'>入出金</a>
+								    </li>
+                    <li class='nav-item'>
+    									<a class='nav-link active' href='data_comparison.php'>前月比・前年比</a>
+		    						</li>
+								    <li class='nav-item'>
+								    	<a class='nav-link' href='data_summary12m.php'>推移(月間・年間)</a>
+								    </li>
+                  </ul>
+                  <div class="d-flex" style='padding:5px;'>
+                    <input v-model='from' :disabled='search_disable' @change='read_db_comparison' type="number" class='form-control' placeholder="期間FROM YYYYMM">
+                  </div>
+                  <div class="d-flex" style='padding:5px;'>
+                    <button class='btn btn-outline-primary lbtn' style='margin-right:5px;' @click='from_back'>前月</button>
+                    <button class='btn btn-outline-primary rbtn' style='margin-right:50px;' @click='from_next'>次月</button>
+                  </div>
+                </div>
               </div>
-              <div class="d-flex" style='padding:5px;'>
-                <button class='btn btn-outline-primary lbtn' style='margin-right:5px;' @click='from_back'>前月</button>
-                <button class='btn btn-outline-primary rbtn' style='margin-right:50px;' @click='from_next'>次月</button>
-              </div>
-            </div>
+            </nav>
           </div>
-        </nav>
         </div>
       </div>
-      </div>
     </HEADER>
-    <MAIN class='container-fluid' style='color:#fff;padding-left:20px;padding-right:20px;'>
+    <MAIN class='container' style='color:#fff;padding-left:20px;padding-right:20px;'>
       <div class='row' style='height:100%;'>
-        <div class='col-xl-4' style='height:100%;'>
+        <div class='col-lg-6 col-xl-5' style='height:100%;'>
           <div class="table-responsive table-h-full" style='width:100%;'>
             <table class="table table-hover table-sm table-bordered">
               <thead class='sticky-top'>
@@ -122,8 +132,8 @@
             </table>
           </div>
         </div>
-        <div class='col-xl-8'>
-          <canvas id="myChart2"></canvas>
+        <div class='col-lg-6 col-xl-7' style='height:100%;'>
+          <canvas id="myChart2" style='height:100%;'></canvas>
         </div>
       </div>
     </MAIN>
