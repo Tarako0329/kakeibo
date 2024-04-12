@@ -40,6 +40,16 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
 define("SAVEDIR", $_ENV["SAVEDIR"]);
 define("NOM", $_ENV["SIO"]);
+
+
+if(empty($_SESSION["uid"])){
+  //リダイレクト
+  log_writer("","セッション切れです");
+  $_SESSION["MSG"] = "セッション切れです。再ログインしてください。";
+  header("HTTP/1.1 301 Moved Permanently");
+  header("Location: login.php?");
+  exit();
+}
 /*
 if(!empty($_GET["v"])){
   setCookie("vpool", $_GET["v"], time()+60*60*24*7, "/", "",true,true);
