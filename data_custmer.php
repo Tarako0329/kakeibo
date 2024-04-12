@@ -66,6 +66,7 @@
           </div>
         </div>
       </div>
+      <div class='logoff'><a href="logoff.php" class='a_none'>logoff</a></div>
     </HEADER>
 
 
