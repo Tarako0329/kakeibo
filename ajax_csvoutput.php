@@ -1,7 +1,7 @@
 <?php
   require "php_header.php";
   $return_satas = "success";
-  log_writer("\$POST",$_POST);
+  //log_writer("\$POST",$_POST);
 
   //$dataset = $_POST["csv"];
   $dataset = json_decode($_POST["csv"], true);

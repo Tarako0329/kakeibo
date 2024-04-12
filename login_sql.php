@@ -6,8 +6,9 @@ if(MAIN_DOMAIN!=="localhost:81"){
 $success=false;
 log_writer("\$_POST",$_POST);
 
+$pass = passEx($_POST["pass"],$_POST["id"],NOM);
+
 if(!empty($_POST)){
-  $pass = passEx($_POST["pass"],$_POST["id"],NOM);
   log_writer("\$pass",$pass);
   if($_POST["login"]==="login"){
     $sql = "select * from user where uid = :id and pass = :pass";

@@ -16,9 +16,10 @@
   try{
     $pdo_h->beginTransaction();
 
-    $stmt = $pdo_h->prepare("delete from kakeibo where getudo between :start and :end");
+    $stmt = $pdo_h->prepare("delete from kakeibo where getudo between :start and :end and uid = :uid");
     $stmt->bindValue("start", $start_YM, PDO::PARAM_STR);
     $stmt->bindValue("end", $end_YM, PDO::PARAM_STR);
+    $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
   
     $stmt->execute();
     

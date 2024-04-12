@@ -18,12 +18,12 @@
 <BODY id = 'body' style='background:black;' >
   <div id='app' style='height:100%;'>
     <HEADER style='color:#FFA400;padding-top:0;'>
-      <div class='container'>
+      <div class='container-fluid'>
         <div class='row'>
           <div class='col-12'>
             <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
               <div class="container-fluid">
-                <a class="navbar-brand" href="index.php"><h3 style='color:#FFA400;'><?php echo $title;?></h3></a>
+                <a class="navbar-brand" href="index.php"><h3 class='potta-one-regular' style='color:#FFA400;'><?php echo $title;?></h3></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>

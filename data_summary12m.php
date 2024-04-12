@@ -21,7 +21,7 @@
 <BODY id = 'body' style='background:black;' >
 	<div id='app' style='height:100%;'>
 		<HEADER style='color:#FFA400;padding-top:0;'>
-			<div  class='container'>
+			<div class='container-fluid'>
 			<div class='row'>
 				<div class='col-12'>
 				<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">

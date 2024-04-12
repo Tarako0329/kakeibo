@@ -15,7 +15,7 @@ define("ROOT_URL",$_ENV["HTTP"]);
 //$rtn=session_set_cookie_params(24*60*60*24*3,'/',MAIN_DOMAIN,true,true);
 session_start();
 //$_SESSION = [];
-$_SESSION["uid"]="tarako";
+//$_SESSION["uid"]="tarako";
 
 
 if(MAIN_DOMAIN==="localhost:81"){

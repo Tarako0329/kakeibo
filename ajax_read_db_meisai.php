@@ -4,6 +4,7 @@
     exit();
   }
   //log_writer('\$_SESSION["uid"]',++$a);
+  log_writer('\$_SESSION["uid"]',$_SESSION["uid"]);
   $sql = "select date as date,date as date2,meisai,kin,shuppimoto,kake.daikoumoku,chuukoumoku,memo,guid ,sort
     from kakeibo as kake
     left join daikoumoku_ms as ms

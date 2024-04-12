@@ -26,7 +26,7 @@
 <BODY id = 'body' style='background:black;' >
   <div id='app' style='height:100%;'>
     <HEADER style='color:#FFA400;padding-top:0;'>
-      <div  class='container'>
+      <div class='container-fluid'>
         <div class='row'>
           <div class='col-12'>
             <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
@@ -71,7 +71,7 @@
 
 
     <!--<MAIN class='container-fluid' style='color:#fff;'> class="table-responsive" -->
-    <MAIN class='container table-responsive' style='color:#fff;'>
+    <MAIN class='container-fluid table-responsive' style='color:#fff;'>
       <div class="table-responsive table-h-full" style='width:100%;'>
         <table class="table table-striped table-hover table-sm">
         <thead class='sticky-top'>
