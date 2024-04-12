@@ -591,6 +591,9 @@ const dataset = (Where_to_use) => createApp({
           if(pagename.value==="data_summary.php"){
             read_db_meisai()
           }
+          if(pagename.value==="index.php"){
+            read_db_meisai()
+          }
           if(pagename.value==="data_comparison.php"){
             console_log('data_comparison root')
             to.value="m"

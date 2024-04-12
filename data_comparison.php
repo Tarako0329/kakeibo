@@ -33,7 +33,7 @@
 								    	<a class='nav-link' href='data_custmer.php?m=imp'>データ取込</a>
 								    </li>
 								    <li class='nav-item'>
-								    	<a class='nav-link' href='data_summary.php'>入出金</a>
+								    	<a class='nav-link' href='index.php'>入出金</a>
 								    </li>
                     <li class='nav-item'>
     									<a class='nav-link active' href='data_comparison.php'>前月比・前年比</a>
