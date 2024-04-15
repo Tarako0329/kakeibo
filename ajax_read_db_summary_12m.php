@@ -24,8 +24,8 @@
     $kikan[] = date("Y/m", strtotime($_GET["fm"]."01"." -".(12-$i)." month"));
   }
 
-  log_writer("\$kikan",$kikan);
-  log_writer("\$_SESSION[uid]",$_SESSION["uid"]);
+  //log_writer("\$kikan",$kikan);
+  //log_writer("\$_SESSION[uid]",$_SESSION["uid"]);
 
   $sql = "select COALESCE(ms.sort,999) as sort ,temp.daikoumoku ,temp.chuukoumoku 
     ,sum(m12) as m12c 
