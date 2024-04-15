@@ -58,6 +58,9 @@
 									<option value='5y'>過去５年</option>
 								</select>
 							</div>
+							<div class="d-flex" style='padding:5px;'>
+								<a href="user_setting.php" class='a_none'><h2><i class="bi bi-person-circle"></i></h2></a>
+							</div>
 						</div>
 					</div>
 				</nav>
@@ -164,6 +167,7 @@
 				</div>
 			</div>
 		</div>
+		<div class='logoff'><a href="logoff.php" class='a_none'><h1><i class="bi bi-box-arrow-right"></i></h1></a></div>
 		</MAIN>
 	</div>
 	

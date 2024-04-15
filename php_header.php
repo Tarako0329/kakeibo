@@ -41,14 +41,22 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 define("SAVEDIR", $_ENV["SAVEDIR"]);
 define("NOM", $_ENV["SIO"]);
 
+if(!empty($_SESSION["MSG"])){
 
-if(empty($_SESSION["uid"])){
-  //リダイレクト
-  log_writer("","セッション切れです");
-  $_SESSION["MSG"] = "セッション切れです。再ログインしてください。";
-  header("HTTP/1.1 301 Moved Permanently");
-  header("Location: login.php?");
-  exit();
+}else if(!empty($_POST["login"])){
+
+}else if(empty($_SESSION["uid"])){
+  if(empty($_COOKIE["mesp_uid"])){
+    //リダイレクト
+    log_writer("","セッション切れです");
+    $_SESSION["MSG"] = "セッション切れです。再ログインしてください。";
+    header("HTTP/1.1 301 Moved Permanently");
+    header("Location: login.php?");
+    exit();
+  }else{
+    log_writer("","セッション切れ/クッキーで再セット");
+    $_SESSION["uid"]=$_COOKIE["mesp_uid"];
+  }
 }
 /*
 if(!empty($_GET["v"])){

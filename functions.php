@@ -322,6 +322,7 @@ function upd_getudo($pdo_h,$symd,$eymd) {
         //開始日の判定(31=月末)
         $sd=$row[0]["kisanbi"];
         $sd=($sd==="31")?date('Ymd',strtotime($sym.' last day of this month')):$sd;
+        $sd = substr("0".$sd,-2);
         $shukujitu = "holiday";
         $startdate = $sym.$sd;
         while($shukujitu === "holiday"){
@@ -347,6 +348,7 @@ function upd_getudo($pdo_h,$symd,$eymd) {
         //終了日の判定
         $sd=$row[0]["kisanbi"];
         $sd=($sd==="31")?date('Ymd',strtotime($sym.' last day of this month')):$sd;
+        $sd = substr("0".$sd,-2);
         $shukujitu = "holiday";
         $enddate = date("Ym", strtotime($sym.$sd." 1 month")).$sd;   //１か月後の
         while($shukujitu === "holiday"){
@@ -370,7 +372,7 @@ function upd_getudo($pdo_h,$symd,$eymd) {
                 $enddate=date("Ymd", strtotime($enddate." 1 day")); 
             }
         }
-        //log_writer("月度期間",$sym."：".$startdate."-".$enddate);
+        log_writer("月度期間",$sym."：".$startdate."-".$enddate);
 
         //データ更新
         try{

@@ -258,7 +258,6 @@ const dataset = (Where_to_use) => createApp({
       }
       loader.value = true
       const params = new FormData();
-      //const csv = readdata.value
       params.append('csv', JSON.stringify(readdata.value));
 
       let start = ''
@@ -789,11 +788,56 @@ const dataset = (Where_to_use) => createApp({
   }
 });
 
-const dataset2 = () => createApp({
+const user_setting = () => createApp({
   setup() {
-    const test = ref('test')
+    const kisanbi = ref('')
+    const shukuzitu = ref('')
+    const nendomatu = ref('')
+
+    const get_user = () =>{
+      axios
+      .get(`ajax_read_db_user.php`)
+      .then((response) => {
+        console_log(response.data)
+        kisanbi.value = response.data.user[0].kisanbi
+        shukuzitu.value = response.data.user[0].shukuzitu
+        nendomatu.value = response.data.user[0].nendomatu
+        console_log('ajax_read_db_user succsess')
+      })
+      .catch((error) => {
+        console_log('ajax_read_db_user error')
+        console.log(error)
+      });
+    }
+
+    const onsubmit =()=>{
+      const params = new FormData();
+      params.append('kisanbi', kisanbi.value);
+      params.append('shukuzitu', shukuzitu.value);
+      params.append('nendomatu', nendomatu.value);
+
+      axios
+      .post(`ajax_upd_db_user.php`,params, {headers: {'Content-Type': 'application/json'}})
+      .then((response) => {
+        console_log(response.data)
+        alert("登録しました")
+        console_log('ajax_upd_db_user succsess')
+      })
+      .catch((error) => {
+        alert("登録失敗")
+        console_log('ajax_upd_db_user error')
+        console.log(error)
+      });
+    }
+
+    onMounted(()=>{
+      get_user()
+    })
     return{
-      test,
+      kisanbi,
+      shukuzitu,
+      nendomatu,
+      onsubmit,
     }
   }
 });

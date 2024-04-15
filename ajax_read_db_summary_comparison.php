@@ -47,7 +47,7 @@
 	$stmt->execute();
 	$dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-  log_writer("\$dataset",$dataset);
+  //log_writer("\$dataset",$dataset);
 
   header('Content-type: application/json');  
   echo json_encode($dataset, JSON_UNESCAPED_UNICODE);

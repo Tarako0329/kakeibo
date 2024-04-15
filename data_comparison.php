@@ -48,6 +48,7 @@
                   <div class="d-flex" style='padding:5px;'>
                     <button class='btn btn-outline-primary lbtn' style='margin-right:5px;' @click='from_back'>前月</button>
                     <button class='btn btn-outline-primary rbtn' style='margin-right:50px;' @click='from_next'>次月</button>
+                    <a href="user_setting.php" class='a_none'><h2><i class="bi bi-person-circle"></i></h2></a>
                   </div>
                 </div>
               </div>
@@ -136,6 +137,7 @@
           <canvas id="myChart2" style='height:100%;'></canvas>
         </div>
       </div>
+      <div class='logoff'><a href="logoff.php" class='a_none'><h1><i class="bi bi-box-arrow-right"></i></h1></a></div>
     </MAIN>
   </div>
   

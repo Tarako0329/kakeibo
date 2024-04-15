@@ -59,6 +59,9 @@
                   <div class="d-flex" style='padding:5px;'>
                     <button class='btn btn-outline-primary' type='button' @click='savecsv'>CSV出力</button>
                   </div>
+                  <div class="d-flex" style='padding:5px;'>
+                    <a href="user_setting.php" class='a_none'><h2><i class="bi bi-person-circle"></i></h2></a>
+                  </div>
                   <input type="file" class="" name="user_file_name" style='width:25%;display:none;' id='file' @change='uploadfile'>
                 </div>
               </div>
@@ -66,7 +69,7 @@
           </div>
         </div>
       </div>
-      <div class='logoff'><a href="logoff.php" class='a_none'>logoff</a></div>
+      
     </HEADER>
 
 
@@ -192,6 +195,7 @@
         </tfoot>
         </table>
       </div>
+      <div class='logoff'><a href="logoff.php" class='a_none'><h1><i class="bi bi-box-arrow-right"></i></h1></a></div>
     </MAIN>
     <div class="loader-wrap" v-show='loader'>
 		  <div class="loader">Loading...</div>

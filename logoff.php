@@ -1,6 +1,6 @@
 <?php
   require "php_header.php";
-
+/*
   try{
     $pdo_h->beginTransaction();
     $sql = "delete from loginkeeper where uid =:id and token =:token";
@@ -14,9 +14,9 @@
     log_writer("loginkeeper削除失敗。",$e);
     $pdo_h->rollBack();
   }
+*/
 
-
-  setCookie("vpool", '', -1, "/", "", false, TRUE); // secure, httponly
+//  setCookie("vpool", '', -1, "/", "", false, TRUE); // secure, httponly
   $_SESSION=[];
   $_SESSION["MSG"]="ログオフしました";
  
