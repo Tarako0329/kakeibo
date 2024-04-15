@@ -57,17 +57,18 @@
     <MAIN class='container' style='color:#fff;padding-left:20px;padding-right:20px;'>
       <div class='row mt-5'>
         <div class='col-lg-6 col-xl-5'>
-          <label for='kisanbi' class='form-label'>月度起算日</label>
+          <label for='kisanbi' class='form-label'>集計期間の設定</label>
           <input type='number' id='kisanbi' class='form-control' v-model='kisanbi'>
+          <small>日から1ヵ月を集計する。</small>
         </div>
       </div>
       <div class='row mt-5'>
         <div class='col-lg-6 col-xl-5'>
           <label for='shukuzitu' class='form-label'>月度起算日が土日祝の場合</label>
           <select id='shukuzitu' class='form-select' v-model='shukuzitu'>
-            <option value="0">無視する</option>
-            <option value="1">直前の平日を起算日とする</option>
-            <option value="2">直後の平日を起算日とする</option>
+            <option value="0">そのまま適用する</option>
+            <option value="1">直前の平日を起算日とする（金曜日等）</option>
+            <option value="2">直後の平日を起算日とする（月曜日等）</option>
           </select>
         </div>
       </div>
