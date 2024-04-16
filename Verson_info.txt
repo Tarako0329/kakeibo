@@ -14,6 +14,8 @@ ver1.04.1:デザイン修正bugfix
 ver1.04.2:デザイン修正bugfix
 ver1.05.0:ログイン関連修正
 ver1.05.1:ログイン関連修正
+ver1.05.2:ログイン関連修正
+  ALTER TABLE `user` CHANGE `uid` `uid` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'mail';
 
 
 【Issues】

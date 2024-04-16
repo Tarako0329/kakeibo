@@ -25,7 +25,7 @@ if(!empty($_POST)){
       $success=true;
     }else{
       log_writer("","ログイン失敗");
-      $_SESSION["MSG"]="ログインIDまたはパスワードが違います";
+      $_SESSION["MSG"]="メールアドレスまたはパスワードが違います";
     }
   }else if($_POST["login"]==="newlogin"){
     try{
@@ -47,7 +47,24 @@ if(!empty($_POST)){
       $_SESSION["MSG"]="登録に失敗しました。ユーザーIDがすでに登録されてます。";
       $pdo_h->rollBack();
     }
-  }else{
+  }else if($_POST["login"]==="setpass"){
+    $sql = "select * from user where uid = :id";
+    $stmt = $pdo_h->prepare($sql);
+    $stmt->bindValue("id", $_POST["id"], PDO::PARAM_STR);
+    $stmt->execute();
+    $user = $stmt->fetchAll();
+    if(!empty($user[0]["uid"])){
+      $_SESSION=[];
+      setCookie("mesp_uid","", -1, "/", "",true,true);
+      $url = ROOT_URL."user_setting.php?val=".rot13encrypt2($_POST["id"]);
+      send_mail($_POST["id"],"パスワード再設定",$url);
+      $_SESSION["MSG"]="メールを送信しました";
+      $url = "login.php?v=";
+      $success=true;
+    }else{
+      log_writer("","ログイン失敗");
+      $_SESSION["MSG"]="メールアドレスは登録されてません";
+    }
 
   }
 }

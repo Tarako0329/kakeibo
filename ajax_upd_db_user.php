@@ -5,15 +5,28 @@
   }*/
   //log_writer('\$_SESSION["uid"]',++$a);
   log_writer('\$_SESSION["uid"]',$_SESSION["uid"]);
+  log_writer('\$_POST',$_POST);
   $status = "warning";
   $msg = "";
   try{
-    $sql = "update user set kisanbi=:kisanbi,shukuzitu=:shukuzitu,nendomatu=:nendomatu where uid = :uid";
+    if($_POST["pass_hen"]==="true"){
+      $pass = passEx($_POST["pass"],$_POST["uid"],NOM);
+      log_writer("パスワード変更",$pass);
+
+      $sql = "update user set pass=:pass where uid = :uid_old";
+      $stmt = $pdo_h->prepare($sql);
+      $stmt->bindValue("pass", $pass, PDO::PARAM_STR);
+      $stmt->bindValue("uid_old", $_POST["uid_old"], PDO::PARAM_STR);
+      $stmt->execute();
+    }
+    $sql = "update user set uid=:uid,kisanbi=:kisanbi,shukuzitu=:shukuzitu,nendomatu=:nendomatu where uid = :uid_old";
     $stmt = $pdo_h->prepare($sql);
+    $stmt->bindValue("uid", $_POST["uid"], PDO::PARAM_STR);
+    $stmt->bindValue("kisanbi", $_POST["kisanbi"], PDO::PARAM_STR);
     $stmt->bindValue("kisanbi", $_POST["kisanbi"], PDO::PARAM_STR);
     $stmt->bindValue("shukuzitu", $_POST["shukuzitu"], PDO::PARAM_STR);
     $stmt->bindValue("nendomatu", $_POST["nendomatu"], PDO::PARAM_STR);
-    $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
+    $stmt->bindValue("uid_old", $_POST["uid_old"], PDO::PARAM_STR);
     $stmt->execute();
 
     upd_getudo($pdo_h,0,0);

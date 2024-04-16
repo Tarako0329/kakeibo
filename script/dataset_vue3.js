@@ -793,6 +793,11 @@ const user_setting = () => createApp({
     const kisanbi = ref('')
     const shukuzitu = ref('')
     const nendomatu = ref('')
+    const uid = ref('')
+    const uid_old = ref('')
+    const pass = ref('')
+    const pass2 = ref('')
+    const pass_hen = ref(false)
 
     const get_user = () =>{
       axios
@@ -802,6 +807,8 @@ const user_setting = () => createApp({
         kisanbi.value = response.data.user[0].kisanbi
         shukuzitu.value = response.data.user[0].shukuzitu
         nendomatu.value = response.data.user[0].nendomatu
+        uid.value = response.data.user[0].uid
+        uid_old.value = response.data.user[0].uid
         console_log('ajax_read_db_user succsess')
       })
       .catch((error) => {
@@ -811,10 +818,20 @@ const user_setting = () => createApp({
     }
 
     const onsubmit =()=>{
+      if(pass_hen.value){
+        if(pass.value!==pass2.value){
+          alert("パスワードが不一致です。")
+          return
+        }
+      }
       const params = new FormData();
       params.append('kisanbi', kisanbi.value);
       params.append('shukuzitu', shukuzitu.value);
       params.append('nendomatu', nendomatu.value);
+      params.append('uid_old', uid_old.value);
+      params.append('uid', uid.value);
+      params.append('pass', pass.value);
+      params.append('pass_hen', pass_hen.value);
 
       axios
       .post(`ajax_upd_db_user.php`,params, {headers: {'Content-Type': 'application/json'}})
@@ -837,6 +854,11 @@ const user_setting = () => createApp({
       kisanbi,
       shukuzitu,
       nendomatu,
+      uid,
+      uid_old,
+      pass,
+      pass2,
+      pass_hen,
       onsubmit,
     }
   }

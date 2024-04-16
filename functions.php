@@ -372,7 +372,7 @@ function upd_getudo($pdo_h,$symd,$eymd) {
                 $enddate=date("Ymd", strtotime($enddate." 1 day")); 
             }
         }
-        log_writer("月度期間",$sym."：".$startdate."-".$enddate);
+        //log_writer("月度期間",$sym."：".$startdate."-".$enddate);
 
         //データ更新
         try{
@@ -463,4 +463,53 @@ function get_getudo_kikan($pdo_h,$getudo){
         ,"fromTo" => $from_ymd." ～ ".$to_ymd
     );
     }
+
+// =========================================================
+// メール送信 
+// =========================================================
+function send_mail($to,$subject,$body){
+	//$to		: 送信先アドレス
+	//$subject	: 件名
+	//$body		: 本文
+
+	//SMTP送信
+    if(EXEC_MODE==="Local"){
+        log_writer("\$body",$body);
+        return true;
+    }
+
+    require_once('qdmail.php');
+    require_once('qdsmtp.php');
+
+    $mail = new Qdmail();
+    $mail -> smtp(true);
+    $param = array(
+        'host'=> HOST,
+        'port'=> PORT ,
+        'from'=> FROM,
+        'protocol'=>PROTOCOL,
+    	'pop_host'=>POP_HOST,
+    	'pop_user'=>POP_USER,
+    	'pop_pass'=>POP_PASS,
+    );
+    $mail->smtpServer($param);
+    $mail->charsetBody('UTF-8','base64');
+    $mail->kana(true);
+    $mail->errorDisplay(false);
+    $mail->smtpObject()->error_display = false;
+    $mail->logLevel(1);
+	//$mail->logPath('./log/');
+	//$mail->logFilename('anpi.log');
+	//$smtp ->timeOut(10);
+	
+    $mail ->to($to);
+    $mail ->from('information@green-island.mixh.jp' , 'WEBREZ-info');
+    $mail ->subject($subject);
+    $mail ->text($body);
+
+    //送信
+    $return_flag = $mail ->send();
+    return $return_flag;
+}
+
 ?>
