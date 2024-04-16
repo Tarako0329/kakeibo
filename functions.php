@@ -503,7 +503,7 @@ function send_mail($to,$subject,$body){
 	//$smtp ->timeOut(10);
 	
     $mail ->to($to);
-    $mail ->from('information@green-island.mixh.jp' , 'WEBREZ-info');
+    $mail ->from('info@greeen-sys.com' , 'Me-Sapo');
     $mail ->subject($subject);
     $mail ->text($body);
 
