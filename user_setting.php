@@ -61,8 +61,8 @@
     <MAIN class='container' style='color:#fff;padding-left:20px;padding-right:20px;'>
     <div class='row mt-3'>
         <div class='col-lg-6 col-xl-5'>
-          <label for='uid' class='form-label'>メールアドレス</label>
-          <input type='mail' id='uid' class='form-control' v-model='uid'>
+          <label for='mail' class='form-label'>メールアドレス</label>
+          <input type='mail' id='mail' class='form-control' v-model='mail'>
         </div>
       </div>
       <hr>

@@ -26,8 +26,8 @@
 
 				<form action='login_sql.php' method="POST">
 					<div class='col-lg-6 col-10'>
-						<label for='id' class='form-label'>メールアドレス</label>
-						<input type='mail' class='form-control' name='id' id='id' value='<?php echo $id;?>' maxlength='200' required>
+						<label for='mail' class='form-label'>メールアドレス</label>
+						<input type='mail' class='form-control' name='mail' id='mail' value='<?php echo $id;?>' maxlength='200' required>
 					</div>
 					<div class='col-lg-6 col-10'>
 						<label for='pass' class='form-label'>パスワード</label>

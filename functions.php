@@ -147,9 +147,12 @@ function csrf_checker($from,$chkpoint){
 function passEx($str,$uid,$key){
 //	if(strlen($str)<=8 and !empty($uid)){
 	if(strlen($str)>0 and !empty($uid)){
-		$rtn = crypt($str,$key);
+		$rtn = crypt($str.$uid,$key);
+        //log_writer("\$rtn",$rtn);
 		for($i = 0; $i < 1000; $i++){
+            //log_writer("\$rtn",$rtn.$uid);
 			$rtn = substr(crypt($rtn.$uid,$key),2);
+            //log_writer("\$rtn",$rtn);
 		}
 	}else{
 		$rtn = $str;

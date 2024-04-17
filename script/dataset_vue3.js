@@ -794,7 +794,7 @@ const user_setting = () => createApp({
     const shukuzitu = ref('')
     const nendomatu = ref('')
     const uid = ref('')
-    const uid_old = ref('')
+    const mail = ref('')
     const pass = ref('')
     const pass2 = ref('')
     const pass_hen = ref(false)
@@ -808,7 +808,7 @@ const user_setting = () => createApp({
         shukuzitu.value = response.data.user[0].shukuzitu
         nendomatu.value = response.data.user[0].nendomatu
         uid.value = response.data.user[0].uid
-        uid_old.value = response.data.user[0].uid
+        mail.value = response.data.user[0].mail
         console_log('ajax_read_db_user succsess')
       })
       .catch((error) => {
@@ -828,7 +828,7 @@ const user_setting = () => createApp({
       params.append('kisanbi', kisanbi.value);
       params.append('shukuzitu', shukuzitu.value);
       params.append('nendomatu', nendomatu.value);
-      params.append('uid_old', uid_old.value);
+      params.append('mail', mail.value);
       params.append('uid', uid.value);
       params.append('pass', pass.value);
       params.append('pass_hen', pass_hen.value);
@@ -855,7 +855,7 @@ const user_setting = () => createApp({
       shukuzitu,
       nendomatu,
       uid,
-      uid_old,
+      mail,
       pass,
       pass2,
       pass_hen,
