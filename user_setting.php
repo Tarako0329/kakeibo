@@ -2,8 +2,8 @@
 	if(!empty($_GET["val"])){
 		session_start();
 		$_SESSION = [];
+		setCookie("mesp_uid", "", -1, "/", "",true,true);
 		$_SESSION["mail"] = openssl_decrypt(hex2bin($_GET["val"]), "AES-128-ECB", "1");
-		//setCookie("mesp_uid", $_SESSION["uid"], time()+60*60*24*7, "/", "",true,true);
 	}
 	require "php_header.php";
 ?>
