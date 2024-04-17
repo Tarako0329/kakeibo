@@ -41,6 +41,8 @@ if(!empty($_SESSION["MSG"])){
 
 }else if(!empty($_POST["login"])){
 
+}else if(!empty($_SESSION["mail"])){
+
 }else if(empty($_SESSION["uid"])){
 	if(empty($_COOKIE["mesp_uid"])){
 		//リダイレクト
