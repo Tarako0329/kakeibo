@@ -15,13 +15,13 @@ define("ROOT_URL",$_ENV["HTTP"]);
 session_start();
 
 if(MAIN_DOMAIN==="localhost:81"){
-  $time=date('Ymd-His');
-  $id="demo";
-  $pass="00000000";
+	$time=date('Ymd-His');
+	$id="r.tamura-az@azuma.agns.co.jp";
+	$pass="tarako";
 }else{
-  $time=date('Ymd-His')."up03";
-  $id="";
-  $pass="";
+	$time=date('Ymd-His')."up03";
+	$id="";
+	$pass="";
 }
 
 
@@ -42,17 +42,17 @@ if(!empty($_SESSION["MSG"])){
 }else if(!empty($_POST["login"])){
 
 }else if(empty($_SESSION["uid"])){
-  if(empty($_COOKIE["mesp_uid"])){
-    //リダイレクト
-    log_writer("","セッション切れです");
-    $_SESSION["MSG"] = "セッション切れです。再ログインしてください。";
-    header("HTTP/1.1 301 Moved Permanently");
-    header("Location: login.php?");
-    exit();
-  }else{
-    log_writer("","セッション切れ/クッキーで再セット");
-    $_SESSION["uid"]=$_COOKIE["mesp_uid"];
-  }
+	if(empty($_COOKIE["mesp_uid"])){
+		//リダイレクト
+		log_writer("","セッション切れです");
+		$_SESSION["MSG"] = "セッション切れです。再ログインしてください。";
+		header("HTTP/1.1 301 Moved Permanently");
+		header("Location: login.php?");
+		exit();
+	}else{
+		log_writer("","セッション切れ/クッキーで再セット");
+		$_SESSION["uid"]=$_COOKIE["mesp_uid"];
+	}
 }
 
 //メール送信関連

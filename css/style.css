@@ -1,197 +1,197 @@
 .btn-primary {
-  --bs-btn-color: #fff;
-  --bs-btn-bg: #FFA400;
-  --bs-btn-border-color: #FFA400;
-  --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #b1770d;
-  --bs-btn-hover-border-color: #ca370a;
-  --bs-btn-focus-shadow-rgb: 49,132,253;
-  --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #b1770d;
-  --bs-btn-active-border-color: #ca370a;
-  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: #FFA400;
-  --bs-btn-disabled-border-color: #FFA400;
+	--bs-btn-color: #fff;
+	--bs-btn-bg: #FFA400;
+	--bs-btn-border-color: #FFA400;
+	--bs-btn-hover-color: #fff;
+	--bs-btn-hover-bg: #b1770d;
+	--bs-btn-hover-border-color: #ca370a;
+	--bs-btn-focus-shadow-rgb: 49,132,253;
+	--bs-btn-active-color: #fff;
+	--bs-btn-active-bg: #b1770d;
+	--bs-btn-active-border-color: #ca370a;
+	--bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+	--bs-btn-disabled-color: #fff;
+	--bs-btn-disabled-bg: #FFA400;
+	--bs-btn-disabled-border-color: #FFA400;
 }
 .btn-outline-primary {
-  --bs-btn-color: #FFA400;
-  --bs-btn-border-color: #FFA400;
-  --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #FFA400;
-  --bs-btn-hover-border-color: #FFA400;
-  --bs-btn-focus-shadow-rgb: 13,110,253;
-  --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #FFA400;
-  --bs-btn-active-border-color: #FFA400;
-  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: #FFA400;
-  --bs-btn-disabled-bg: transparent;
-  --bs-btn-disabled-border-color: #FFA400;
-  --bs-gradient: none;
+	--bs-btn-color: #FFA400;
+	--bs-btn-border-color: #FFA400;
+	--bs-btn-hover-color: #fff;
+	--bs-btn-hover-bg: #FFA400;
+	--bs-btn-hover-border-color: #FFA400;
+	--bs-btn-focus-shadow-rgb: 13,110,253;
+	--bs-btn-active-color: #fff;
+	--bs-btn-active-bg: #FFA400;
+	--bs-btn-active-border-color: #FFA400;
+	--bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+	--bs-btn-disabled-color: #FFA400;
+	--bs-btn-disabled-bg: transparent;
+	--bs-btn-disabled-border-color: #FFA400;
+	--bs-gradient: none;
 }
 .navbar-dark, .navbar[data-bs-theme=dark] {
-  --bs-navbar-color: rgba(255, 255, 255, 0.55);
-  --bs-navbar-hover-color: #FFA400;
-  --bs-navbar-disabled-color: rgba(255, 255, 255, 0.25);
-  --bs-navbar-active-color: #d9ff00bd;
-  --bs-navbar-brand-color: #fff;
-  --bs-navbar-brand-hover-color: #fff;
-  --bs-navbar-toggler-border-color: rgba(255, 255, 255, 0.1);
+	--bs-navbar-color: rgba(255, 255, 255, 0.55);
+	--bs-navbar-hover-color: #FFA400;
+	--bs-navbar-disabled-color: rgba(255, 255, 255, 0.25);
+	--bs-navbar-active-color: #d9ff00bd;
+	--bs-navbar-brand-color: #fff;
+	--bs-navbar-brand-hover-color: #fff;
+	--bs-navbar-toggler-border-color: rgba(255, 255, 255, 0.1);
 }
 .potta-one-regular {
-  font-family: "Potta One", system-ui;
-  font-weight: 400;
-  font-style: normal;
+	font-family: "Potta One", system-ui;
+	font-weight: 400;
+	font-style: normal;
 }
 
 html,body,main{
-  height:100%;
+	height:100%;
 }
 a{
-  color:inherit;
+	color:inherit;
 }
 header{
-  position: fixed;
-  top:0;
-  left:0;
-  width: 100%;
-  height: 80px;
-  padding-top: 20px;
-  background-color:black;
-  z-index: 120;
+	position: fixed;
+	top:0;
+	left:0;
+	width: 100%;
+	height: 80px;
+	padding-top: 20px;
+	background-color:black;
+	z-index: 120;
 }
 .sticky-top{
-  top:0px;
-  z-index: 98;
+	top:0px;
+	z-index: 98;
 }
 .sticky-bottom{
-  z-index: 98;
+	z-index: 98;
 }
 .sticky-left{
-  left:0px;
-  position: sticky;
-  z-index: 99;
+	left:0px;
+	position: sticky;
+	z-index: 99;
 }
 .table-h-full{
-  min-height: 650px;
-  height:98%;
+	min-height: 650px;
+	height:98%;
 }
 main{
-  padding-top:80px;
-  padding-bottom: 30px;
+	padding-top:80px;
+	padding-bottom: 30px;
 }
 footer{
-  position: fixed;
-  bottom:0;
-  left:0;
-  width: 100%;
-  height: 90px;
-  padding-top: 10px;
-  padding-bottom: 0px;
-  background-color: black;
-  border:solid 1px #FFA400;
-  z-index: 100;
-  color:#FFA400;
-  margin:0;
+	position: fixed;
+	bottom:0;
+	left:0;
+	width: 100%;
+	height: 90px;
+	padding-top: 10px;
+	padding-bottom: 0px;
+	background-color: black;
+	border:solid 1px #FFA400;
+	z-index: 100;
+	color:#FFA400;
+	margin:0;
 }
 .btn{
-  width:160px;
+	width:160px;
 }
 .wd80{
-  width: 80px;
+	width: 80px;
 }
 .wd90{
-  width: 90px;
+	width: 90px;
 }
 .wd100{
-  width: 100px;
+	width: 100px;
 }
 .wd110{
-  width: 110px;
+	width: 110px;
 }
 .wd120{
-  width: 120px;
+	width: 120px;
 }
 .wd130{
-  width: 130px;
+	width: 130px;
 }
 .form-control-sm
 ,.form-select-sm{
-  height: 25px;
-  font-size:10px;
-  padding:2px 8px 2px 8px;
+	height: 25px;
+	font-size:10px;
+	padding:2px 8px 2px 8px;
 }
 .table-sm>:not(caption)>*>*{
-  padding:2px 4px 2px 4px;
-  font-size:12px;
+	padding:2px 4px 2px 4px;
+	font-size:12px;
 }
 .fbtn{
-  font-size:32px;
-  font-weight: 900;
-  padding-top: 5px;
+	font-size:32px;
+	font-weight: 900;
+	padding-top: 5px;
 }
 
 .row{
-  margin-bottom: 5px;
+	margin-bottom: 5px;
 }
 .container,.container-fluid {
-  /*animation: fadein 0.7s ease-out forwards;*/
+	/*animation: fadein 0.7s ease-out forwards;*/
 }
 .fadein{
-  animation: fadein 0.7s ease-out forwards;
+	animation: fadein 0.7s ease-out forwards;
 }
 .fadeout{
-  animation: fadeout 2.7s ease-out forwards;
+	animation: fadeout 2.7s ease-out forwards;
 }
 
 @keyframes fadein {
-  from {opacity: 0}
-  to {opacity: 1}
+	from {opacity: 0}
+	to {opacity: 1}
 }
 @keyframes fadeout {
-  from {opacity: 1}
-  to {opacity: 0}
+	from {opacity: 1}
+	to {opacity: 0}
 }
 .a_none{
-  /*text-decoration: none;*/
-  color:inherit;
+	/*text-decoration: none;*/
+	color:inherit;
 }
 .youkoso{
-  position:fixed;
-  top:0;
-  left:0;
+	position:fixed;
+	top:0;
+	left:0;
 }
 .logoff{
-  position:fixed;
-  bottom:10px;
-  right:10px;
-  color:#FFA400;
-  text-decoration: none;
-  font-size:16px;
+	position:fixed;
+	bottom:10px;
+	right:10px;
+	color:#FFA400;
+	text-decoration: none;
+	font-size:16px;
 }
 
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 0.5s ease;
+	transition: opacity 0.5s ease;
 }
 
 .v-enter-from,
 .v-leave-to {
-  opacity: 0;
+	opacity: 0;
 }
 
 .lbtn{
-  padding:5px;
-  border-radius: 100% 0 0 100%;
-  width:50px;
-  font-size:12px;
+	padding:5px;
+	border-radius: 100% 0 0 100%;
+	width:50px;
+	font-size:12px;
 }
 .rbtn{
-  padding:5px;
-  border-radius: 0 100% 100% 0;
-  width:50px;
-  font-size:12px;
+	padding:5px;
+	border-radius: 0 100% 100% 0;
+	width:50px;
+	font-size:12px;
 }
 
 
