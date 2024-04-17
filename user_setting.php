@@ -10,17 +10,17 @@
 <!DOCTYPE html>
 <html lang='ja'>
 <head>
-		<?php 
-		//共通部分、bootstrap設定、フォントCND、ファビコン等
-		include "head_bs5.php" 
-		?>
-		<TITLE><?php echo $title;?></TITLE>
-		<style>
-			html,body,main{
-				height:auto;
-			}
-		</style>
-		
+	<?php 
+	//共通部分、bootstrap設定、フォントCND、ファビコン等
+	include "head_bs5.php" 
+	?>
+	<TITLE><?php echo $title;?></TITLE>
+	<style>
+		html,body,main{
+			height:auto;
+		}
+	</style>
+	
 </head>
 <BODY id = 'body' style='background:black;' >
 	<div id='app'>
@@ -61,7 +61,8 @@
 				</div>
 			</div>
 		</HEADER>
-		<MAIN class='container' style='color:#fff;padding-left:20px;padding-right:20px;'>
+		<!--<MAIN class='container' style='color:#fff;padding-left:20px;padding-right:20px;'>-->
+		<MAIN class='container' style='color:#fff;'>
 			<div class='row mt-3'>
 				<div class='col-lg-6 col-xl-5'>
 					<label for='mail' class='form-label'>メールアドレス</label>
@@ -74,13 +75,13 @@
 					<input type='checkbox' id='pass_hen' class='form-checkbox' v-model='pass_hen'>
 					<label for='pass_hen' class='form-label'>パスワードを変更する</label>
 				</div>
-				<div class='row mt-1 ms-3'>
+				<div class='row mt-1 ps-5'>
 					<div class='col-lg-6 col-xl-5'>
 						<label for='pass' class='form-label'>パスワード</label>
 						<input type='password' id='pass' class='form-control' v-model='pass'>
 					</div>
 				</div>
-				<div class='row mt-1 ms-3'>
+				<div class='row mt-1 ps-5'>
 					<div class='col-lg-6 col-xl-5'>
 						<label for='pass2' class='form-label'>パスワード(再)</label>
 						<input type='password' id='pass2' class='form-control' v-model='pass2'>
