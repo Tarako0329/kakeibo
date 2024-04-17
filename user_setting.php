@@ -23,7 +23,7 @@
 		
 </head>
 <BODY id = 'body' style='background:black;' >
-	<div id='app' style='height:100%;'>
+	<div id='app'>
 		<HEADER style='color:#FFA400;padding-top:0;'>
 			<div class='container-fluid'>
 				<div class='row'>
