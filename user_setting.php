@@ -1,8 +1,9 @@
 <?php
   if(!empty($_GET["val"])){
     session_start();
-    $_SESSION["uid"] = openssl_decrypt(hex2bin($_GET["val"]), "AES-128-ECB", "1");
-    setCookie("mesp_uid", $_SESSION["uid"], time()+60*60*24*7, "/", "",true,true);
+    $_SESSION = [];
+    $_SESSION["mail"] = openssl_decrypt(hex2bin($_GET["val"]), "AES-128-ECB", "1");
+    //setCookie("mesp_uid", $_SESSION["uid"], time()+60*60*24*7, "/", "",true,true);
   }
   require "php_header.php";
 ?>
@@ -120,7 +121,7 @@
   
   <script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>
   <script>
-    user_setting('<?php echo $mail;?>').mount('#app');
+    user_setting('<?php echo $_SESSION["mail"];?>').mount('#app');
   </script>
 </BODY>
 </html>

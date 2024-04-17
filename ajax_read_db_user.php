@@ -5,11 +5,13 @@
   }*/
   //log_writer('\$_SESSION["uid"]',++$a);
   log_writer('\$_SESSION["uid"]',$_SESSION["uid"]);
+  log_writer('\$_SESSION["mail"]',$_SESSION["mail"]);
   $sql = "select *
     from user
-    where uid = :uid";
+    where uid = :uid or mail = :mail";
 	$stmt = $pdo_h->prepare($sql);
 	$stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
+	$stmt->bindValue("mail", $_SESSION["mail"], PDO::PARAM_STR);
 	$stmt->execute();
 	$dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

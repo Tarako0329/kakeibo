@@ -19,7 +19,7 @@ ver1.05.2:ログイン関連修正
 ver1.05.3:ログイン関連修正
   ALTER TABLE `user` ADD `mail` VARCHAR(200) NOT NULL COMMENT 'mail' AFTER `uid`;
   ALTER TABLE `user` CHANGE `uid` `uid` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-
+ver1.05.4:ログイン関連修正
 
 【Issues】
 
