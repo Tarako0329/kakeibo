@@ -864,7 +864,9 @@ const user_setting = () => createApp({
 
 		onMounted(()=>{
 			get_user()
-		})
+			document.getElementById("pass").disabled = true
+			document.getElementById("pass2").disabled = true
+	})
 		return{
 			kisanbi,
 			shukuzitu,
