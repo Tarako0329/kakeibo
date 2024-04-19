@@ -818,6 +818,16 @@ const user_setting = () => createApp({
 			});
 		}
 
+		watch(pass_hen,()=>{
+			if(pass_hen.value){
+				document.getElementById("pass").disabled = false
+				document.getElementById("pass2").disabled = false
+			}else{
+				document.getElementById("pass").disabled = true
+				document.getElementById("pass2").disabled = true
+			}
+		})
+
 		const onsubmit =()=>{
 			if(pass_hen.value){
 				if(pass.value!==pass2.value){

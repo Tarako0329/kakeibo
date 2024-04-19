@@ -77,7 +77,7 @@
 				<div class='row mt-1 ps-5'>
 					<div class='col-lg-6 col-xl-5'>
 						<label for='pass' class='form-label'>パスワード</label>
-						<input type='password' id='pass' class='form-control' v-model='pass'>
+						<input type='text' id='pass' class='form-control' v-model='pass'>
 					</div>
 				</div>
 				<div class='row mt-1 ps-5'>
