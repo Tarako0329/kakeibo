@@ -4,7 +4,7 @@ const dataset = (Where_to_use) => createApp({
 		const pagename = ref(Where_to_use)
 		const readdata = ref([])
 		const readdata_summary = ref([])
-		const readdata_monthly_summary = ref([])
+		//const readdata_monthly_summary = ref([])
 		const daikoumoku_ms = ref([])
 		const input_file_btn = () =>{
 			document.getElementById('file').click()
@@ -134,7 +134,7 @@ const dataset = (Where_to_use) => createApp({
 		const from = ref('')
 		const to = ref('')
 		const loader = ref(false)
-
+		/*
 		const ym_next = (ym) =>{
 			if(ym.toString().length !== 6){
 				console_log('なにもしない')
@@ -179,7 +179,7 @@ const dataset = (Where_to_use) => createApp({
 				read_db_comparison()
 			}
 		}
-
+		*/
 
 		const savedata = () =>{//データベース登録
 			loader.value = true
@@ -383,16 +383,34 @@ const dataset = (Where_to_use) => createApp({
 		const hanei = (id) => {//一括変更
 			console_log('hanei start')
 			let val = document.getElementById(id).value
-			console_log(val)
+			//console_log(val)
 			readdata_filter.value.forEach((list)=>{
-				console_log(list)
+				//console_log(list)
 				if(id==="cdate"){list.date = val}
-				if(id==="cmeisai"){list.meisai = val}
-				if(id==="ckin"){list.kin = val}
-				if(id==="cshuppi"){list.shuppimoto = val}
-				if(id==="cdaikou"){list.daikoumoku = val}
-				if(id==="cchukou"){list.chuukoumoku = val}
-				if(id==="cmemo"){list.memo = val}
+				if(id==="cmeisai"){
+					list.meisai = val
+					list.fl_meisai = val
+				}
+				if(id==="ckin"){
+					list.kin = val
+					list.fl_kin = val
+				}
+				if(id==="cshuppi"){
+					list.shuppimoto = val
+					list.fl_shuppimoto = val
+				}
+				if(id==="cdaikou"){
+					list.daikoumoku = val
+					list.fl_daikoumoku = val
+				}
+				if(id==="cchukou"){
+					list.chuukoumoku = val
+					list.fl_chuukoumoku = val
+				}
+				if(id==="cmemo"){
+					list.memo = val
+					list.fl_memo = val
+				}
 			})
 		}
 
@@ -427,8 +445,9 @@ const dataset = (Where_to_use) => createApp({
 			.catch((error) => console.log(error));
 
 		}
-		const comparison_sum_val = ref([])
-		const comparison_sum = () =>{
+		
+		//const comparison_sum_val = ref([])
+		/*const comparison_sum = () =>{
 			console_log('comparison_sum start')
 			comparison_sum_val.value["zen_m"]=0
 			comparison_sum_val.value["zen_y"]=0
@@ -443,8 +462,8 @@ const dataset = (Where_to_use) => createApp({
 			comparison_sum_val.value["sa_m"] = comparison_sum_val.value["tou"] - comparison_sum_val.value["zen_m"]
 			comparison_sum_val.value["sa_y"] = comparison_sum_val.value["tou"] - comparison_sum_val.value["zen_y"]
 			console_log(comparison_sum_val.value)
-		}
-		const read_db_comparison = () => {
+		}*/
+		/*const read_db_comparison = () => {
 			if(to.value===''){
 				to.value='m'
 			}
@@ -459,9 +478,9 @@ const dataset = (Where_to_use) => createApp({
 				console_log('read_db_comparison succsess')
 			})
 			.catch((error) => console.log(error));
-		}
-		const hanni = ref('12m')
-		const read_db_summary_long = () => {
+		}*/
+		//const hanni = ref('12m')
+		/*const read_db_summary_long = () => {
 			console_log('read_db_summary_long start')
 			axios
 			.get(`ajax_read_db_summary_${hanni.value}.php?fm=${from.value}`)
@@ -476,9 +495,9 @@ const dataset = (Where_to_use) => createApp({
 				console_log('read_db_summary_long succsess')
 			})
 			.catch((error) => console.log(error));
-		}
-		const open_fil = ref('')
-		const open_utiwake =(daikoumoku) =>{
+		}*/
+		//const open_fil = ref('')
+		/*const open_utiwake =(daikoumoku) =>{
 			if(open_fil.value === daikoumoku){
 				open_fil.value = ''
 			}else{
@@ -491,6 +510,7 @@ const dataset = (Where_to_use) => createApp({
 			read_db_summary()
 			read_db_meisai()
 		}
+		*/
 		const setfilter = (dai,chuu) =>{
 			console_log(dai)
 			fl_dai_ko.value = dai
@@ -562,10 +582,11 @@ const dataset = (Where_to_use) => createApp({
 		const ymlist = ref([])
 		onMounted(()=>{
 			console_log("onMounted")
+			/*
 			comparison_sum_val.value["zen"]=0
 			comparison_sum_val.value["tou"]=0
 			comparison_sum_val.value["sa"]=0
-			
+			*/
 			if(pagename.value!=="data_custmer.php"){
 				axios
 				.get(`ajax_read_db_meisai_ymlist.php`)
@@ -575,20 +596,23 @@ const dataset = (Where_to_use) => createApp({
 					ymlist.value = response.data
 					from.value = ymlist.value.max_min[0].max_getudo
 					console_log('ajax_read_db_meisai_ymlist succsess')
+					/*
 					if(pagename.value==="data_summary12m.php"){
 						read_db_summary_long()
 					}
 					if(pagename.value==="data_summary.php"){
 						read_db_meisai()
 					}
+					*/
 					if(pagename.value==="index.php"){
 						read_db_meisai()
 					}
+					/*
 					if(pagename.value==="data_comparison.php"){
 						console_log('data_comparison root')
 						to.value="m"
 						read_db_comparison()
-					}
+					}*/
 
 				})
 				.catch((error) => console.log(error));
@@ -597,6 +621,7 @@ const dataset = (Where_to_use) => createApp({
 		})
 		onBeforeMount(()=>{
 			console_log("onBeforeMount:"+pagename.value)
+			/*
 			if(pagename.value==="data_summary12m.php"){
 				readdata_summary.value = {
 					label:['----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--','----/--']
@@ -604,9 +629,11 @@ const dataset = (Where_to_use) => createApp({
 				}
 				//console_log(readdata_summary.value)
 			}
+			*/
 		})
 
 		//chartjs
+		/*
 		const get_graph_data = (daikoumoku) => {
 			console_log("get_graph_data : daikoumoku")
 			console_log(daikoumoku)
@@ -719,7 +746,7 @@ const dataset = (Where_to_use) => createApp({
 				}
 			})      
 		}
-
+		*/
 		const upd = (index,colom) =>{
 			console_log(`upd -> ${index}:${colom}`)
 			readdata_filter.value[index][colom] = readdata_filter.value[index][`fl_${colom}`]
@@ -729,9 +756,9 @@ const dataset = (Where_to_use) => createApp({
 			upd,
 			readdata,
 			cp_readdata_summary,
-			readdata_summary,
-			readdata_monthly_summary,
-			daikoumoku_ms,
+			//readdata_summary,
+			//readdata_monthly_summary,
+			//daikoumoku_ms,
 			input_file_btn,
 			readfilename,
 			uploadfile,
@@ -757,28 +784,28 @@ const dataset = (Where_to_use) => createApp({
 			upddata,
 			savecsv,
 			hanei,
-			filetype,
+			//filetype,
 			pagename,
 			read_db_meisai,
 			read_db_summary,
-			read_db_comparison,
-			read_db_summary_long,
-			hanni,
-			comparison_sum_val,
-			read_db_meisai_and_summary,
+			//read_db_comparison,
+			//read_db_summary_long,
+			//hanni,
+			//comparison_sum_val,
+			//read_db_meisai_and_summary,
 			//read_db_meisai_summary,
 			from,
 			to,
-			from_next,
-			from_back,
+			//from_next,
+			//from_back,
 			setfilter,
 			search_disable,
 			meisai_disable,
 			cgmode,
 			loader,
-			open_fil,
-			open_utiwake,
-			ymlist
+			//open_fil,
+			//open_utiwake,
+			//ymlist
 		}
 	}
 });
@@ -786,14 +813,14 @@ const dataset = (Where_to_use) => createApp({
 const summary_bunseki = (Where_to_use) => createApp({
 	setup() {
 		const pagename = ref(Where_to_use)
-		const readdata = ref([])
+		//const readdata = ref([])
 		const readdata_summary = ref([])
 		const readdata_monthly_summary = ref([])
-		const daikoumoku_ms = ref([])
-		const input_file_btn = () =>{
+		//const daikoumoku_ms = ref([])
+		/*const input_file_btn = () =>{
 			document.getElementById('file').click()
-		}
-		
+		}*/
+		/*
 		const readfilename = ref('')
 		const filetype = ref('')
 		
@@ -879,10 +906,10 @@ const summary_bunseki = (Where_to_use) => createApp({
 			//readdata_summary.value = []
 			//readdata_summary.value = read_db_meisai_summary(readdata.value)
 		})
-
+		*/
 		const from = ref('')
 		const to = ref('')
-		const loader = ref(false)
+		//const loader = ref(false)
 
 		const ym_next = (ym) =>{
 			if(ym.toString().length !== 6){
@@ -929,7 +956,7 @@ const summary_bunseki = (Where_to_use) => createApp({
 			}
 		}
 
-
+		/*
 		const savedata = () =>{//データベース登録
 			loader.value = true
 			const params = new FormData();
@@ -1100,8 +1127,8 @@ const summary_bunseki = (Where_to_use) => createApp({
 				if(id==="cchukou"){list.chuukoumoku = val}
 				if(id==="cmemo"){list.memo = val}
 			})
-		}
-
+		}*/
+		/*
 		const read_db_meisai = () => {
 			console_log('read_db_meisai start')
 			axios
@@ -1131,8 +1158,8 @@ const summary_bunseki = (Where_to_use) => createApp({
 				console_log('read_db_meisai succsess')
 			})
 			.catch((error) => console.log(error));
+		}*/
 
-		}
 		const comparison_sum_val = ref([])
 		const comparison_sum = () =>{
 			console_log('comparison_sum start')
@@ -1197,11 +1224,13 @@ const summary_bunseki = (Where_to_use) => createApp({
 			read_db_summary()
 			read_db_meisai()
 		}
+		/*
 		const setfilter = (dai,chuu) =>{
 			console_log(dai)
 			fl_dai_ko.value = dai
 			fl_chuu_ko.value = chuu
-		}
+		}*/
+		/*
 		const get_sortNO = (name) =>{
 			//console_log('start get_sortNO')
 			result = daikoumoku_ms.value.filter((row)=>row.daikoumoku.includes(name))
@@ -1212,6 +1241,8 @@ const summary_bunseki = (Where_to_use) => createApp({
 				return result[0].sort
 			}
 		}
+		*/
+		/*
 		const cp_readdata_summary = computed(() => {
 			console_log('start computed read_db_meisai_summary')
 			return readdata.value.reduce((result, current) => {
@@ -1248,7 +1279,8 @@ const summary_bunseki = (Where_to_use) => createApp({
 				return result;
 			}, []).sort((a,b)=>{return (a.sort+a.daichuukou > b.sort+b.daichuukou ?1:-1)})
 		})
-		
+		*/
+		/*
 		watch(readdata,()=>{
 			console_log('watch readdata')
 			sum_kingaku2.value = 0
@@ -1256,15 +1288,16 @@ const summary_bunseki = (Where_to_use) => createApp({
 				sum_kingaku2.value = Number(sum_kingaku2.value) + Number(row.kin)
 			})
 		})
-		
+		*/
 		//データ編集モードの切り替え
 		const search_disable = ref(false)
+		/*
 		const meisai_disable = ref(true)
 		const cgmode =()=>{
 			search_disable.value = true
 			meisai_disable.value  = false
 		}
-
+		*/
 		const ymlist = ref([])
 		onMounted(()=>{
 			console_log("onMounted")
@@ -1285,9 +1318,6 @@ const summary_bunseki = (Where_to_use) => createApp({
 						read_db_summary_long()
 					}
 					if(pagename.value==="data_summary.php"){
-						read_db_meisai()
-					}
-					if(pagename.value==="index.php"){
 						read_db_meisai()
 					}
 					if(pagename.value==="data_comparison.php"){
@@ -1426,22 +1456,17 @@ const summary_bunseki = (Where_to_use) => createApp({
 			})      
 		}
 
-		const upd = (index,colom) =>{
-			console_log(`upd -> ${index}:${colom}`)
-			readdata_filter.value[index][colom] = readdata_filter.value[index][`fl_${colom}`]
-		}
-
 		return{
-			upd,
-			readdata,
-			cp_readdata_summary,
+			//upd,
+			//readdata,
+			//cp_readdata_summary,
 			readdata_summary,
 			readdata_monthly_summary,
-			daikoumoku_ms,
-			input_file_btn,
-			readfilename,
-			uploadfile,
-			fl_date,      
+			//daikoumoku_ms,
+			//input_file_btn,
+			//readfilename,
+			//uploadfile,
+			/*fl_date,      
 			fl_meisai,    
 			fl_kin,       
 			fl_shuppimoto,
@@ -1456,17 +1481,17 @@ const summary_bunseki = (Where_to_use) => createApp({
 			fl_shuppimoto_lst,
 			fl_dai_ko_lst,
 			fl_chuu_ko_lst,
-			fl_memo_lst,
-			sum_kingaku,
-			sum_kingaku2,
-			savedata,
-			upddata,
-			savecsv,
-			hanei,
-			filetype,
-			pagename,
-			read_db_meisai,
-			read_db_summary,
+			fl_memo_lst,*/
+			//sum_kingaku,
+			//sum_kingaku2,
+			//savedata,
+			//upddata,
+			//savecsv,
+			//hanei,
+			//filetype,
+			//pagename,
+			//read_db_meisai,
+			//read_db_summary,
 			read_db_comparison,
 			read_db_summary_long,
 			hanni,
@@ -1477,14 +1502,14 @@ const summary_bunseki = (Where_to_use) => createApp({
 			to,
 			from_next,
 			from_back,
-			setfilter,
+			//setfilter,
 			search_disable,
-			meisai_disable,
-			cgmode,
-			loader,
+			//meisai_disable,
+			//cgmode,
+			//loader,
 			open_fil,
 			open_utiwake,
-			ymlist
+			//ymlist
 		}
 	}
 });

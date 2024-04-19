@@ -143,7 +143,7 @@
   
   <script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>
   <script>
-    dataset('<?php echo basename(__FILE__);?>').mount('#app');
+    summary_bunseki('<?php echo basename(__FILE__);?>').mount('#app');
   </script>
 </BODY>
 </html>
