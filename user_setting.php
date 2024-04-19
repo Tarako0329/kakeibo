@@ -61,7 +61,6 @@
 				</div>
 			</div>
 		</HEADER>
-		<!--<MAIN class='container' style='color:#fff;padding-left:20px;padding-right:20px;'>-->
 		<MAIN class='container' style='color:#fff;'>
 			<div class='row mt-3'>
 				<div class='col-lg-6 col-xl-5'>
@@ -120,6 +119,9 @@
 			</div>
 			<div class='logoff'><a href="logoff.php" class='a_none'><h1><i class="bi bi-box-arrow-right"></i></h1></a></div>
 		</MAIN>
+		<div class="loader-wrap" v-show='loader'>
+		  <div class="loader">Loading...</div>
+	  </div>
 	</div>
 	
 	<script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>

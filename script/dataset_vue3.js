@@ -798,6 +798,7 @@ const user_setting = () => createApp({
 		const pass = ref('')
 		const pass2 = ref('')
 		const pass_hen = ref(false)
+		const loader = ref(false)
 
 		const get_user = () =>{
 			axios
@@ -824,6 +825,7 @@ const user_setting = () => createApp({
 					return
 				}
 			}
+			loader.value = true
 			const params = new FormData();
 			params.append('kisanbi', kisanbi.value);
 			params.append('shukuzitu', shukuzitu.value);
@@ -844,7 +846,10 @@ const user_setting = () => createApp({
 				alert("登録失敗")
 				console_log('ajax_upd_db_user error')
 				console.log(error)
-			});
+			})
+			.finally(()=>{
+				loader.value = false
+			})
 		}
 
 		onMounted(()=>{
@@ -859,6 +864,7 @@ const user_setting = () => createApp({
 			pass,
 			pass2,
 			pass_hen,
+			loader,
 			onsubmit,
 		}
 	}
