@@ -200,12 +200,12 @@
                 <tr>
                 <td>{{list.No}}</td>
                 <td><input v-model='list.date' :disabled='meisai_disable' class="form-control form-control-sm wd90" type="date" placeholder=""></td>
-                <td><input v-model='list.meisai' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
-                <td><input v-model='list.kin' :disabled='meisai_disable' class="form-control form-control-sm text-end wd100" type="number" placeholder=""></td>
-                <td><input v-model='list.shuppimoto' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
-                <td><input v-model='list.daikoumoku' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
-                <td><input v-model='list.chuukoumoku' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
-                <td><input v-model='list.memo' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
+                <td><input @change='upd(index,"meisai")' v-model='list.fl_meisai' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
+                <td><input @change='upd(index,"kin")' v-model='list.fl_kin' :disabled='meisai_disable' class="form-control form-control-sm text-end wd100" type="number" placeholder=""></td>
+                <td><input @change='upd(index,"shuppimoto")' v-model='list.fl_shuppimoto' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
+                <td><input @change='upd(index,"daikoumoku")' v-model='list.fl_daikoumoku' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
+                <td><input @change='upd(index,"chuukoumoku")' v-model='list.fl_chuukoumoku' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
+                <td><input @change='upd(index,"memo")' v-model='list.fl_memo' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
                 </tr>
               </template>
             </tbody>

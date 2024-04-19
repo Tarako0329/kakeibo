@@ -5,7 +5,23 @@
   }
   //log_writer('\$_SESSION["uid"]',++$a);
   log_writer('\$_SESSION["uid"]',$_SESSION["uid"]);
-  $sql = "select date as date,date as date2,meisai,kin,shuppimoto,kake.daikoumoku,chuukoumoku,memo,guid ,sort
+  $sql = "select 
+      date as date
+      ,date as date2
+      ,meisai
+      ,kin
+      ,shuppimoto
+      ,kake.daikoumoku
+      ,chuukoumoku
+      ,memo
+      ,guid
+      ,sort
+      ,meisai as fl_meisai
+      ,kin as  fl_kin
+      ,shuppimoto as fl_shuppimoto
+      ,kake.daikoumoku as fl_daikoumoku
+      ,chuukoumoku as fl_chuukoumoku
+      ,memo as fl_memo
     from kakeibo as kake
     left join daikoumoku_ms as ms
     on kake.daikoumoku=ms.daikoumoku
