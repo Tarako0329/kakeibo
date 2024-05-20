@@ -1,183 +1,309 @@
 <?php
 require "php_header.php";
 if(empty($_GET["fn"])){
-  exit;
+	exit;
 }else{
-  $filepass = $_GET["fn"];
+	$filepass = $_GET["fn"];
 }
 log_writer("\$filepass",$filepass);
 
 
 $type="";
 if(substr($filepass,-3)==="csv"){
-  $type="csv";
-  $contents = fopen($filepass, 'r');
-  //log_writer("\$contents csv",$contents);
-  $i=0;
-  $j=0;
-  while($content = fgetcsv($contents)){
-    if($i===0){
-      $i=$i+1;
-      continue;
-    }
-    //log_writer("\$content =>",mb_convert_encoding($content, "UTF-8", "SJIS"));
-    //log_writer("\$content 文字CD =>",mb_detect_encoding($content[4],['JIS','SJIS','ASCII', 'UTF-8'], false));
-    //$data[] = mb_convert_encoding($content, "UTF-8", "SJIS");
-    /*
-    if(mb_detect_encoding($content[4])==="SJIS"){
-      $data[] = array(
-        "date" => mb_convert_encoding($content[1], "UTF-8", "SJIS")
-        ,"meisai" => mb_convert_encoding($content[2], "UTF-8", "SJIS")
-        ,"kin" => mb_convert_encoding($content[3], "UTF-8", "SJIS")
-        ,"shuppimoto" => mb_convert_encoding($content[4], "UTF-8", "SJIS")
-        ,"daikoumoku" => mb_convert_encoding($content[5], "UTF-8", "SJIS")
-        ,"chuukoumoku" => mb_convert_encoding($content[6], "UTF-8", "SJIS")
-        ,"memo" => mb_convert_encoding($content[7], "UTF-8", "SJIS")
-        ,"No" => $j
-      );
-    }else{
-      $data[] = array(
-        "date" => $content[1]
-        ,"meisai" => $content[2]
-        ,"kin" => $content[3]
-        ,"shuppimoto" => $content[4]
-        ,"daikoumoku" => $content[5]
-        ,"chuukoumoku" => $content[6]
-        ,"memo" => $content[7]
-        ,"No" => $j
-      );
-    }
-    */
-    $basecd = mb_detect_encoding($content[4],['JIS','SJIS','ASCII', 'UTF-8'], false);
-    $data[] = array(
-      "date" => mb_convert_encoding($content[1], "UTF-8", $basecd)
-      ,"meisai" => mb_convert_encoding($content[2], "UTF-8", $basecd)
-      ,"kin" => mb_convert_encoding($content[3], "UTF-8", $basecd)
-      ,"shuppimoto" => mb_convert_encoding($content[4], "UTF-8", $basecd)
-      ,"daikoumoku" => mb_convert_encoding($content[5], "UTF-8", $basecd)
-      ,"chuukoumoku" => mb_convert_encoding($content[6], "UTF-8", $basecd)
-      ,"memo" => mb_convert_encoding($content[7], "UTF-8", $basecd)
-      ,"No" => $j
-    );
+	$type="csv";
+	$contents = fopen($filepass, 'r');
+	//log_writer("\$contents csv",$contents);
+	$i=0;
+	$j=0;
+	while($content = fgetcsv($contents)){
+		if($i===0){
+			$i=$i+1;
+			continue;
+		}
+		//log_writer("\$content =>",mb_convert_encoding($content, "UTF-8", "SJIS"));
+		//log_writer("\$content 文字CD =>",mb_detect_encoding($content[4],['JIS','SJIS','ASCII', 'UTF-8'], false));
+		//$data[] = mb_convert_encoding($content, "UTF-8", "SJIS");
+		/*
+		if(mb_detect_encoding($content[4])==="SJIS"){
+			$data[] = array(
+				"date" => mb_convert_encoding($content[1], "UTF-8", "SJIS")
+				,"meisai" => mb_convert_encoding($content[2], "UTF-8", "SJIS")
+				,"kin" => mb_convert_encoding($content[3], "UTF-8", "SJIS")
+				,"shuppimoto" => mb_convert_encoding($content[4], "UTF-8", "SJIS")
+				,"daikoumoku" => mb_convert_encoding($content[5], "UTF-8", "SJIS")
+				,"chuukoumoku" => mb_convert_encoding($content[6], "UTF-8", "SJIS")
+				,"memo" => mb_convert_encoding($content[7], "UTF-8", "SJIS")
+				,"No" => $j
+			);
+		}else{
+			$data[] = array(
+				"date" => $content[1]
+				,"meisai" => $content[2]
+				,"kin" => $content[3]
+				,"shuppimoto" => $content[4]
+				,"daikoumoku" => $content[5]
+				,"chuukoumoku" => $content[6]
+				,"memo" => $content[7]
+				,"No" => $j
+			);
+		}
+		*/
+		$basecd = mb_detect_encoding($content[4],['JIS','SJIS','ASCII', 'UTF-8'], false);
+		$data[] = array(
+			"date" => mb_convert_encoding($content[1], "UTF-8", $basecd)
+			,"meisai" => mb_convert_encoding($content[2], "UTF-8", $basecd)
+			,"kin" => mb_convert_encoding($content[3], "UTF-8", $basecd)
+			,"shuppimoto" => mb_convert_encoding($content[4], "UTF-8", $basecd)
+			,"daikoumoku" => mb_convert_encoding($content[5], "UTF-8", $basecd)
+			,"chuukoumoku" => mb_convert_encoding($content[6], "UTF-8", $basecd)
+			,"memo" => mb_convert_encoding($content[7], "UTF-8", $basecd)
+			,"No" => $j
+		);
 
-    $data[$j]["date"] = str_replace("/", '-', $data[$j]["date"]);
-    $j=$j+1;
-  }
-  
+		$data[$j]["date"] = str_replace("/", '-', $data[$j]["date"]);
+		$j=$j+1;
+	}
+	
 }else if(substr($filepass,-4)==="html"){
-  $type="html";
-  $contents = file($filepass);
-  $write = false;
-  $next=false;//次行の書き出し
-  $create=false;
-  $x = 0;
-  $rcount = 1;
-  foreach ($contents as $number => $content) {
-      $fileNumber = $number + 1;
-      $content = str_replace(["\r","\n","\r\n"], '', $content);
-      //
-      if($content==='<tbody class="list_body">'){
-        $content="start";
-        $create=true;
-        continue;
-        $write=true;
-      }else if($content==='<h3 class="heading-normal">家計簿データの出力（Excel、CSV形式対応）</h3>'){
-        $content = "end";
-        $create=false;
-        break;
-        $write=true;
-      }else if(preg_match( '/^<span>[0-9]*/', $content)){
-        $write=true;
-      }else if(preg_match( '/^<td class="date" data-table-sortable-value="*/', $content)){
-        $content = substr($content,44,10);// 日付：yyyy/mm/dd（カードなどの自動計上）
-        $content = str_replace(["/"], '-', $content);
-        $write=true;
-      }else if(preg_match( '/^<td class="date form-switch-td" data-table-sortable-value="*/', $content)){
-        $content = substr($content,59,10);// 日付：yyyy/mm/dd（手入力）
-        $content = str_replace(["/"], '-', $content);
-        $write=true;
-      }else if(substr($content,0,21)==='<span class="offset">'){
-        $write=true;//金額
-      }else if(substr($content,0,21)==='<td class="note calc"'){
-        $write=true;//出費元
-      }else if(substr($content,0,72)==='<a class="btn btn-small dropdown-toggle v_l_ctg" data-toggle="dropdown">'){
-        $next = true;//大項目
-      }else if(substr($content,0,83)==='<a class="btn btn-small dropdown-toggle v_l_ctg btn-danger" data-toggle="dropdown">'){
-        $next = true;//大項目(未分類)
-      }else if(substr($content,0,72)==='<a class="btn btn-small dropdown-toggle v_m_ctg" data-toggle="dropdown">'){
-        $next = true;//中項目
-      }else if(substr($content,0,20)==='<div class="offset">'){
-        $content = "振替";
-        $write=true;
-      }else if(substr($content,0,49)==='<td class="calc" style="text-align: left;" title='){
-        $next = true;//振替元
-      }else if(substr($content,0,34)==='<div class="transfer_account_box">'){
-        $write=true;//振替先
-      }else if($next===true){
-        $write=true;
-        $next=false;
-      }
-      
-      //二次元配列の作成
-      if($write===true && $create===true){
-        $row[] = tagClear($content);
-  
-        if($x>=7){
-          //$row["No"] = $rcount;
-          //log_writer("\$row html",$row);
-          //$data[] = $row;
+	$type="html";
+	$contents = file($filepass);
+	$write = false;
+	$next=false;//次行の書き出し
+	$create=false;
+	$x = 0;
+	$rcount = 1;
+	$system = "";
+	$row = null;
+	$data = null;
+	foreach ($contents as $number => $content) {
+		//$fileNumber = $number + 1;
+		
+		$content = str_replace(["\r","\n","\r\n"], '', $content);
+		//対象システムの判定
+		if($system <> ""){
+			//no action
+		}else if(preg_match( '/moneyforward/', $content)){
+			$system = "moneyforward";
+		}else if(preg_match( '/zaim/', $content)){
+			$system = "zaim";
+		}
+		//log_writer("\$system",$system);
+		//
+		if($system === "moneyforward"){
+			if($content==='<tbody class="list_body">'){
+				$content="start";
+				$create=true;
+				continue;
+				$write=true;
+			}else if($content==='<h3 class="heading-normal">家計簿データの出力（Excel、CSV形式対応）</h3>'){
+				$content = "end";
+				$create=false;
+				break;
+				$write=true;
+			}else if(preg_match( '/^<span>[0-9]*/', $content)){
+				$write=true;
+			}else if(preg_match( '/^<td class="date" data-table-sortable-value="*/', $content)){
+				$content = substr($content,44,10);// 日付：yyyy/mm/dd（カードなどの自動計上）
+				$content = str_replace(["/"], '-', $content);
+				$write=true;
+			}else if(preg_match( '/^<td class="date form-switch-td" data-table-sortable-value="*/', $content)){
+				$content = substr($content,59,10);// 日付：yyyy/mm/dd（手入力）
+				$content = str_replace(["/"], '-', $content);
+				$write=true;
+			}else if(substr($content,0,21)==='<span class="offset">'){
+				$write=true;//金額
+			}else if(substr($content,0,21)==='<td class="note calc"'){
+				$write=true;//出費元
+			}else if(substr($content,0,72)==='<a class="btn btn-small dropdown-toggle v_l_ctg" data-toggle="dropdown">'){
+				$next = true;//大項目
+			}else if(substr($content,0,83)==='<a class="btn btn-small dropdown-toggle v_l_ctg btn-danger" data-toggle="dropdown">'){
+				$next = true;//大項目(未分類)
+			}else if(substr($content,0,72)==='<a class="btn btn-small dropdown-toggle v_m_ctg" data-toggle="dropdown">'){
+				$next = true;//中項目
+			}else if(substr($content,0,20)==='<div class="offset">'){
+				$content = "振替";
+				$write=true;
+			}else if(substr($content,0,49)==='<td class="calc" style="text-align: left;" title='){
+				$next = true;//振替元
+			}else if(substr($content,0,34)==='<div class="transfer_account_box">'){
+				$write=true;//振替先
+			}else if($next===true){
+				$write=true;
+				$next=false;
+			}
+			//二次元配列の作成
+			if($write===true && $create===true){
+				$row[] = tagClear($content);
+	
+				if($x>=7){
+					//$row["No"] = $rcount;
+					//log_writer("\$row html",$row);
+					//$data[] = $row;
 
-          if($row[4]==="振替"){
-            $data[] = array(
-              "date" => $row[0]
-              ,"meisai" => $row[2]
-              ,"kin" => $row[3]
-              ,"shuppimoto" => $row[5]
-              ,"daikoumoku" => ""
-              ,"chuukoumoku" => ""
-              ,"memo" => "振替"
-              ,"No" => $rcount
-            );
-            $rcount = $rcount + 1;
-            $data[] = array(
-              "date" => $row[0]
-              ,"meisai" => $row[2]
-              ,"kin" => $row[3] * (-1)
-              ,"shuppimoto" => $row[6]
-              ,"daikoumoku" => ""
-              ,"chuukoumoku" => ""
-              ,"memo" => "振替"
-              ,"No" => $rcount
-            );
-          }else{
-            $data[] = array(
-              "date" => $row[0]
-              ,"meisai" => $row[2]
-              ,"kin" => $row[3]
-              ,"shuppimoto" => $row[4]
-              ,"daikoumoku" => $row[5]
-              ,"chuukoumoku" => $row[6]
-              ,"memo" => $row[7]
-              ,"No" => $rcount
-            );
-  
-          }
-      
-          $row=[];
-          $rcount = $rcount + 1;
-        }
-        $x = ($x>=7)?0:$x+1;
-      }
-  
-      $write = false;
-  }
-  
+					if($row[4]==="振替"){
+						$data[] = array(
+							"date" => $row[0]
+							,"meisai" => $row[2]
+							,"kin" => $row[3]
+							,"shuppimoto" => $row[5]
+							,"daikoumoku" => ""
+							,"chuukoumoku" => ""
+							,"memo" => "振替"
+							,"No" => $rcount
+						);
+						$rcount = $rcount + 1;
+						$data[] = array(
+							"date" => $row[0]
+							,"meisai" => $row[2]
+							,"kin" => $row[3] * (-1)
+							,"shuppimoto" => $row[6]
+							,"daikoumoku" => ""
+							,"chuukoumoku" => ""
+							,"memo" => "振替"
+							,"No" => $rcount
+						);
+					}else{
+						$data[] = array(
+							"date" => $row[0]
+							,"meisai" => $row[2]
+							,"kin" => $row[3]
+							,"shuppimoto" => $row[4]
+							,"daikoumoku" => $row[5]
+							,"chuukoumoku" => $row[6]
+							,"memo" => $row[7]
+							,"No" => $rcount
+						);
+	
+					}
+			
+					$row=[];
+					$rcount = $rcount + 1;
+				}
+				$x = ($x>=7)?0:$x+1;
+			}
+		
+			$write = false;
+		}else if($system === "zaim"){
+			if(preg_match( '/<div id="root">/', $content)){
+				
+				$content = strstr($content,'https://zaim.net/money?month=');
+				$content = strstr($content,'=');
+				$Ybefore = substr($content,1,4);
+				if(substr($content,5,2)==="12"){
+					$Y = $Ybefore + 1;
+				}else{
+					$Y = $Ybefore;
+				}
+				//log_writer("\$Y",$Y);
+				//log_writer("\$Ybefore",$Ybefore);
+
+				$content = strstr($content,'<div class="SearchResult-module__list_');
+				while(true){
+					
+					//日付の検索(日付クラスから閉じタグ２個)
+					$content = strstr($content,"SearchResult-module__date");
+					$content = strstr($content,'">');
+					$content = strstr(substr($content,2),'">');
+					
+					$ymd = strstr(substr($content,2),"<",true); //12月15日（月）
+					$m = substr("0".strstr($ymd,"月",true),-2);
+					$d = substr("0".strstr(substr(strstr($ymd,"月"),3),"日",true),-2);
+					
+					if($m==12){
+						$row[] = $Ybefore."-".$m."-".$d;
+					}else{
+						$row[] = $Y."-".$m."-".$d;
+					}
+					
+					//log_writer("\$ymd",$ymd);
+					//log_writer("\$m",$m);
+					//log_writer("\$d",$d);
+					
+					//$row[] = strstr(substr($content,2),"<",true);
+					//大カテゴリ
+					$content = strstr($content,"SearchResult-module__category");
+					$content = strstr($content,'data-title="');
+					$row[] = strstr(substr($content,12),'" ',true);
+					//中カテゴリ
+					$content = strstr($content,'edit">');
+					$row[] = strstr(substr($content,6),'<',true);
+					//金額 SearchResult-module__fromAccount
+					$content = strstr($content,'edit">¥');
+					$row[] = str_replace(",","",(strstr(substr($content,8),'<',true)));
+					//出金元
+					$content = strstr($content,'SearchResult-module__fromAccount');
+					$content = substr($content,43);
+					if(substr($content,0,4)==="span"){
+						$content = strstr($content,'data-title="');
+						$content = strstr($content,'"');
+						$row[] = strstr(substr($content,1),'"',true);
+						$row[3] = $row[3] * (-1);
+					}else{
+						//$row[] = "-";
+					}
+					//入金元
+					$content = strstr($content,'SearchResult-module__toAccount');
+					$content = substr($content,41);
+					if(substr($content,0,4)==="span"){
+						$content = strstr($content,'data-title="');
+						$content = strstr($content,'"');
+						$row[] = strstr(substr($content,1),'"',true);
+					}else{
+						//$row[] = "-";
+					}
+					//お店
+					$content = strstr($content,'edit">');
+					$row[] = strstr(substr($content,6),'<',true);
+					$content = strstr($content,'<');
+					//品目
+					$content = strstr($content,'edit">');
+					$row[] = strstr(substr($content,6),'<',true);
+					$content = strstr($content,'<');
+					//メモ
+					$content = strstr($content,'edit">');
+					$row[] = strstr(substr($content,6),'<',true);
+					$content = strstr($content,'<');
+
+					$data[] = array(
+						"date" => $row[0]
+						,"meisai" => $row[5]
+						,"kin" => $row[3]
+						,"shuppimoto" => $row[4]
+						,"daikoumoku" => $row[1]
+						,"chuukoumoku" => $row[2]
+						,"memo" => $row[6].$row[7]
+						,"No" => $rcount
+					);
+
+					//log_writer("\$row",$row);
+					//log_writer("\$data",$data);
+					
+					$row = [];
+					//EOFチェック
+					$content = strstr($content,'</span>');
+					//log_writer("\$content",substr($content,0,81));
+					if(substr($content,0,82)==='</span></div></div></div></div></div><table class="SearchResultTable-module__table'){
+						break;
+					}
+					$rcount = $rcount + 1;
+					/*
+					if($rcount > 300){
+						break;
+					}
+					
+					break;
+					*/
+				}
+			}
+		}
+	}
+	log_writer("\$data",$data);
 }else{
 
 }
 $return = array(
-  "data" => $data
-  ,"type" => $type
+	"data" => $data
+	,"type" => $type
 );
 //log_writer("\$data",$data);
 
@@ -187,15 +313,15 @@ echo json_encode($return, JSON_UNESCAPED_UNICODE);
 
 
 function tagClear($str){
-  $str = substr($str,strpos($str,">"));
+	$str = substr($str,strpos($str,">"));
 
-  if(strpos($str,"<")<>false){
-    $str = substr($str,1,strpos($str,"<")-1);
-  }
-  $str = str_replace(["<",">",","], '', $str);
-  //log_writer("",$str.",");
-  //echo $str."<br>"
+	if(strpos($str,"<")<>false){
+		$str = substr($str,1,strpos($str,"<")-1);
+	}
+	$str = str_replace(["<",">",","], '', $str);
+	//log_writer("",$str.",");
+	//echo $str."<br>"
 
-  return $str;
+	return $str;
 }
 ?>
