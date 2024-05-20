@@ -53,6 +53,9 @@
                   <div class="d-flex" style='padding:5px;'>
                     <button class='btn btn-outline-primary' type='button' @click='input_file_btn'>ファイル選択</button>
                   </div>
+                  <div class="d-flex" style='padding:5px;'>
+                    <button class='btn btn-outline-primary' type='button' @click='clear_data'>表示クリア</button>
+                  </div>
                   <div v-if='pagename.includes("imp")' class="d-flex" style='padding:5px;'>
                     <button class='btn btn-outline-primary' type='button' @click='savedata'>システム登録</button>
                   </div>

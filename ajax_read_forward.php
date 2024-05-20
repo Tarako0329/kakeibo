@@ -199,7 +199,12 @@ if(substr($filepass,-3)==="csv"){
 
 				$content = strstr($content,'<div class="SearchResult-module__list_');
 				while(true){
-					
+					//データUNIQキー取得
+					$content = strstr($content,'money');
+					$id = strstr(substr($content,6),'edit',true);
+					$row["id"] = $id;
+					//log_writer("\$id",$id);
+
 					//日付の検索(日付クラスから閉じタグ２個)
 					$content = strstr($content,"SearchResult-module__date");
 					$content = strstr($content,'">');
@@ -210,9 +215,9 @@ if(substr($filepass,-3)==="csv"){
 					$d = substr("0".strstr(substr(strstr($ymd,"月"),3),"日",true),-2);
 					
 					if($m==12){
-						$row[] = $Ybefore."-".$m."-".$d;
+						$row["date"] = $Ybefore."-".$m."-".$d;
 					}else{
-						$row[] = $Y."-".$m."-".$d;
+						$row["date"] = $Y."-".$m."-".$d;
 					}
 					
 					//log_writer("\$ymd",$ymd);
@@ -223,21 +228,21 @@ if(substr($filepass,-3)==="csv"){
 					//大カテゴリ
 					$content = strstr($content,"SearchResult-module__category");
 					$content = strstr($content,'data-title="');
-					$row[] = strstr(substr($content,12),'" ',true);
+					$row["daikoumoku"] = strstr(substr($content,12),'" ',true);
 					//中カテゴリ
 					$content = strstr($content,'edit">');
-					$row[] = strstr(substr($content,6),'<',true);
+					$row["chuukoumoku"] = strstr(substr($content,6),'<',true);
 					//金額 SearchResult-module__fromAccount
 					$content = strstr($content,'edit">¥');
-					$row[] = str_replace(",","",(strstr(substr($content,8),'<',true)));
+					$row["kin"] = str_replace(",","",(strstr(substr($content,8),'<',true)));
 					//出金元
 					$content = strstr($content,'SearchResult-module__fromAccount');
 					$content = substr($content,43);
 					if(substr($content,0,4)==="span"){
 						$content = strstr($content,'data-title="');
 						$content = strstr($content,'"');
-						$row[] = strstr(substr($content,1),'"',true);
-						$row[3] = $row[3] * (-1);
+						$row["shuppimoto"] = strstr(substr($content,1),'"',true);
+						$row["kin"] = $row["kin"] * (-1);
 					}else{
 						//$row[] = "-";
 					}
@@ -247,34 +252,54 @@ if(substr($filepass,-3)==="csv"){
 					if(substr($content,0,4)==="span"){
 						$content = strstr($content,'data-title="');
 						$content = strstr($content,'"');
-						$row[] = strstr(substr($content,1),'"',true);
+						$row["shuppimoto"] = strstr(substr($content,1),'"',true);
 					}else{
 						//$row[] = "-";
 					}
 					//お店
 					$content = strstr($content,'edit">');
-					$row[] = strstr(substr($content,6),'<',true);
+					$row["meisai"] = strstr(substr($content,6),'<',true);
 					$content = strstr($content,'<');
 					//品目
 					$content = strstr($content,'edit">');
-					$row[] = strstr(substr($content,6),'<',true);
+					$row["memo"] = strstr(substr($content,6),'<',true);
 					$content = strstr($content,'<');
 					//メモ
 					$content = strstr($content,'edit">');
-					$row[] = strstr(substr($content,6),'<',true);
+					$row["memo"] .= strstr(substr($content,6),'<',true);
 					$content = strstr($content,'<');
 
-					$data[] = array(
-						"date" => $row[0]
-						,"meisai" => $row[5]
-						,"kin" => $row[3]
-						,"shuppimoto" => $row[4]
-						,"daikoumoku" => $row[1]
-						,"chuukoumoku" => $row[2]
-						,"memo" => $row[6].$row[7]
-						,"No" => $rcount
-					);
+					$row["NO"] = $rcount;
+					$pdo_h->beginTransaction();
+					$sql = "insert IGNORE into zaim_work(uid,id,date,meisai,kin,shuppimoto,daikoumoku,chuukoumoku,memo,NO) values(:uid,:id,:date,:meisai,:kin,:shuppimoto,:daikoumoku,:chuukoumoku,:memo,:NO)";
+					$stmt = $pdo_h->prepare($sql);
+					$stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
+					$stmt->bindValue("id", $row["id"], PDO::PARAM_STR);
+					$stmt->bindValue("date", $row["date"], PDO::PARAM_STR);
+					$stmt->bindValue("meisai", $row["meisai"], PDO::PARAM_STR);
+					$stmt->bindValue("kin", $row["kin"], PDO::PARAM_STR);
+					$stmt->bindValue("shuppimoto", $row["shuppimoto"], PDO::PARAM_STR);
+					$stmt->bindValue("daikoumoku", $row["daikoumoku"], PDO::PARAM_STR);
+					$stmt->bindValue("chuukoumoku", $row["chuukoumoku"], PDO::PARAM_STR);
+					$stmt->bindValue("memo", $row["memo"], PDO::PARAM_STR);
+					$stmt->bindValue("NO", $row["NO"], PDO::PARAM_STR);
+					$stmt->execute();
+					$pdo_h->commit();
 
+					/*$data[] = array(
+						"id" => $row[0]
+						,"date" => $row[1]
+						,"meisai" => $row[6]
+						,"kin" => $row[4]
+						,"shuppimoto" => $row[5]
+						,"daikoumoku" => $row[2]
+						,"chuukoumoku" => $row[3]
+						,"memo" => $row[7].$row[8]
+						,"No" => $rcount
+					);*/
+
+					//$data[]=$row;
+					
 					//log_writer("\$row",$row);
 					//log_writer("\$data",$data);
 					
@@ -294,6 +319,10 @@ if(substr($filepass,-3)==="csv"){
 					break;
 					*/
 				}
+				$stmt = $pdo_h->prepare("select * from zaim_work order by date desc");
+				$stmt->execute();
+				$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			
 			}
 		}
 	}
