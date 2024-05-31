@@ -26,7 +26,7 @@ if(MAIN_DOMAIN==="localhost:81"){
 
 
 //$pass=dirname(__FILE__);
-$title="Me・サポ";
+$title="マネコ";
 
 // DBとの接続
 define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8");

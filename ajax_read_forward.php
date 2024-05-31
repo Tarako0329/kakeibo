@@ -90,43 +90,47 @@ if(substr($filepass,-3)==="csv"){
 		//log_writer("\$system",$system);
 		//
 		if($system === "moneyforward"){
-			if($content==='<tbody class="list_body">'){
+			if($content==='<tbody class="list_body">'){//明細エリア開始
 				$content="start";
 				$create=true;
 				continue;
-				$write=true;
-			}else if($content==='<h3 class="heading-normal">家計簿データの出力（Excel、CSV形式対応）</h3>'){
+				//$write=true;
+			}else if($content==='<h3 class="heading-normal">家計簿データの出力（Excel、CSV形式対応）</h3>'){//明細エリア終了
 				$content = "end";
 				$create=false;
 				break;
 				$write=true;
-			}else if(preg_match( '/^<span>[0-9]*/', $content)){
+			}else if(preg_match( '/^<span>[0-9]*/', $content) ){//日付（全角曜日）
 				$write=true;
-			}else if(preg_match( '/^<td class="date" data-table-sortable-value="*/', $content)){
-				$content = substr($content,44,10);// 日付：yyyy/mm/dd（カードなどの自動計上）
+
+				//log_writer("\$x ",$x);
+				//log_writer("\$content ",$content);
+			}else if(preg_match( '/^<td class="date" data-table-sortable-value="*/', $content) && $x===0){// 日付：yyyy/mm/dd（カードなどの自動計上）
+				$content = substr($content,44,10);
 				$content = str_replace(["/"], '-', $content);
 				$write=true;
-			}else if(preg_match( '/^<td class="date form-switch-td" data-table-sortable-value="*/', $content)){
-				$content = substr($content,59,10);// 日付：yyyy/mm/dd（手入力）
+			}else if(preg_match( '/^<td class="date form-switch-td" data-table-sortable-value="*/', $content) && $x===0){// 日付：yyyy/mm/dd（手入力）
+				$content = substr($content,59,10);
 				$content = str_replace(["/"], '-', $content);
 				$write=true;
-			}else if(substr($content,0,21)==='<span class="offset">'){
-				$write=true;//金額
-			}else if(substr($content,0,21)==='<td class="note calc"'){
-				$write=true;//出費元
-			}else if(substr($content,0,72)==='<a class="btn btn-small dropdown-toggle v_l_ctg" data-toggle="dropdown">'){
-				$next = true;//大項目
-			}else if(substr($content,0,83)==='<a class="btn btn-small dropdown-toggle v_l_ctg btn-danger" data-toggle="dropdown">'){
-				$next = true;//大項目(未分類)
-			}else if(substr($content,0,72)==='<a class="btn btn-small dropdown-toggle v_m_ctg" data-toggle="dropdown">'){
-				$next = true;//中項目
-			}else if(substr($content,0,20)==='<div class="offset">'){
+			}else if(substr($content,0,21)==='<span class="offset">'  && $x===3){//金額
+				$write=true;
+			}else if(substr($content,0,21)==='<td class="note calc"'  && $x===4){//出費元
+				$write=true;
+			}else if(substr($content,0,72)==='<a class="btn btn-small dropdown-toggle v_l_ctg" data-toggle="dropdown">' && $x===5){//大項目
+				$next = true;
+			}else if(substr($content,0,83)==='<a class="btn btn-small dropdown-toggle v_l_ctg btn-danger" data-toggle="dropdown">' && $x===5){//大項目(未分類)
+				$next = true;
+			}else if(substr($content,0,72)==='<a class="btn btn-small dropdown-toggle v_m_ctg" data-toggle="dropdown">' && $x===6){//中項目
+				$next = true;
+			}else if(substr($content,0,20)==='<div class="offset">' && $x===4){//振替
 				$content = "振替";
 				$write=true;
-			}else if(substr($content,0,49)==='<td class="calc" style="text-align: left;" title='){
-				$next = true;//振替元
-			}else if(substr($content,0,34)==='<div class="transfer_account_box">'){
-				$write=true;//振替先
+			}else if(substr($content,0,49)==='<td class="calc" style="text-align: left;" title=' && $x===5){//振替元
+				$next = true;
+			}else if(substr($content,0,34)==='<div class="transfer_account_box">' && $x===6){//振替先
+				$write=true;
+				//$x=7;
 			}else if($next===true){
 				$write=true;
 				$next=false;
@@ -136,11 +140,9 @@ if(substr($filepass,-3)==="csv"){
 				$row[] = tagClear($content);
 	
 				if($x>=7){
-					//$row["No"] = $rcount;
 					//log_writer("\$row html",$row);
-					//$data[] = $row;
-
 					if($row[4]==="振替"){
+						log_writer("\$row html",$row);
 						$data[] = array(
 							"date" => $row[0]
 							,"meisai" => $row[2]
@@ -175,7 +177,7 @@ if(substr($filepass,-3)==="csv"){
 						);
 	
 					}
-			
+					
 					$row=[];
 					$rcount = $rcount + 1;
 				}
