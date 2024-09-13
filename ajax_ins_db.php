@@ -8,6 +8,8 @@
   $dataset = json_decode($_POST["csv"], true);
   $start_date = $_POST["start"];
   $end_date = $_POST["end"];
+  $filename = $_POST["filename"];
+  log_writer("\$POST",$_POST);
 
   try{
     $pdo_h->beginTransaction();
@@ -24,12 +26,7 @@
       $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
       $stmt2->execute();
     }
-    /*
-    $stmt = $pdo_h->prepare("delete from kakeibo_plus where guid in ( select guid from kakeibo where date between :start and :end)");
-    $stmt->bindValue("start", $start_date, PDO::PARAM_STR);
-    $stmt->bindValue("end", $end_date, PDO::PARAM_STR);
-    $stmt->execute();
-    */
+
     $stmt = $pdo_h->prepare("delete from kakeibo where date between :start and :end and uid = :uid");
     $stmt->bindValue("start", $start_date, PDO::PARAM_STR);
     $stmt->bindValue("end", $end_date, PDO::PARAM_STR);
@@ -65,7 +62,19 @@
       $stmt2->execute();
     }
     
+    
+    //ログを追記
+    $sql = "insert into import_log(id,filename,from_ymd,to_ymd) values(:uid,:filename,:start,:end)";
+    $stmt = $pdo_h->prepare($sql);
+    $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
+    $stmt->bindValue("filename", $filename, PDO::PARAM_STR);
+    $stmt->bindValue("start", $start_date, PDO::PARAM_STR);
+    $stmt->bindValue("end", $end_date, PDO::PARAM_STR);
+    $stmt->execute();
+    $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
     $pdo_h->commit();
+    
     upd_getudo($pdo_h,$start_date,$end_date);
     $return = "success";
   }catch(Exception $e){

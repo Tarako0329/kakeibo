@@ -51,16 +51,16 @@
 			  	  				</li>
                   </ul>
                   <div class="d-flex" style='padding:5px;'>
-                    <button class='btn btn-outline-primary' type='button' @click='input_file_btn'>ファイル選択</button>
+                    <button class='btn btn-outline-primary menu_btn' type='button' @click='input_file_btn'>ファイル選択</button>
                   </div>
                   <div class="d-flex" style='padding:5px;'>
-                    <button class='btn btn-outline-primary' type='button' @click='clear_data'>表示クリア</button>
+                    <button class='btn btn-outline-primary menu_btn' type='button' @click='clear_data'>表示クリア</button>
                   </div>
                   <div v-if='pagename.includes("imp")' class="d-flex" style='padding:5px;'>
-                    <button class='btn btn-outline-primary' type='button' @click='savedata'>システム登録</button>
+                    <button class='btn btn-outline-primary menu_btn' type='button' @click='savedata'>システム登録</button>
                   </div>
                   <div class="d-flex" style='padding:5px;'>
-                    <button class='btn btn-outline-primary' type='button' @click='savecsv'>CSV出力</button>
+                    <button class='btn btn-outline-primary menu_btn' type='button' @click='savecsv'>CSV出力</button>
                   </div>
                   <div class="d-flex" style='padding:5px;'>
                     <a href="user_setting.php" class='a_none'><h2><i class="bi bi-person-circle"></i></h2></a>
@@ -199,7 +199,40 @@
         </table>
       </div>
       <div class='logoff'><a href="logoff.php" class='a_none'><h1><i class="bi bi-box-arrow-right"></i></h1></a></div>
+      <div class='import_log'><a href="logoff.php" class='a_none' data-bs-toggle='modal' data-bs-target='#taisosiki'><h1><i class="bi bi-file-text"></i></h1></a></div>
     </MAIN>
+    <div class='modal fade' id='taisosiki' tabindex='-1' role='dialog' aria-labelledby='basicModal' aria-hidden='true'>
+			<div class='modal-dialog  modal-dialog-centered modal-dialog-scrollable'>
+				<div class='modal-content edit' style=''>
+					<div class='modal-header'>
+	      		<h5 class="modal-title">ファイル取込履歴</h5>
+  	    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class='modal-body container'>
+              <div class='row'>
+                <table class="table">
+                  <thead>
+                    <tr>
+                    <th>取込日時</th>
+                    <th>対象期間</th>
+                    <th>ファイル名</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for='(list,index) in import_log' :key='list.ins_datetime'>
+                    <td>{{list.ins_datetime}}</td>
+                    <td>{{list.from_ymd}}～{{list.to_ymd}}</td>
+                    <td>{{list.filename}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+					</div>
+					<div class='modal-footer'>
+					</div>
+				</div>
+			</div>
+		</div>
     <div class="loader-wrap" v-show='loader'>
 		  <div class="loader">Loading...</div>
 	  </div>

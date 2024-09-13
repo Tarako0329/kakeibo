@@ -177,6 +177,8 @@ const dataset = (Where_to_use) => createApp({
 			params.append(`start`, start) //月度算出対象範囲
 			params.append(`end`, end)     //月度算出対象範囲
 			params.append(`mode`, mode)
+			params.append(`filename`, readfilename.value)     //月度算出対象範囲
+			console_log(`ファイル名：${readfilename.value}`)
 			
 			console_log(`${start} ～ ${end}`)
 			//console_log(csv)
@@ -452,9 +454,10 @@ const dataset = (Where_to_use) => createApp({
 					if(pagename.value==="index.php"){
 						read_db_meisai()
 					}
-
 				})
 				.catch((error) => console.log(error));
+
+				get_import_log()
 			}
 
 		})
@@ -467,6 +470,17 @@ const dataset = (Where_to_use) => createApp({
 			readdata_filter.value[index][colom] = readdata_filter.value[index][`fl_${colom}`]
 		}
 
+		const import_log = ref([])
+		const get_import_log = () =>{
+			axios
+			.get(`ajax_read_db_importlog.php`)
+			.then((response) => {
+				console_log(response.data.import_log)
+				import_log.value = response.data.import_log
+				console_log('ajax_read_db_importlog succsess')
+			})
+			.catch((error) => console.log(error));
+		}
 		return{
 			upd,
 			readdata,
@@ -507,6 +521,7 @@ const dataset = (Where_to_use) => createApp({
 			meisai_disable,
 			cgmode,
 			loader,
+			import_log,
 		}
 	}
 });

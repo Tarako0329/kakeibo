@@ -170,6 +170,14 @@ footer{
 	text-decoration: none;
 	font-size:16px;
 }
+.import_log{
+	position:fixed;
+	bottom:10px;
+	left:10px;
+	color:#FFA400;
+	text-decoration: none;
+	font-size:16px;
+}
 
 .v-enter-active,
 .v-leave-active {
@@ -193,7 +201,9 @@ footer{
 	width:50px;
 	font-size:12px;
 }
-
+.menu_btn{
+	width:120px;
+}
 
 
 /*ローディングアニメーション*/
