@@ -153,18 +153,18 @@
 								</template>-->
 								<tr v-if='list.daikoumoku===open_fil' class='fadein'>
 										<td class='sticky-left'>　{{list["chuukoumoku"]}}</td>
-										<td class='text-end' @click='get_meisai(readdata_summary.label[0],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m12c).toLocaleString()}}</td>
-										<td class='text-end' @click='get_meisai(readdata_summary.label[1],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m11c).toLocaleString()}}</td>
-										<td class='text-end' @click='get_meisai(readdata_summary.label[2],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m10c).toLocaleString()}}</td>
-										<td class='text-end' @click='get_meisai(readdata_summary.label[3],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m9c).toLocaleString()}}</td>
-										<td class='text-end' @click='get_meisai(readdata_summary.label[4],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m8c).toLocaleString()}}</td>
-										<td class='text-end' @click='get_meisai(readdata_summary.label[5],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m7c).toLocaleString()}}</td>
-										<td class='text-end' @click='get_meisai(readdata_summary.label[6],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m6c).toLocaleString()}}</td>
-										<td class='text-end' @click='get_meisai(readdata_summary.label[7],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m5c).toLocaleString()}}</td>
-										<td class='text-end' @click='get_meisai(readdata_summary.label[8],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m4c).toLocaleString()}}</td>
-										<td class='text-end' @click='get_meisai(readdata_summary.label[9],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m3c).toLocaleString()}}</td>
-										<td class='text-end' @click='get_meisai(readdata_summary.label[10],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m2c).toLocaleString()}}</td>
-										<td class='text-end' @click='get_meisai(readdata_summary.label[11],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m1c).toLocaleString()}}</td>
+										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[0],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m12c).toLocaleString()}}</td>
+										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[1],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m11c).toLocaleString()}}</td>
+										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[2],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m10c).toLocaleString()}}</td>
+										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[3],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m9c).toLocaleString()}}</td>
+										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[4],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m8c).toLocaleString()}}</td>
+										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[5],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m7c).toLocaleString()}}</td>
+										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[6],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m6c).toLocaleString()}}</td>
+										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[7],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m5c).toLocaleString()}}</td>
+										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[8],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m4c).toLocaleString()}}</td>
+										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[9],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m3c).toLocaleString()}}</td>
+										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[10],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m2c).toLocaleString()}}</td>
+										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[11],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m1c).toLocaleString()}}</td>
 									</tr>
 							</template>
 						</tbody>
@@ -194,7 +194,7 @@
 					</div>
 					<div class='modal-body container'>
               <div class='row'>
-                <table class="table">
+                <table class="table table-sm">
                   <thead>
                     <tr>
                     <th>日付</th>
@@ -209,7 +209,7 @@
                     <td>{{list.date}}</td>
                     <td>{{list.shuppimoto}}</td>
                     <td>{{list.meisai}}</td>
-                    <td>{{list.kin}}</td>
+                    <td class='text-end'>{{Number(list.kin).toLocaleString()}}</td>
                     <td>{{list.memo}}</td>
                     </tr>
                   </tbody>

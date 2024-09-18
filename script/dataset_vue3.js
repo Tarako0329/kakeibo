@@ -809,12 +809,24 @@ const summary_bunseki = (Where_to_use) => createApp({
 		const popup_meisai = ref([])
 		const modal_label = ref('')
 		const get_meisai = (p_ymd,dk,ck) =>{
-			let ymd = p_ymd.replace("/","")
 			modal_label.value = `${p_ymd} ${dk} > ${ck}`
-			console_log(`select * from kakeibo where getudo=${ymd} and daikoumoku=${dk} and chuukoumoku=${ck}`)
+
+			let ymd = p_ymd.replace("/","")
+			let ymd_from
+			if(hanni.value==='5y'){
+				let y = (Number(String(p_ymd).slice(0,4)) - 1) * 100
+				let m = Number(String(p_ymd).slice(-2)) - 1
+				if(m===0){
+					m=Number(12)
+				}
+				ymd_from = y + m
+			}else{
+				ymd_from = ymd
+			}
+			console_log(`select * from kakeibo where getudo between ${ymd_from} and ${ymd} and daikoumoku=${dk} and chuukoumoku=${ck}`)
 			console_log('read_db_meisai start')
 			axios
-			.get(`ajax_read_db_meisai.php?fm=${ymd}&to=${ymd}&daikoumoku=${dk}&chuukoumoku=${ck}`)
+			.get(`ajax_read_db_meisai.php?fm=${ymd_from}&to=${ymd}&daikoumoku=${dk}&chuukoumoku=${ck}`)
 			.then((response) => {
 				console_log(response.data.meisai)
 				console_log('read_db_meisai succsess')
