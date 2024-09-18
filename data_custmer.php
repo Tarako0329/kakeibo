@@ -199,9 +199,9 @@
         </table>
       </div>
       <div class='logoff'><a href="logoff.php" class='a_none'><h1><i class="bi bi-box-arrow-right"></i></h1></a></div>
-      <div class='import_log'><a href="logoff.php" class='a_none' data-bs-toggle='modal' data-bs-target='#taisosiki'><h1><i class="bi bi-file-text"></i></h1></a></div>
+      <div class='import_log'><a href="logoff.php" class='a_none' data-bs-toggle='modal' data-bs-target='#rireki_modal'><h1><i class="bi bi-file-text"></i></h1></a></div>
     </MAIN>
-    <div class='modal fade' id='taisosiki' tabindex='-1' role='dialog' aria-labelledby='basicModal' aria-hidden='true'>
+    <div class='modal fade' id='rireki_modal' tabindex='-1' role='dialog' aria-labelledby='basicModal' aria-hidden='true'>
 			<div class='modal-dialog  modal-dialog-centered modal-dialog-scrollable'>
 				<div class='modal-content edit' style=''>
 					<div class='modal-header'>
@@ -210,7 +210,7 @@
 					</div>
 					<div class='modal-body container'>
               <div class='row'>
-                <table class="table">
+                <table class="table table-sm">
                   <thead>
                     <tr>
                     <th>取込日時</th>

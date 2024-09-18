@@ -815,9 +815,9 @@ const summary_bunseki = (Where_to_use) => createApp({
 			let ymd_from
 			if(hanni.value==='5y'){
 				let y = (Number(String(p_ymd).slice(0,4)) - 1) * 100
-				let m = Number(String(p_ymd).slice(-2)) - 1
-				if(m===0){
-					m=Number(12)
+				let m = Number(String(p_ymd).slice(-2)) + 1
+				if(m===13){
+					m=Number(1)
 				}
 				ymd_from = y + m
 			}else{
