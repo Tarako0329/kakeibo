@@ -806,6 +806,27 @@ const summary_bunseki = (Where_to_use) => createApp({
 			})      
 		}
 
+		const popup_meisai = ref([])
+		const modal_label = ref('')
+		const get_meisai = (p_ymd,dk,ck) =>{
+			let ymd = p_ymd.replace("/","")
+			modal_label.value = `${p_ymd} ${dk} > ${ck}`
+			console_log(`select * from kakeibo where getudo=${ymd} and daikoumoku=${dk} and chuukoumoku=${ck}`)
+			console_log('read_db_meisai start')
+			axios
+			.get(`ajax_read_db_meisai.php?fm=${ymd}&to=${ymd}&daikoumoku=${dk}&chuukoumoku=${ck}`)
+			.then((response) => {
+				console_log(response.data.meisai)
+				console_log('read_db_meisai succsess')
+				popup_meisai.value = response.data.meisai
+				document.getElementById('meisai_modal_btn').click()
+			})
+			.catch((error) => {
+				console_log('read_db_meisai error')
+				console.log(error)
+			});
+
+		}
 		return{
 			readdata_summary,
 			readdata_monthly_summary,
@@ -821,6 +842,9 @@ const summary_bunseki = (Where_to_use) => createApp({
 			search_disable,
 			open_fil,
 			open_utiwake,
+			get_meisai,
+			popup_meisai,
+			modal_label,
 		}
 	}
 });

@@ -4,7 +4,11 @@
     exit();
   }
   //log_writer('\$_SESSION["uid"]',++$a);
+  log_writer("\$_GET",$_GET);
   log_writer('\$_SESSION["uid"]',$_SESSION["uid"]);
+  $daikoumoku = empty($_GET["daikoumoku"])?"%":$_GET["daikoumoku"];
+  $chuukoumoku = empty($_GET["chuukoumoku"])?"%":$_GET["chuukoumoku"];
+  
   $sql = "select 
       date as date
       ,date as date2
@@ -25,11 +29,17 @@
     from kakeibo as kake
     left join daikoumoku_ms as ms
     on kake.daikoumoku=ms.daikoumoku
-    where kake.uid = :uid and getudo between :from and :to order by date";
+    where kake.uid = :uid 
+      and getudo between :from and :to 
+      and kake.daikoumoku like :daikoumoku
+      and kake.chuukoumoku like :chuukoumoku
+    order by date";
 	$stmt = $pdo_h->prepare($sql);
 	$stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
   $stmt->bindValue("from", $_GET["fm"], PDO::PARAM_STR);
   $stmt->bindValue("to", (empty($_GET["to"]))?$_GET["fm"]:$_GET["to"], PDO::PARAM_STR);
+  $stmt->bindValue("daikoumoku", $daikoumoku, PDO::PARAM_STR);
+  $stmt->bindValue("chuukoumoku", $chuukoumoku, PDO::PARAM_STR);
 	$stmt->execute();
 	$dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
