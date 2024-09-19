@@ -29,11 +29,12 @@
     from kakeibo as kake
     left join daikoumoku_ms as ms
     on kake.daikoumoku=ms.daikoumoku
+    and kake.uid = ms.uid
     where kake.uid = :uid 
       and getudo between :from and :to 
       and kake.daikoumoku like :daikoumoku
       and kake.chuukoumoku like :chuukoumoku
-    order by date";
+    order by date,meisai,memo,kin";
 	$stmt = $pdo_h->prepare($sql);
 	$stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
   $stmt->bindValue("from", $_GET["fm"], PDO::PARAM_STR);

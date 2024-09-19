@@ -157,7 +157,14 @@
             <button type='button' class='btn btn-success btn-sm' @click='hanei("cshuppi")'>↓反映</button>
           </td>
           <td>
-            <input type="text" id='cdaikou' class='form-control form-control-sm' placeholder="一括変更" style='margin-bottom:3px;'>
+            <!--<input type="text" id='cdaikou' class='form-control form-control-sm' placeholder="一括変更" style='margin-bottom:3px;'>-->
+            <select id='cdaikou' class='form-select form-select-sm' placeholder="一括変更" style='margin-bottom:3px;'>
+              <option value=""></option>
+              <template v-for='(list,index) in daikoumoku_ms' :key='list.daikoumoku'>
+                <option :value=list.daikoumoku>{{list.daikoumoku}}</option>
+              </template>
+            </select>
+
             <button type='button' class='btn btn-success btn-sm' @click='hanei("cdaikou")'>↓反映</button>
           </td>
           <td>
@@ -178,7 +185,15 @@
           <td><input v-model='list.meisai' class="form-control form-control-sm" type="text" placeholder=""></td>
           <td><input v-model='list.kin' class="form-control form-control-sm text-end" type="number" placeholder=""></td>
           <td><input v-model='list.shuppimoto' class="form-control form-control-sm" type="text" placeholder=""></td>
-          <td><input v-model='list.daikoumoku' class="form-control form-control-sm" type="text" placeholder=""></td>
+          <td>
+            <!--<input v-model='list.daikoumoku' class="form-control form-control-sm" type="text" placeholder="">-->
+            <select v-model='list.daikoumoku' class="form-select form-select-sm" placeholder="">
+              <template v-for='(list,index) in daikoumoku_ms' :key='list.daikoumoku'>
+                <option :value=list.daikoumoku>{{list.daikoumoku}}</option>
+              </template>
+            </select>
+ 
+          </td>
           <td><input v-model='list.chuukoumoku' class="form-control form-control-sm" type="text" placeholder=""></td>
           <td><input v-model='list.memo' class="form-control form-control-sm" type="text" placeholder=""></td>
           </tr>

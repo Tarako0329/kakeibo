@@ -20,20 +20,21 @@
     ,sum(moto_chuukei) as moto_chuukei
     ,sum(sum(moto_daikei)) over(PARTITION BY daikoumoku) as moto_daikei 
     from (
-      select kake.daikoumoku,chuukoumoku ,0 as 1y_ago_chuukei,0 as 1y_ago_daikei,0 as 1m_ago_chuukei,0 as 1m_ago_daikei,kin as moto_chuukei,kin as moto_daikei
+      select uid,kake.daikoumoku,chuukoumoku ,0 as 1y_ago_chuukei,0 as 1y_ago_daikei,0 as 1m_ago_chuukei,0 as 1m_ago_daikei,kin as moto_chuukei,kin as moto_daikei
       from kakeibo as kake
       where uid = :uid and getudo = :baseYM
       UNION ALL
-      select kake.daikoumoku,chuukoumoku ,0 as 1y_ago_chuukei,0 as 1y_ago_daikei,kin as 1m_ago_chuukei,kin as 1m_ago_daikei, 0 as moto_chuukei,0 as moto_daikei
+      select uid,kake.daikoumoku,chuukoumoku ,0 as 1y_ago_chuukei,0 as 1y_ago_daikei,kin as 1m_ago_chuukei,kin as 1m_ago_daikei, 0 as moto_chuukei,0 as moto_daikei
       from kakeibo as kake
       where uid = :uid2 and getudo = :1m_ago
       UNION ALL
-      select kake.daikoumoku,chuukoumoku ,kin as 1y_ago_chuukei,kin as 1y_ago_daikei,0 as 1m_ago_chuukei,0 as 1m_ago_daikei, 0 as moto_chuukei,0 as moto_daikei
+      select uid,kake.daikoumoku,chuukoumoku ,kin as 1y_ago_chuukei,kin as 1y_ago_daikei,0 as 1m_ago_chuukei,0 as 1m_ago_daikei, 0 as moto_chuukei,0 as moto_daikei
       from kakeibo as kake
       where uid = :uid3 and getudo = :1y_ago
     ) as temp
     inner join daikoumoku_ms as ms
     on temp.daikoumoku=ms.daikoumoku
+    and temp.uid = ms.uid
     group by ms.sort,temp.daikoumoku,temp.chuukoumoku 
     order by ms.sort,chuukoumoku 
     ";

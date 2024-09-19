@@ -53,56 +53,57 @@
     ,sum(m1) as m1c
     ,sum(sum(m1)) over(PARTITION BY daikoumoku) as m1d 
     from (
-      select daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,kin as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,kin as m1
       from kakeibo
       where uid = :uid1 and getudo = :baseYM1
       UNION ALL 
-      select daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,kin as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,kin as m2,0 as m1
       from kakeibo
       where uid = :uid2 and getudo = :baseYM2
       UNION ALL 
-      select daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,kin as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,kin as m3,0 as m2,0 as m1
       from kakeibo
       where uid = :uid3 and getudo = :baseYM3
       UNION ALL 
-      select daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,kin as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,kin as m4,0 as m3,0 as m2,0 as m1
       from kakeibo
       where uid = :uid4 and getudo = :baseYM4
       UNION ALL 
-      select daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,kin as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,kin as m5,0 as m4,0 as m3,0 as m2,0 as m1
       from kakeibo
       where uid = :uid5 and getudo = :baseYM5
       UNION ALL 
-      select daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,kin as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,kin as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
       from kakeibo
       where uid = :uid6 and getudo = :baseYM6
       UNION ALL 
-      select daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,kin as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,kin as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
       from kakeibo
       where uid = :uid7 and getudo = :baseYM7
       UNION ALL 
-      select daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,kin as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,kin as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
       from kakeibo
       where uid = :uid8 and getudo = :baseYM8
       UNION ALL 
-      select daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,kin as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,kin as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
       from kakeibo
       where uid = :uid9 and getudo = :baseYM9
       UNION ALL 
-      select daikoumoku,chuukoumoku ,0 as m12,0 as m11,kin as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,kin as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
       from kakeibo
       where uid = :uid10 and getudo = :baseYM10
       UNION ALL 
-      select daikoumoku,chuukoumoku ,0 as m12,kin as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,kin as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
       from kakeibo
       where uid = :uid11 and getudo = :baseYM11
       UNION ALL 
-      select daikoumoku,chuukoumoku ,kin as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,kin as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
       from kakeibo
       where uid = :uid12 and getudo = :baseYM12
     ) as temp
     left join daikoumoku_ms as ms
     on temp.daikoumoku=ms.daikoumoku
+    and temp.uid = ms.uid
     group by COALESCE(ms.sort,999),temp.daikoumoku,temp.chuukoumoku
     having temp.daikoumoku <> ''
     order by COALESCE(ms.sort,999),chuukoumoku 

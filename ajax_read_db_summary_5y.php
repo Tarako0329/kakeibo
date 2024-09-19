@@ -25,28 +25,29 @@
     ,sum(m1) as m8c
     ,sum(sum(m1)) over(PARTITION BY daikoumoku) as m8d 
     from (
-      select daikoumoku,chuukoumoku ,0 as m5,0 as m4,0 as m3,0 as m2,kin as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m5,0 as m4,0 as m3,0 as m2,kin as m1
       from kakeibo
       where uid = :uid1 and getudo between :baseYM1 and :baseYM2
       UNION ALL 
-      select daikoumoku,chuukoumoku ,0 as m5,0 as m4,0 as m3,kin as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m5,0 as m4,0 as m3,kin as m2,0 as m1
       from kakeibo
       where uid = :uid2 and getudo between :baseYM3 and :baseYM4
       UNION ALL 
-      select daikoumoku,chuukoumoku ,0 as m5,0 as m4,kin as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m5,0 as m4,kin as m3,0 as m2,0 as m1
       from kakeibo
       where uid = :uid3 and getudo between :baseYM5 and :baseYM6
       UNION ALL 
-      select daikoumoku,chuukoumoku ,0 as m5,kin as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m5,kin as m4,0 as m3,0 as m2,0 as m1
       from kakeibo
       where uid = :uid4 and getudo between :baseYM7 and :baseYM8
       UNION ALL 
-      select daikoumoku,chuukoumoku ,kin as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,kin as m5,0 as m4,0 as m3,0 as m2,0 as m1
       from kakeibo
       where uid = :uid5 and getudo between :baseYM9 and :baseYM10
     ) as temp
     left join daikoumoku_ms as ms
     on temp.daikoumoku=ms.daikoumoku
+    and temp.uid = ms.uid
     group by COALESCE(ms.sort,999),temp.daikoumoku,temp.chuukoumoku 
     having temp.daikoumoku <> ''
     order by COALESCE(ms.sort,999),chuukoumoku 

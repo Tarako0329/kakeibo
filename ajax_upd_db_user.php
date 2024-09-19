@@ -9,6 +9,7 @@
   $status = "warning";
   $msg = "";
   try{
+    $pdo_h->beginTransaction();
     if($_POST["pass_hen"]==="true"){
       $pass = passEx($_POST["pass"],$_POST["uid"],NOM);
       log_writer("パスワード変更",$pass);
@@ -31,8 +32,11 @@
 
     upd_getudo($pdo_h,0,0);
 
+    $pdo_h->commit();
     $status = "success";
   }catch(Exception $e){
+    $pdo_h->rollBack();
+
     $status = "danger";
     $msg = json_encode($e, JSON_UNESCAPED_UNICODE);
   }

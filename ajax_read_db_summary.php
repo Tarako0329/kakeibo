@@ -8,6 +8,7 @@
     from kakeibo as kake
     left join daikoumoku_ms as ms
     on kake.daikoumoku=ms.daikoumoku
+    and kake.uid = ms.uid
     where uid = :uid and getudo between :from and :to 
     group by ms.sort,kake.daikoumoku,chuukoumoku 
     order by ms.sort,chuukoumoku";

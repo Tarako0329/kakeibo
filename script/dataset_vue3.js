@@ -340,7 +340,7 @@ const dataset = (Where_to_use) => createApp({
 		}
 
 		const read_db_meisai = () => {
-			console_log('read_db_meisai start')
+			console_log('dataset の read_db_meisai start')
 			axios
 			.get(`ajax_read_db_meisai.php?fm=${from.value}&to=${to.value}`)
 			.then((response) => {
@@ -365,7 +365,7 @@ const dataset = (Where_to_use) => createApp({
 				readdata_summary.value = []
 				console_log(response.data)
 				readdata_summary.value = [...response.data]
-				console_log('read_db_meisai succsess')
+				console_log('read_db_summary succsess')
 			})
 			.catch((error) => console.log(error));
 
@@ -522,6 +522,7 @@ const dataset = (Where_to_use) => createApp({
 			cgmode,
 			loader,
 			import_log,
+			daikoumoku_ms,
 		}
 	}
 });
@@ -642,7 +643,7 @@ const summary_bunseki = (Where_to_use) => createApp({
 		const read_db_meisai_and_summary = () => {
 			console_log('read_db_meisai_and_summary start')
 			read_db_summary()
-			read_db_meisai()
+			//read_db_meisai()
 		}
 
 		//データ編集モードの切り替え
@@ -668,7 +669,7 @@ const summary_bunseki = (Where_to_use) => createApp({
 						read_db_summary_long()
 					}
 					if(pagename.value==="data_summary.php"){
-						read_db_meisai()
+						//read_db_meisai()
 					}
 					if(pagename.value==="data_comparison.php"){
 						console_log('data_comparison root')
@@ -827,17 +828,17 @@ const summary_bunseki = (Where_to_use) => createApp({
 				ymd_from = ymd
 			}
 			console_log(`select * from kakeibo where getudo between ${ymd_from} and ${ymd} and daikoumoku=${dk} and chuukoumoku=${ck}`)
-			console_log('read_db_meisai start')
+			console_log('get_meisai start')
 			axios
 			.get(`ajax_read_db_meisai.php?fm=${ymd_from}&to=${ymd}&daikoumoku=${dk}&chuukoumoku=${ck}`)
 			.then((response) => {
 				console_log(response.data.meisai)
-				console_log('read_db_meisai succsess')
+				console_log('get_meisai succsess')
 				popup_meisai.value = response.data.meisai
 				document.getElementById('meisai_modal_btn').click()
 			})
 			.catch((error) => {
-				console_log('read_db_meisai error')
+				console_log('get_meisai error')
 				console.log(error)
 			});
 
@@ -875,7 +876,71 @@ const user_setting = () => createApp({
 		const pass2 = ref('')
 		const pass_hen = ref(false)
 		const loader = ref(false)
+
+		const page = ref('setting') //or master
+		const page_changer = (p_page) =>{
+			page.value = p_page
+			if(p_page==="setting"){
+				document.getElementById("setting").className = "nav-link active"
+				document.getElementById("master").className = "nav-link "
+			}else if(p_page==="master"){
+				document.getElementById("setting").className = "nav-link"
+				document.getElementById("master").className = "nav-link active"
+			}
+		}
+
 		const bunrui_ms = ref([])
+		const bunrui_ms_sort = computed(()=>{
+			return bunrui_ms.value.sort((a,b)=>{
+				return a.sort > b.sort?1:-1
+			})
+		})
+		const bunrui_ms_new = ref('')
+		const bunrui_ms_add = () =>{
+			if(!bunrui_ms_new.value){return 0}
+			let new_record = {
+				"uid" :uid
+				,"sort":10000
+				,"daikoumoku":bunrui_ms_new.value}
+			bunrui_ms.value.push(new_record)
+
+			bunrui_ms_new.value=""
+		}
+		const bunrui_ms_del = (index) =>{
+			bunrui_ms_sort.value.splice(index,1)
+		}
+
+		const onsubmit_ms =()=>{
+			loader.value = true
+			const params = new FormData();
+			//params.append('bunrui_ms', bunrui_ms.value);
+			params.append('mail', mail.value);
+			params.append('uid', uid.value);
+			let i = 0
+      bunrui_ms.value.forEach((row)=>{
+        params.append(`bunrui_ms[${i}][uid]`,row.uid)
+        params.append(`bunrui_ms[${i}][sort]`,row.sort)
+        params.append(`bunrui_ms[${i}][daikoumoku]`,row.daikoumoku)
+        i=i+1
+      })
+      
+
+			axios
+			.post(`ajax_upd_db_bunrui_ms.php`,params, {headers: {'Content-Type': 'multipart/form-data'}})
+			.then((response) => {
+				console_log(response.data)
+				alert("登録しました")
+				console_log('ajax_upd_db_bunrui_ms succsess')
+			})
+			.catch((error) => {
+				alert("登録失敗")
+				console_log('ajax_upd_db_bunrui_ms error')
+				console.log(error)
+			})
+			.finally(()=>{
+				loader.value = false
+			})
+		}
 
 		const get_user = () =>{
 			axios
@@ -905,7 +970,7 @@ const user_setting = () => createApp({
 				document.getElementById("pass2").disabled = true
 			}
 		})
-
+		
 		const onsubmit =()=>{
 			if(pass_hen.value){
 				if(pass.value!==pass2.value){
@@ -940,31 +1005,47 @@ const user_setting = () => createApp({
 			})
 		}
 
-		const move_recorde = (e,list) =>{
-			console_log(e.currentTarget)
-			console_log(list)
-			var data_transfer = e.dataTransfer;
+		const move_recorde = (e,index) =>{
+			//console_log(e.currentTarget)
+			//console_log(index)
 			// 出力テスト
-			data_transfer.setData( "text" , list);
-			console.log(data_transfer);
+			e.dataTransfer.setData( "index" , index);
 		}
-		const moving_recorde = (e) =>{
-			e.preventDefault();
-			console_log(e.currentTarget)
-			console_log("moving_recorde")
+		const moving_in = (e) =>{
+			console_log("moving_in")
+			//console_log(e.currentTarget)
+			e.currentTarget.classList.toggle("dragging")
 		}
-
+		const moving_out = (e) =>{
+			console_log("moving_out")
+			//console_log(e.currentTarget)
+			e.currentTarget.classList.toggle("dragging")
+		}
+		const dorpping = (e,p_sort) =>{
+			console_log("dorpping")
+			let index = e.dataTransfer.getData("index")
+			//console_log(bunrui_ms_sort.value[index])
+			if(bunrui_ms_sort.value[index].sort == Number(p_sort)){
+				//なにもしない
+			}else if(bunrui_ms_sort.value[index].sort > Number(p_sort)){
+				bunrui_ms_sort.value[index].sort = Number(p_sort) - 1
+			}else{
+				bunrui_ms_sort.value[index].sort = Number(p_sort) + 1
+			}
+			bunrui_ms_sort.value.forEach((list,index)=>{
+				list.sort = Number(index) * 10
+			})
+			console_log(bunrui_ms_sort.value)
+			e.currentTarget.classList.remove("dragging")
+			e.dataTransfer.clearData()
+		}
 		
 
 		onMounted(()=>{
 			get_user()
 			document.getElementById("pass").disabled = true
 			document.getElementById("pass2").disabled = true
-			document.getElementById("dropArea").addEventListener("dragover",(e)=>{
-				console_log("dropover")
-				e.preventDefault();
-			})
-	})
+		})
 		return{
 			kisanbi,
 			shukuzitu,
@@ -977,8 +1058,18 @@ const user_setting = () => createApp({
 			loader,
 			onsubmit,
 			bunrui_ms,
+			bunrui_ms_sort,
+			bunrui_ms_add,
+			bunrui_ms_new,
 			move_recorde,
-			moving_recorde,
+			moving_in,
+			moving_out,
+			dorpping,
+			page_changer,
+			page,
+			onsubmit_ms,
+			get_user,
+			bunrui_ms_del,
 		}
 	}
 });

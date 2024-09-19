@@ -19,6 +19,10 @@
 		html,body,main{
 			height:auto;
 		}
+		.dragging{
+			background-color:#FFA400;
+		  opacity: 0.5;
+		}
 	</style>
 	
 </head>
@@ -64,91 +68,111 @@
 		<MAIN class='container' style='color:#fff;'>
 			<ul class="nav nav-tabs">
 			  <li class="nav-item">
-			    <a class="nav-link active" aria-current="page" href="#">設定</a>
+			    <a role='button' class="nav-link active" aria-current="page" @click='page_changer("setting")' id='setting'>設定</a>
 			  </li>
 			  <li class="nav-item">
-			    <a class="nav-link" href="#">分類マスタ</a>
+			    <a role='button' class="nav-link " @click='page_changer("master")' id='master'>分類マスタ</a>
 			  </li>
-			  <!--<li class="nav-item">
-			    <a class="nav-link" href="#">Link</a>
-			  </li>
-			  <li class="nav-item">
-			    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-			  </li>-->
 			</ul>
-			<div class='row mt-3'>
-				<div class='col-lg-6 col-xl-5'>
-					<label for='mail' class='form-label'>メールアドレス</label>
-					<input type='mail' id='mail' class='form-control' v-model='mail'>
-				</div>
-			</div>
-			<hr>
-			<div class='row mt-3'>
-				<div class='col-lg-6 col-xl-5'>
-					<input type='checkbox' id='pass_hen' class='form-checkbox' v-model='pass_hen'>
-					<label for='pass_hen' class='form-label'>パスワードを変更する</label>
-				</div>
-				<div class='row mt-1 ps-5'>
+
+			<div v-if='page==="setting"'>
+				<div class='row mt-3'>
 					<div class='col-lg-6 col-xl-5'>
-						<label for='pass' class='form-label'>パスワード</label>
-						<input type='text' id='pass' class='form-control' v-model='pass'>
+						<label for='mail' class='form-label'>メールアドレス</label>
+						<input type='mail' id='mail' class='form-control' v-model='mail'>
 					</div>
 				</div>
-				<div class='row mt-1 ps-5'>
+				<hr>
+				<div class='row mt-3'>
 					<div class='col-lg-6 col-xl-5'>
-						<label for='pass2' class='form-label'>パスワード(再)</label>
-						<input type='password' id='pass2' class='form-control' v-model='pass2'>
-						<small v-show="pass!==pass2" style='color:red;'>パスワード不一致</small>
+						<input type='checkbox' id='pass_hen' class='form-checkbox' v-model='pass_hen'>
+						<label for='pass_hen' class='form-label'>パスワードを変更する</label>
+					</div>
+					<div class='row mt-1 ps-5'>
+						<div class='col-lg-6 col-xl-5'>
+							<label for='pass' class='form-label'>パスワード</label>
+							<input type='text' id='pass' class='form-control' v-model='pass'>
+						</div>
+					</div>
+					<div class='row mt-1 ps-5'>
+						<div class='col-lg-6 col-xl-5'>
+							<label for='pass2' class='form-label'>パスワード(再)</label>
+							<input type='password' id='pass2' class='form-control' v-model='pass2'>
+							<small v-show="pass!==pass2" style='color:red;'>パスワード不一致</small>
+						</div>
 					</div>
 				</div>
-			</div>
-			<hr>
-			<div class='row mt-3'>
-				<div class='col-lg-6 col-xl-5'>
-					<label for='kisanbi' class='form-label'>集計期間の設定</label>
-					<input type='number' id='kisanbi' class='form-control' v-model='kisanbi'>
-					<small>日から1ヵ月を集計する。</small>
+				<hr>
+				<div class='row mt-3'>
+					<div class='col-lg-6 col-xl-5'>
+						<label for='kisanbi' class='form-label'>集計期間の設定</label>
+						<input type='number' id='kisanbi' class='form-control' v-model='kisanbi'>
+						<small>日から1ヵ月を集計する。</small>
+					</div>
 				</div>
-			</div>
-			<div class='row mt-3'>
-				<div class='col-lg-6 col-xl-5'>
-					<label for='shukuzitu' class='form-label'>月度起算日が土日祝の場合</label>
-					<select id='shukuzitu' class='form-select' v-model='shukuzitu'>
-						<option value="0">そのまま適用する</option>
-						<option value="1">直前の平日を起算日とする（金曜日等）</option>
-						<option value="2">直後の平日を起算日とする（月曜日等）</option>
-					</select>
+				<div class='row mt-3'>
+					<div class='col-lg-6 col-xl-5'>
+						<label for='shukuzitu' class='form-label'>月度起算日が土日祝の場合</label>
+						<select id='shukuzitu' class='form-select' v-model='shukuzitu'>
+							<option value="0">そのまま適用する</option>
+							<option value="1">直前の平日を起算日とする（金曜日等）</option>
+							<option value="2">直後の平日を起算日とする（月曜日等）</option>
+						</select>
+					</div>
 				</div>
-			</div>
-			<div class='row mt-3'>
-				<div class='col-lg-6 col-xl-5'>
-					<label for='nendomatu' class='form-label'>年度末月</label>
-					<input type='number' id='nendomatu' class='form-control' v-model='nendomatu'>
+				<div class='row mt-3'>
+					<div class='col-lg-6 col-xl-5'>
+						<label for='nendomatu' class='form-label'>年度末月</label>
+						<input type='number' id='nendomatu' class='form-control' v-model='nendomatu'>
+					</div>
 				</div>
-			</div>
-			<div class='row mt-3'>
-				<div class='col-lg-6 col-xl-5'>
-					<button type='button' class='btn btn-outline-primary' @click='onsubmit'>登　録</button>
+				<div class='row mt-3'>
+					<div class='col-lg-6 col-xl-5'>
+						<button type='button' class='btn btn-outline-primary' @click='onsubmit'>登　録</button>
+					</div>
 				</div>
-			</div>
-			<div class='row mt-3'>
-				<table class='table table-sm table-hover'>
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>項目名</th>
-						</tr>
-					</thead>
-					<tbody>
-						<template v-for='(list,index) in bunrui_ms' :key='list.daikoumoku'>
-							<tr role='button' draggable="true" @dragstart='move_recorde($event,list)' >
-								<td>{{index}}</td>
-								<td>{{list.daikoumoku}}</td>
+			</div><!--setting-->
+
+			<div v-if='page==="master"'>
+				<div class='row mt-3 ps-5 pe-5'>
+					<table class='table table-sm table-hover'>
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>項目名</th>
+								<th>-</th>
 							</tr>
-						</template>
-					</tbody>
-				</table>
-				<div style="width:100px;height:100px;background-color:#fff;" id='dropArea'></div>
+						</thead>
+						<tbody>
+							<template v-for='(list,index) in bunrui_ms_sort' :key='list.daikoumoku'>
+								<tr role='button' draggable="true" @dragstart='move_recorde($event,index)' @dragenter='moving_in' @dragleave='moving_out' @dragover='$event.preventDefault()' @drop='dorpping($event,list.sort)'>
+									<td>{{index}}</td>
+									<td>{{list.daikoumoku}}</td>
+									<td><i class="bi bi-trash3" role='button' @click='bunrui_ms_del(index)'></i></td>
+								</tr>
+							</template>
+							<tr>
+								<td>追加</td>
+								<td>
+									<div class="input-group">
+										<input type='text' v-model='bunrui_ms_new' class='form-control form-control-sm' aria-describedby="button-addon2">
+										<button class="btn btn-outline-secondary p-0" type="button" id="button-addon2" @click='bunrui_ms_add'>追加</button>
+									</div>
+								</td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class='row mt-3'>
+				<div class='col-lg-4 col-xl-3'>
+						<button type='button' class='btn btn-outline-primary' @click='onsubmit_ms'>登　録</button>
+					</div>
+					<div class='col-lg-4 col-xl-3'>
+						<button type='button' class='btn btn-outline-primary' @click='get_user'>元の戻す</button>
+					</div>
+				</div>
+
 			</div>
 			<div class='logoff'><a href="logoff.php" class='a_none'><h1><i class="bi bi-box-arrow-right"></i></h1></a></div>
 		</MAIN>
@@ -156,47 +180,10 @@
 		  <div class="loader">Loading...</div>
 	  </div>
 	</div>
-	<div draggable="true" style="width:100px;height:100px;background-color:#fff;" id='dropArea2'></div>
-	<div draggable="true" style="width:100px;height:100px;background-color:#FFA400;" id='dropArea3'></div>
 	
 	<script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>
 	<script>
 		user_setting('<?php echo $_SESSION["mail"];?>').mount('#app');
-		document.getElementById("dropArea2").ondragstart = function (e){
-			console.log("ondragstart")
-			if(!e) e = window.event; // レガシー
-
-			// ------------------------------------------------------------
-			// DataTransfer オブジェクトを取得する
-			// ------------------------------------------------------------
-			var data_transfer = e.dataTransfer;
-
-			// ------------------------------------------------------------
-			// テキストデータをセットする
-			// ------------------------------------------------------------
-			data_transfer.setData( "text" , "テスト文字列です" );
-
-			try{
-				// ------------------------------------------------------------
-				// 「コンテンツタイプ」を指定して「データ」を格納する（HTML5 世代）
-				// ------------------------------------------------------------
-				data_transfer.setData( "text/plain" , "テスト文字列です" );
-				data_transfer.setData( "text/html"  , "<span>テスト文字列です</span>" );
-
-			}catch(e){
-			}
-		};
-		document.getElementById("dropArea3").addEventListener("ondragover" , function (e){
-			// ドロップを許可し受け入れを表明
-			alert("dragover")
-			console.log("dragover")
-			e.preventDefault();
-		});
-		document.getElementById("dropArea3").addEventListener("ondrop",(e)=>{
-			alert("dragover")
-			console.log("drop")
-			e.preventDefault();
-		})
 	</script>
 
 </BODY>

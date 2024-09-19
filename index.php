@@ -182,7 +182,14 @@
                   <button type='button' class='btn btn-success btn-sm' @click='hanei("cshuppi")'>↓反映</button>
                 </td>
                 <td>
-                  <input type="text" id='cdaikou' class='form-control form-control-sm' placeholder="一括変更" style='margin-bottom:3px;'>
+                  <!--<input type="text" id='cdaikou' class='form-control form-control-sm' placeholder="一括変更" style='margin-bottom:3px;'>-->
+                  <select id='cdaikou' class='form-select form-select-sm' placeholder="一括変更" style='margin-bottom:3px;'>
+                    <option value=""></option>
+                    <template v-for='(list,index) in daikoumoku_ms' :key='list.daikoumoku'>
+                      <option :value=list.daikoumoku>{{list.daikoumoku}}</option>
+                    </template>
+                  </select>
+
                   <button type='button' class='btn btn-success btn-sm' @click='hanei("cdaikou")'>↓反映</button>
                 </td>
                 <td>
@@ -203,7 +210,14 @@
                 <td><input @change='upd(index,"meisai")' v-model='list.fl_meisai' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
                 <td><input @change='upd(index,"kin")' v-model='list.fl_kin' :disabled='meisai_disable' class="form-control form-control-sm text-end wd100" type="number" placeholder=""></td>
                 <td><input @change='upd(index,"shuppimoto")' v-model='list.fl_shuppimoto' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
-                <td><input @change='upd(index,"daikoumoku")' v-model='list.fl_daikoumoku' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
+                <!--<td><input @change='upd(index,"daikoumoku")' v-model='list.fl_daikoumoku' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>-->
+                <td>
+                  <select @change='upd(index,"daikoumoku")' v-model='list.fl_daikoumoku' :disabled='meisai_disable' class="form-select form-select-sm" placeholder="">
+                    <template v-for='(list,index) in daikoumoku_ms' :key='list.daikoumoku'>
+                      <option :value=list.daikoumoku>{{list.daikoumoku}}</option>
+                    </template>
+                  </select>
+                </td>
                 <td><input @change='upd(index,"chuukoumoku")' v-model='list.fl_chuukoumoku' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
                 <td><input @change='upd(index,"memo")' v-model='list.fl_memo' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
                 </tr>
