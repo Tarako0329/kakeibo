@@ -62,6 +62,20 @@
 			</div>
 		</HEADER>
 		<MAIN class='container' style='color:#fff;'>
+			<ul class="nav nav-tabs">
+			  <li class="nav-item">
+			    <a class="nav-link active" aria-current="page" href="#">設定</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="#">分類マスタ</a>
+			  </li>
+			  <!--<li class="nav-item">
+			    <a class="nav-link" href="#">Link</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+			  </li>-->
+			</ul>
 			<div class='row mt-3'>
 				<div class='col-lg-6 col-xl-5'>
 					<label for='mail' class='form-label'>メールアドレス</label>
@@ -117,16 +131,73 @@
 					<button type='button' class='btn btn-outline-primary' @click='onsubmit'>登　録</button>
 				</div>
 			</div>
+			<div class='row mt-3'>
+				<table class='table table-sm table-hover'>
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>項目名</th>
+						</tr>
+					</thead>
+					<tbody>
+						<template v-for='(list,index) in bunrui_ms' :key='list.daikoumoku'>
+							<tr role='button' draggable="true" @dragstart='move_recorde($event,list)' >
+								<td>{{index}}</td>
+								<td>{{list.daikoumoku}}</td>
+							</tr>
+						</template>
+					</tbody>
+				</table>
+				<div style="width:100px;height:100px;background-color:#fff;" id='dropArea'></div>
+			</div>
 			<div class='logoff'><a href="logoff.php" class='a_none'><h1><i class="bi bi-box-arrow-right"></i></h1></a></div>
 		</MAIN>
 		<div class="loader-wrap" v-show='loader'>
 		  <div class="loader">Loading...</div>
 	  </div>
 	</div>
+	<div draggable="true" style="width:100px;height:100px;background-color:#fff;" id='dropArea2'></div>
+	<div draggable="true" style="width:100px;height:100px;background-color:#FFA400;" id='dropArea3'></div>
 	
 	<script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>
 	<script>
 		user_setting('<?php echo $_SESSION["mail"];?>').mount('#app');
+		document.getElementById("dropArea2").ondragstart = function (e){
+			console.log("ondragstart")
+			if(!e) e = window.event; // レガシー
+
+			// ------------------------------------------------------------
+			// DataTransfer オブジェクトを取得する
+			// ------------------------------------------------------------
+			var data_transfer = e.dataTransfer;
+
+			// ------------------------------------------------------------
+			// テキストデータをセットする
+			// ------------------------------------------------------------
+			data_transfer.setData( "text" , "テスト文字列です" );
+
+			try{
+				// ------------------------------------------------------------
+				// 「コンテンツタイプ」を指定して「データ」を格納する（HTML5 世代）
+				// ------------------------------------------------------------
+				data_transfer.setData( "text/plain" , "テスト文字列です" );
+				data_transfer.setData( "text/html"  , "<span>テスト文字列です</span>" );
+
+			}catch(e){
+			}
+		};
+		document.getElementById("dropArea3").addEventListener("ondragover" , function (e){
+			// ドロップを許可し受け入れを表明
+			alert("dragover")
+			console.log("dragover")
+			e.preventDefault();
+		});
+		document.getElementById("dropArea3").addEventListener("ondrop",(e)=>{
+			alert("dragover")
+			console.log("drop")
+			e.preventDefault();
+		})
 	</script>
+
 </BODY>
 </html>

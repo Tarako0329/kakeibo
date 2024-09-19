@@ -875,6 +875,7 @@ const user_setting = () => createApp({
 		const pass2 = ref('')
 		const pass_hen = ref(false)
 		const loader = ref(false)
+		const bunrui_ms = ref([])
 
 		const get_user = () =>{
 			axios
@@ -886,6 +887,7 @@ const user_setting = () => createApp({
 				nendomatu.value = response.data.user[0].nendomatu
 				uid.value = response.data.user[0].uid
 				mail.value = response.data.user[0].mail
+				bunrui_ms.value = response.data.bunrui_ms
 				console_log('ajax_read_db_user succsess')
 			})
 			.catch((error) => {
@@ -938,10 +940,30 @@ const user_setting = () => createApp({
 			})
 		}
 
+		const move_recorde = (e,list) =>{
+			console_log(e.currentTarget)
+			console_log(list)
+			var data_transfer = e.dataTransfer;
+			// 出力テスト
+			data_transfer.setData( "text" , list);
+			console.log(data_transfer);
+		}
+		const moving_recorde = (e) =>{
+			e.preventDefault();
+			console_log(e.currentTarget)
+			console_log("moving_recorde")
+		}
+
+		
+
 		onMounted(()=>{
 			get_user()
 			document.getElementById("pass").disabled = true
 			document.getElementById("pass2").disabled = true
+			document.getElementById("dropArea").addEventListener("dragover",(e)=>{
+				console_log("dropover")
+				e.preventDefault();
+			})
 	})
 		return{
 			kisanbi,
@@ -954,6 +976,9 @@ const user_setting = () => createApp({
 			pass_hen,
 			loader,
 			onsubmit,
+			bunrui_ms,
+			move_recorde,
+			moving_recorde,
 		}
 	}
 });

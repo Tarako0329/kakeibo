@@ -70,7 +70,6 @@
 		</HEADER>
 
 
-		<!--<MAIN class='container-fluid' style='color:#fff;padding-left:60px;padding-right:60px;'>-->
 		<MAIN class='container' style='color:#fff;'>
 		<div class='row' style='min-height:240px;'>
 			<div class='col-xl-12' style='height:100%;display:flex;justify-content: center;'>
@@ -118,39 +117,7 @@
 										<td class='text-end'>{{Number(list.m2d).toLocaleString()}}</td>
 										<td class='text-end'>{{Number(list.m1d).toLocaleString()}}</td>
 									</tr>
-									<!--<tr v-if='list.daikoumoku===open_fil' class='fadein'>
-										<td class='sticky-left'>　{{list["chuukoumoku"]}}</td>
-										<td class='text-end' @click='get_meisai(readdata_summary.label[0],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m12c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m11c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m10c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m9c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m8c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m7c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m6c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m5c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m4c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m3c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m2c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m1c).toLocaleString()}}</td>
-									</tr>-->
 								</template>
-								<!--<template v-if='index!==0 && list["daikoumoku"]===readdata_summary.data[index -1]["daikoumoku"]'>
-									<tr v-if='list.daikoumoku===open_fil' class='fadein'>
-										<td class='sticky-left'>　{{list["chuukoumoku"]}}</td>
-										<td class='text-end' @click='get_meisai(readdata_summary.label[0],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m12c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m11c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m10c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m9c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m8c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m7c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m6c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m5c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m4c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m3c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m2c).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m1c).toLocaleString()}}</td>
-									</tr>
-								</template>-->
 								<tr v-if='list.daikoumoku===open_fil' class='fadein'>
 										<td class='sticky-left'>　{{list["chuukoumoku"]}}</td>
 										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[0],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m12c).toLocaleString()}}</td>
@@ -168,16 +135,6 @@
 									</tr>
 							</template>
 						</tbody>
-						<!--
-						<tfoot class='sticky-bottom'>
-							<tr class='table-success'>
-								<td class='text-center'>入出金計</td>
-								<td class='text-end'>{{Number(comparison_sum_val["zen"]).toLocaleString()}}</td>
-								<td class='text-end'>{{Number(comparison_sum_val["tou"]).toLocaleString()}}</td>
-								<td class='text-end'>{{Number(comparison_sum_val["sa"]).toLocaleString()}}</td>
-							</tr>
-						</tfoot>
-						-->
 					</table>
 				</div>
 			</div>

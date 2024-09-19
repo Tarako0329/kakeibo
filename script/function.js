@@ -7,7 +7,7 @@ const console_log=(log)=>{
   if(uri.hostname==="localhost"){
     console.log(log)
   }else{
-    console.log(log)
+    //console.log(log)
   }
 }
 

@@ -15,9 +15,19 @@
 	$stmt->execute();
 	$dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+	$sql = "select *
+		from daikoumoku_ms
+		where uid = :uid
+		order by sort";
+	$stmt = $pdo_h->prepare($sql);
+	$stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
+	$stmt->execute();
+	$dataset2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 	$return = array(
 		"user" => $dataset,
+		"bunrui_ms" => $dataset2,
 	);
 
 	header('Content-type: application/json');  
