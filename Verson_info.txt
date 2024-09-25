@@ -27,7 +27,10 @@ ver1.08.1:Zaim.net　読み込み対応
 ver1.08.2:マネフォワ修正
 ver1.09.1:取込履歴追加-commited
 ver1.10.0:グラフ画面内訳取得-commited
-ver1.11.0:マスタ設定
+ver1.11.0:マスタ設定-commited
+ver1.12.0:レコード分割機能-commited
+  ALTER TABLE `kakeibo` ADD `SEQ` INT NOT NULL AUTO_INCREMENT AFTER `upddatetime`, ADD PRIMARY KEY (`SEQ`);
+  ALTER TABLE `kakeibo` ADD `b_moto` TINYINT NOT NULL COMMENT '1:分割元' AFTER `SEQ`, ADD `b_pair_no` INT NOT NULL COMMENT '分割グループNO' AFTER `b_moto`;
 
 
 

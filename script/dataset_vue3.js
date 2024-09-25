@@ -4,6 +4,7 @@ const dataset = (Where_to_use) => createApp({
 		const pagename = ref(Where_to_use)
 		const readdata = ref([])
 		const readdata_summary = ref([])
+		const max_pair_no = ref(0)
 		
 		const daikoumoku_ms = ref([])
 		const input_file_btn = () =>{
@@ -80,9 +81,30 @@ const dataset = (Where_to_use) => createApp({
 		const sum_kingaku = ref(0)
 		const sum_kingaku2 = ref(0)
 		const readdata_filter = computed(() => {
-			if (readdata.value.length===0) {return readdata.value}
+			let return_data
+			/*if (readdata.value.length===0) {return readdata.value}
+				else{
+					return readdata.value.filter((record) => {
+						return (
+							record.date.includes(fl_date.value.toString().trim())
+							&&
+							record.meisai.includes(fl_meisai.value.toString().trim())
+							&&
+							record.kin.toString().includes(fl_kin.value.toString().trim())
+							&&
+							record.shuppimoto.includes(fl_shuppimoto.value.toString().trim())
+							&&
+							record.daikoumoku.includes(fl_dai_ko.value.toString().trim())
+							&&
+							record.chuukoumoku.includes(fl_chuu_ko.value.toString().trim())
+							&&
+							record.memo.includes(fl_memo.value.toString().trim()) 
+							);
+					});
+				}*/
+			if (readdata.value.length===0) {return_data = readdata.value}
 			else{
-				return readdata.value.filter((record) => {
+				return_data = readdata.value.filter((record) => {
 					return (
 						record.date.includes(fl_date.value.toString().trim())
 						&&
@@ -99,7 +121,10 @@ const dataset = (Where_to_use) => createApp({
 						record.memo.includes(fl_memo.value.toString().trim()) 
 						);
 				});
-			} 
+			}
+			return return_data.sort((a,b)=>{
+				return (a.date+a.b_pair_no+a.b_moto+a.meisai+a.memo+a.kin < b.date+b.b_pair_no+b.b_moto+b.meisai+b.memo+b.kin ?1:-1)
+			})
 		})
 		const filter_reset = () =>{
 			fl_date.value       = ''
@@ -307,6 +332,10 @@ const dataset = (Where_to_use) => createApp({
 
 		const hanei = (id) => {//一括変更
 			console_log('hanei start')
+			if(meisai_disable.value  !== false){
+				alert("「修正モード」ボタンを押してください。")
+				return 0
+			}
 			let val = document.getElementById(id).value
 			//console_log(val)
 			readdata_filter.value.forEach((list)=>{
@@ -345,9 +374,11 @@ const dataset = (Where_to_use) => createApp({
 			.get(`ajax_read_db_meisai.php?fm=${from.value}&to=${to.value}`)
 			.then((response) => {
 				readdata.value = []
-				//console_log(response.data)
-				readdata.value = [...response.data.meisai]
-				daikoumoku_ms.value = [...response.data.daikou_ms]
+				console_log(response.data)
+				readdata.value = response.data.meisai
+				daikoumoku_ms.value = response.data.daikou_ms
+				max_pair_no.value = response.data.max_pair_no.max_pair_no
+				
 				search_disable.value = false
 				meisai_disable.value  = true
 				//console_log(get_sortNO("収入"))
@@ -435,35 +466,11 @@ const dataset = (Where_to_use) => createApp({
 		const search_disable = ref(false)
 		const meisai_disable = ref(true)
 		const cgmode =()=>{
-			search_disable.value = true
-			meisai_disable.value  = false
+			search_disable.value = true			//期間検索をOFFにする
+			meisai_disable.value  = false		//明細変更をONにする
 		}
 
 		const ymlist = ref([])
-		onMounted(()=>{
-			console_log("onMounted")
-			if(pagename.value!=="data_custmer.php"){
-				axios
-				.get(`ajax_read_db_meisai_ymlist.php`)
-				.then((response) => {
-					ymlist.value = []
-					//console_log(response.data)
-					ymlist.value = response.data
-					from.value = ymlist.value.max_min[0].max_getudo
-					console_log('ajax_read_db_meisai_ymlist succsess')
-					if(pagename.value==="index.php"){
-						read_db_meisai()
-					}
-				})
-				.catch((error) => console.log(error));
-
-				get_import_log()
-			}
-
-		})
-		onBeforeMount(()=>{
-			console_log("onBeforeMount:"+pagename.value)
-		})
 
 		const upd = (index,colom) =>{
 			console_log(`upd -> ${index}:${colom}`)
@@ -481,6 +488,135 @@ const dataset = (Where_to_use) => createApp({
 			})
 			.catch((error) => console.log(error));
 		}
+
+		//明細分割
+		const bunkatu_index = ref(0)
+		const bunkatu_data = ref([])
+		const bunkatu = (index) =>{
+			if(meisai_disable.value  !== false){
+				alert("「修正モード」ボタンを押してください。")
+				return 0
+			}else{
+				document.getElementById('meisai_bunkatu_modal_open').click()
+			}
+			bunkatu_index.value = index
+			bunkatu_data.value=[]
+			bunkatu_data.value.push({...readdata_filter.value[index]})
+			bunkatu_data.value.push({...readdata_filter.value[index]})
+			console_log(bunkatu_index.value)
+		}
+		const bunkatu_add = (index) =>{
+			bunkatu_data.value.push({...readdata_filter.value[index]})
+		}
+
+		const split_kingaku_chk = ()=>{
+			console_log(bunkatu_index.value)
+			//console_log(readdata_filter.value[bunkatu_index.value])
+			let goukei = 0
+			bunkatu_data.value.forEach((list)=>{
+				goukei = Number(goukei) + Number(list.fl_kin)
+			})
+			//console_log(readdata_filter.value[bunkatu_index.value].fl_kin)
+			
+			
+			if(Number(goukei)!==Number(readdata_filter.value[bunkatu_index.value].fl_kin)){
+				alert("分割後の合計金額が不足してます")
+				return 0
+			}
+			if(confirm("明細を分割してよいですか？")){
+				console_log("いいよ")
+				//ソート前データを編集
+				let shori_seq = readdata_filter.value[bunkatu_index.value].SEQ
+				//let shori_index = 0
+				let moto_aka_data = []
+				readdata.value.forEach((list,index)=>{
+					if(list.SEQ === shori_seq){
+						list.b_moto = 2
+						list.b_pair_no = Number(max_pair_no.value) + Number(1)
+						//shori_index = index
+						console_log(list)
+						moto_aka_data = {...list}
+					}
+				})
+				moto_aka_data.b_moto = 1
+				moto_aka_data.SEQ = -1
+				moto_aka_data.fl_kin = Number(moto_aka_data.fl_kin) * Number(-1)
+				moto_aka_data.kin = Number(moto_aka_data.kin) * Number(-1)
+				readdata.value.push({...moto_aka_data})
+
+				let local_seq = -2
+				bunkatu_data.value.forEach((list)=>{
+					list.b_pair_no = Number(max_pair_no.value) + Number(1)
+					list.meisai = list.fl_meisai
+					list.kin = list.fl_kin
+					list.daikoumoku = list.fl_daikoumoku
+					list.chuukoumoku = list.fl_chuukoumoku
+					list.memo = list.fl_memo
+					list.SEQ = local_seq
+					readdata.value.push({...list})
+
+					local_seq = Number(local_seq) - Number(1)
+				})
+				max_pair_no.value = Number(max_pair_no.value) + Number(1)
+				document.getElementById('modal_close').click()
+			}
+		}
+
+		const bunkatu_modosu = (index) =>{
+			if(meisai_disable.value  !== false){
+				alert("「修正モード」ボタンを押してください。")
+				return 0
+			}
+			if(confirm("分割した明細を元に戻しますか？")){
+				console_log("いいよ")
+				let p_b_pair_no = readdata_filter.value[index].b_pair_no
+				console_log(p_b_pair_no)
+				readdata.value.forEach((list,index)=>{
+					if(list.b_pair_no === p_b_pair_no){
+						if(list.b_moto===2){
+							list.b_moto = 0
+							list.b_pair_no = 0
+						}else{
+							console_log(`SEQ:${list.SEQ} 削除`)
+							//list.toSpliced(0)
+							console_log(list)
+							delete readdata.value[index]
+							console_log(list)
+						}
+					}
+				})
+
+			}else{
+
+			}
+
+		}
+
+		onMounted(()=>{
+			console_log("onMounted")
+		})
+		onBeforeMount(()=>{
+			console_log("onBeforeMount:"+pagename.value)
+			if(pagename.value!=="data_custmer.php"){
+				axios
+				.get(`ajax_read_db_meisai_ymlist.php`)
+				.then((response) => {
+					ymlist.value = []
+					//console_log(response.data)
+					ymlist.value = response.data
+					from.value = ymlist.value.max_min[0].max_getudo
+					console_log('ajax_read_db_meisai_ymlist succsess')
+					if(pagename.value==="index.php"){
+						read_db_meisai()
+						
+					}
+				})
+				.catch((error) => console.log(error));
+
+				get_import_log()
+			}
+		})
+
 		return{
 			upd,
 			readdata,
@@ -523,6 +659,13 @@ const dataset = (Where_to_use) => createApp({
 			loader,
 			import_log,
 			daikoumoku_ms,
+			bunkatu_index,
+			bunkatu,
+			bunkatu_add,
+			bunkatu_data,
+			split_kingaku_chk,
+			max_pair_no,
+			bunkatu_modosu
 		}
 	}
 });

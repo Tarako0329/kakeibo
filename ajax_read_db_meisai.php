@@ -26,6 +26,9 @@
       ,kake.daikoumoku as fl_daikoumoku
       ,chuukoumoku as fl_chuukoumoku
       ,memo as fl_memo
+      ,b_moto
+      ,b_pair_no
+      ,SEQ
     from kakeibo as kake
     left join daikoumoku_ms as ms
     on kake.daikoumoku=ms.daikoumoku
@@ -34,7 +37,7 @@
       and getudo between :from and :to 
       and kake.daikoumoku like :daikoumoku
       and kake.chuukoumoku like :chuukoumoku
-    order by date,meisai,memo,kin";
+    order by date desc,b_pair_no desc,b_moto desc,meisai,memo,kin";
 	$stmt = $pdo_h->prepare($sql);
 	$stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
   $stmt->bindValue("from", $_GET["fm"], PDO::PARAM_STR);
@@ -52,9 +55,17 @@
 	$stmt->execute();
 	$dataset2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+  $sql = "select max(b_pair_no) as max_pair_no from kakeibo
+    where uid = :uid group by uid";
+	$stmt = $pdo_h->prepare($sql);
+	$stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
+	$stmt->execute();
+	$dataset3 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
   $return = array(
     "meisai" => $dataset,
-    "daikou_ms" => $dataset2
+    "daikou_ms" => $dataset2,
+    "max_pair_no" => $dataset3[0],
   );
 
   header('Content-type: application/json');  

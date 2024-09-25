@@ -20,6 +20,12 @@
     //共通部分、bootstrap設定、フォントCND、ファビコン等
     include "head_bs5.php" 
     ?>
+    <style>
+      table{.btn, .form-control, .form-select{
+        width: 100%;
+      }}
+    </style>
+    
     <script src="./script/flow.js"></script>
     <TITLE><?php echo $title;?></TITLE>
 </head>

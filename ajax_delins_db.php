@@ -5,8 +5,9 @@
     exit();
   }
   //log_writer("\$POST",$_POST);
-
+  
   $dataset = json_decode($_POST["csv"], true);
+  log_writer("\$dataset",$dataset);
   $start_date = $_POST["start"];
   $end_date = $_POST["end"];
   $start_YM = $_POST["startYM"];
@@ -27,10 +28,13 @@
   
     $stmt->execute();
     
-    $sql = "insert into kakeibo(uid,guid,date,meisai,kin,shuppimoto,daikoumoku,chuukoumoku,memo) values(:uid,:guid,:date,:meisai,:kin,:shuppimoto,:daikoumoku,:chuukoumoku,:memo)";
+    $sql = "insert into kakeibo(uid,guid,date,meisai,kin,shuppimoto,daikoumoku,chuukoumoku,memo,b_moto,b_pair_no) values(:uid,:guid,:date,:meisai,:kin,:shuppimoto,:daikoumoku,:chuukoumoku,:memo,:b_moto,:b_pair_no)";
     $stmt = $pdo_h->prepare($sql);
     foreach($dataset as $row){
       //log_writer("\$row[date]",$row[0]);
+      if(empty($row)){
+        continue;
+      }
       $guid = empty($row["guid"])?getGUID():$row["guid"];
 
       $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
@@ -42,6 +46,8 @@
       $stmt->bindValue("daikoumoku", $row["daikoumoku"], PDO::PARAM_STR);
       $stmt->bindValue("chuukoumoku", $row["chuukoumoku"], PDO::PARAM_STR);
       $stmt->bindValue("memo", empty($row["memo"])?"":$row["memo"], PDO::PARAM_STR);
+      $stmt->bindValue("b_moto", $row["b_moto"], PDO::PARAM_INT);
+      $stmt->bindValue("b_pair_no", $row["b_pair_no"], PDO::PARAM_INT);
       $stmt->execute();
     }
     

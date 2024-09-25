@@ -14,6 +14,9 @@
       .navbtn{
         width:100px;
       }
+      table{.btn, .form-control, .form-select{
+        width: 100%;
+      }}
     </style>
 </head>
 <BODY id = 'body' style='background:black;' >
@@ -108,9 +111,9 @@
             <thead class='sticky-top'><!--sticky-top-->
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">日付</th>
+                <th class='wd100' scope="col">日付</th>
                 <th scope="col">明細</th>
-                <th scope="col">入出金額</th>
+                <th class='wd130' scope="col">入出金額</th>
                 <th scope="col">出費元</th>
                 <th scope="col">大項目</th>
                 <th scope="col">中項目</th>
@@ -203,24 +206,65 @@
               </tr>
             </thead>
             <tbody>
-              <template v-for='(list,index) in readdata_filter' :key="list.guid">
-                <tr>
-                <td>{{list.No}}</td>
-                <td><input v-model='list.date' :disabled='meisai_disable' class="form-control form-control-sm wd90" type="date" placeholder=""></td>
-                <td><input @change='upd(index,"meisai")' v-model='list.fl_meisai' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
-                <td><input @change='upd(index,"kin")' v-model='list.fl_kin' :disabled='meisai_disable' class="form-control form-control-sm text-end wd100" type="number" placeholder=""></td>
-                <td><input @change='upd(index,"shuppimoto")' v-model='list.fl_shuppimoto' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
-                <!--<td><input @change='upd(index,"daikoumoku")' v-model='list.fl_daikoumoku' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>-->
-                <td>
-                  <select @change='upd(index,"daikoumoku")' v-model='list.fl_daikoumoku' :disabled='meisai_disable' class="form-select form-select-sm" placeholder="">
-                    <template v-for='(list,index) in daikoumoku_ms' :key='list.daikoumoku'>
-                      <option :value=list.daikoumoku>{{list.daikoumoku}}</option>
-                    </template>
-                  </select>
-                </td>
-                <td><input @change='upd(index,"chuukoumoku")' v-model='list.fl_chuukoumoku' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
-                <td><input @change='upd(index,"memo")' v-model='list.fl_memo' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
+              <template v-for='(list,index) in readdata_filter' :key="list.SEQ">
+
+              <tr v-if='list.b_pair_no===0' >
+                  <td><button type='button' class='btn btn-outline-secondary btn-sm ps-1 pe-1 pt-0 pb-0' @click='bunkatu(index)'>
+                    <i class="bi bi-arrows-expand"></i></button>
+                  </td>
+                  <td><input v-model='list.date' :disabled='meisai_disable' class="form-control form-control-sm wd90" type="date" placeholder=""></td>
+                  <td><input @change='upd(index,"meisai")' v-model='list.fl_meisai' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
+                  <td><input @change='upd(index,"kin")' v-model='list.fl_kin' :disabled='meisai_disable' class="form-control form-control-sm text-end wd100" type="number" placeholder=""></td>
+                  <td><input @change='upd(index,"shuppimoto")' v-model='list.fl_shuppimoto' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
+                  <td>
+                    <select @change='upd(index,"daikoumoku")' v-model='list.fl_daikoumoku' :disabled='meisai_disable' class="form-select form-select-sm" placeholder="">
+                      <template v-for='(list,index) in daikoumoku_ms' :key='list.daikoumoku'>
+                        <option :value=list.daikoumoku>{{list.daikoumoku}}</option>
+                      </template>
+                    </select>
+                  </td>
+                  <td><input @change='upd(index,"chuukoumoku")' v-model='list.fl_chuukoumoku' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
+                  <td><input @change='upd(index,"memo")' v-model='list.fl_memo' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
                 </tr>
+
+                <tr v-else-if='list.b_moto!==0' class="table-secondary">
+                  <td>
+                    <button v-if='list.b_moto===2' type='button' class='btn btn-outline-danger btn-sm ps-1 pe-1 pt-0 pb-0' @click='bunkatu_modosu(index)'><i class="bi bi-arrows-collapse"></i></button>
+                  </td>
+                  <td><input v-model='list.date' disabled class="form-control form-control-sm wd90" type="date" placeholder=""></td>
+                  <td><input @change='upd(index,"meisai")' v-model='list.fl_meisai' disabled class="form-control form-control-sm" type="text" placeholder=""></td>
+                  <td><input @change='upd(index,"kin")' v-model='list.fl_kin' disabled class="form-control form-control-sm text-end wd100" type="number" placeholder=""></td>
+                  <td><input @change='upd(index,"shuppimoto")' v-model='list.fl_shuppimoto' disabled class="form-control form-control-sm" type="text" placeholder=""></td>
+                  <td>
+                    <select @change='upd(index,"daikoumoku")' v-model='list.fl_daikoumoku' disabled class="form-select form-select-sm" placeholder="">
+                      <template v-for='(list,index) in daikoumoku_ms' :key='list.daikoumoku'>
+                        <option :value=list.daikoumoku>{{list.daikoumoku}}</option>
+                      </template>
+                    </select>
+                  </td>
+                  <td><input @change='upd(index,"chuukoumoku")' v-model='list.fl_chuukoumoku' disabled class="form-control form-control-sm" type="text" placeholder=""></td>
+                  <td><input @change='upd(index,"memo")' v-model='list.fl_memo' disabled class="form-control form-control-sm" type="text" placeholder=""></td>
+                </tr>
+
+                <tr v-else-if='list.b_pair_no!==0' class="table-info">
+                  <td><!--<button type='button' class='btn btn-outline-secondary btn-sm ps-1 pe-1 pt-0 pb-0' @click='bunkatu(index)'>
+                    <i class="bi bi-arrows-expand"></i></button>-->
+                  </td>
+                  <td><input v-model='list.date' disabled class="form-control form-control-sm wd90" type="date" placeholder=""></td>
+                  <td><input @change='upd(index,"meisai")' v-model='list.fl_meisai' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
+                  <td><input @change='upd(index,"kin")' v-model='list.fl_kin' disabled class="form-control form-control-sm text-end wd100" type="number" placeholder=""></td>
+                  <td><input @change='upd(index,"shuppimoto")' v-model='list.fl_shuppimoto' disabled class="form-control form-control-sm" type="text" placeholder=""></td>
+                  <td>
+                    <select @change='upd(index,"daikoumoku")' v-model='list.fl_daikoumoku' :disabled='meisai_disable' class="form-select form-select-sm" placeholder="">
+                      <template v-for='(list,index) in daikoumoku_ms' :key='list.daikoumoku'>
+                        <option :value=list.daikoumoku>{{list.daikoumoku}}</option>
+                      </template>
+                    </select>
+                  </td>
+                  <td><input @change='upd(index,"chuukoumoku")' v-model='list.fl_chuukoumoku' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
+                  <td><input @change='upd(index,"memo")' v-model='list.fl_memo' :disabled='meisai_disable' class="form-control form-control-sm" type="text" placeholder=""></td>
+                </tr>
+
               </template>
             </tbody>
             <tfoot class='sticky-bottom'>
@@ -236,18 +280,77 @@
               </tr>
             </tfoot>
           </table>
+          <button style="display: none;" type="button" data-bs-toggle='modal' data-bs-target='#meisai_bunkatu_modal' id='meisai_bunkatu_modal_open'>open</button>
         </div>
       </div>
     </div>
     <div class='logoff'><a href="logoff.php" class='a_none'><h1><i class="bi bi-box-arrow-right"></i></h1></a></div>
     </MAIN> 
-    <div class="loader-wrap" v-show='loader'>
+    <div class='modal fade' id='meisai_bunkatu_modal' tabindex='-1' role='dialog' aria-labelledby='basicModal' aria-hidden='true'>
+			<div class='modal-dialog  modal-dialog-centered modal-dialog-scrollable modal-lg'>
+				<div class='modal-content edit' style=''>
+					<div class='modal-header'>
+	      		<h5 class="modal-title">明細分割</h5>
+  	    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='modal_close'></button>
+					</div>
+					<div class='modal-body container'>
+            <div class='row'>
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>明細</th>
+                    <th>入出金額</th>
+                    <th>大項目</th>
+                    <th>中項目</th>
+                    <th>メモ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template v-for='(list,index) in readdata_filter' :key="list.SEQ">
+                    <tr v-if='index==bunkatu_index'>
+                      <td>{{list.fl_meisai}}</td>
+                      <td>{{list.fl_kin}}</td>
+                      <td>{{list.fl_daikoumoku}}</td>
+                      <td>{{list.fl_chuukoumoku}}</td>
+                      <td>{{list.fl_memo}}</td>
+                    </tr>
+                  </template>
+                  <tr>
+                    <td class='text-center' colspan="5"><button type='button' class='btn btn-secondary btn-sm ps-1 pe-1 pt-0 pb-0 w80' @click='bunkatu_add(bunkatu_index)'>
+                      <i class="bi bi-arrows-expand"></i></button>
+                    </td>
+                  </tr>
+                  <template v-for='(list,index) in bunkatu_data' :key="index">
+                  <tr>
+                    <td><input type='text' class='form-control form-control-sm' v-model='list.fl_meisai'></td>
+                    <td><input type='number' class='form-control form-control-sm' v-model='list.fl_kin'></td>
+                    <td><select  class='form-select form-select-sm' v-model='list.fl_daikoumoku'>
+                      <template v-for='(list,index) in daikoumoku_ms' :key='list.daikoumoku'>
+                        <option :value=list.daikoumoku>{{list.daikoumoku}}</option>
+                      </template>
+                      </select>
+                    </td>
+                    <td><input type='text' class='form-control form-control-sm' v-model='list.fl_chuukoumoku'></td>
+                    <td><input type='text' class='form-control form-control-sm' v-model='list.fl_memo'></td>
+                  </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+					</div>
+					<div class='modal-footer'>
+            <button type='button' class='btn btn-primary' @click='split_kingaku_chk'>確　定</button>
+					</div>
+				</div>
+      </div>
+    </div>
+   <div class="loader-wrap" v-show='loader'>
 		  <div class="loader">Loading...</div>
 	  </div>
   </div>
   <script>
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    //const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    //const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
   </script>
   <script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>
   <script>
