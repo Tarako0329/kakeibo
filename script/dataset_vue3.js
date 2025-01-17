@@ -757,6 +757,7 @@ const summary_bunseki = (Where_to_use) => createApp({
 			})
 			.catch((error) => console.log(error));
 		}
+		
 		const hanni = ref('12m')
 		const read_db_summary_long = () => {
 			console_log('read_db_summary_long start')
