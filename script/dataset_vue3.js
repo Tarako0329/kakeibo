@@ -82,26 +82,6 @@ const dataset = (Where_to_use) => createApp({
 		const sum_kingaku2 = ref(0)
 		const readdata_filter = computed(() => {
 			let return_data
-			/*if (readdata.value.length===0) {return readdata.value}
-				else{
-					return readdata.value.filter((record) => {
-						return (
-							record.date.includes(fl_date.value.toString().trim())
-							&&
-							record.meisai.includes(fl_meisai.value.toString().trim())
-							&&
-							record.kin.toString().includes(fl_kin.value.toString().trim())
-							&&
-							record.shuppimoto.includes(fl_shuppimoto.value.toString().trim())
-							&&
-							record.daikoumoku.includes(fl_dai_ko.value.toString().trim())
-							&&
-							record.chuukoumoku.includes(fl_chuu_ko.value.toString().trim())
-							&&
-							record.memo.includes(fl_memo.value.toString().trim()) 
-							);
-					});
-				}*/
 			if (readdata.value.length===0) {return_data = readdata.value}
 			else{
 				return_data = readdata.value.filter((record) => {
@@ -286,7 +266,6 @@ const dataset = (Where_to_use) => createApp({
 				loader.value = false
 			})
 		}
-
 
 		const savecsv = () =>{//CSVしゅつりょく
 			//type (databese or csv)
@@ -594,6 +573,18 @@ const dataset = (Where_to_use) => createApp({
 
 		onMounted(()=>{
 			console_log("onMounted")
+			axios
+			.get(`ajax_read_db_daikoumoku_ms.php`)
+			.then((response) => {
+				console_log(response.data)
+				daikoumoku_ms.value = response.data.daikou_ms
+				console_log('ajax_read_db_daikoumoku_ms succsess')
+			})
+			.catch((error) => {
+				console_log('ajax_read_db_daikoumoku_ms error')
+				console.log(error)
+			});
+
 		})
 		onBeforeMount(()=>{
 			console_log("onBeforeMount:"+pagename.value)

@@ -9,7 +9,7 @@
   $daikoumoku = empty($_GET["daikoumoku"])?"%":$_GET["daikoumoku"];
   $chuukoumoku = empty($_GET["chuukoumoku"])?"%":$_GET["chuukoumoku"];
   
-  $sql = "select 
+  $sql = "SELECT 
       date as date
       ,date as date2
       ,meisai
@@ -48,14 +48,14 @@
 	$dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   //$stmt = [];
-  $sql = "select * from daikoumoku_ms
+  $sql = "SELECT * from daikoumoku_ms
     where uid = :uid order by sort";
 	$stmt = $pdo_h->prepare($sql);
 	$stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
 	$stmt->execute();
 	$dataset2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-  $sql = "select max(b_pair_no) as max_pair_no from kakeibo
+  $sql = "SELECT max(b_pair_no) as max_pair_no from kakeibo
     where uid = :uid group by uid";
 	$stmt = $pdo_h->prepare($sql);
 	$stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
