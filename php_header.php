@@ -16,8 +16,8 @@ session_start();
 
 if(MAIN_DOMAIN==="localhost:81"){
 	$time=date('Ymd-His');
-	$id="r.tamura-az@azuma.agns.co.jp";
-	$pass="tarako";
+	$id="green.green.midori@gmail.com";
+	$pass="000000";
 }else{
 	$time="ver.1.12.3";
 	$id="";

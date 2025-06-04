@@ -379,14 +379,22 @@ function upd_getudo($pdo_h,$symd,$eymd) {
 
         //データ更新
         try{
-            $pdo_h->beginTransaction();
+            $inTran=false;
+            if ($pdo_h->inTransaction()===false) {
+                $pdo_h->beginTransaction();
+                $inTran=true;
+            }else{
+
+            }
             $stmt = $pdo_h->prepare($sql);
             $stmt->bindValue("getudo", $sym, PDO::PARAM_INT);
             $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_STR);
             $stmt->bindValue("sdate", date("Y-m-d", strtotime($startdate)), PDO::PARAM_STR);
             $stmt->bindValue("edate", date("Y-m-d", strtotime($enddate)), PDO::PARAM_STR);
             $stmt->execute();
-            $pdo_h->commit();
+            if($inTran){
+                $pdo_h->commit();
+            }
         }catch(Exception $e){
             $pdo_h->rollback();
             log_writer("func[upd_getudo] Exception \$e",$e);
