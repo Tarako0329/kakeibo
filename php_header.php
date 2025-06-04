@@ -19,7 +19,7 @@ if(MAIN_DOMAIN==="localhost:81"){
 	$id="r.tamura-az@azuma.agns.co.jp";
 	$pass="tarako";
 }else{
-	$time=date('Ymd-His')."up03";
+	$time="ver.1.12.3";
 	$id="";
 	$pass="";
 }
