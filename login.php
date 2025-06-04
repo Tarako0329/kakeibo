@@ -30,7 +30,7 @@
 				</div>
 				<div class='col-lg-6 col-10'>
 					<label for='pass' class='form-label'>パスワード</label>
-					<input type='password' class='form-control' name='pass' id='pass' value='<?php echo $pass;?>' maxlength='10' required>
+					<input type='password' class='form-control' name='pass' id='pass' value='<?php echo $pass;?>' maxlength='10' >
 				</div>
 				<div class='row mt-5'>
 					<div class='col-lg-3 col-5'><button type='submit' class='btn btn-primary btn-lg' name='login' value='login'>ログイン</button></div>

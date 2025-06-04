@@ -887,6 +887,7 @@ const summary_bunseki = (Where_to_use) => createApp({
 				type : 'bar'
 				,data: graph_data
 				,options: {
+					indexAxis: 'y',
 					plugins: {
 						title: {
 							display: true,

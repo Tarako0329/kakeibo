@@ -71,17 +71,17 @@
 
 
 		<MAIN class='container' style='color:#fff;'>
-		<div class='row' style='min-height:240px;'>
-			<div class='col-xl-12' style='height:100%;display:flex;justify-content: center;'>
-				<div style="position:relative;max-width:900px;width:90%;height:100%;">
+		<div class='row' style='height:420px;'>
+			<div class='col-xl-12' style='height:420px;display:flex;justify-content: center;'>
+				<div style="position:relative;max-width:900px;width:90%;height:420px;">
 					<canvas id="myChart"></canvas>
 				</div>
 			</div>
 		</div>
-		<div class='row' style='height:60%;'>
+		<div class='row' style='height:calc(100vh - 530px);overflow: hidden;'>
 			<div class='col-xl-12' style='height:100%;'>
 				<div class="table-responsive " style='width:100%;height:100%;'>
-					<table class="table table-hover table-sm" style='min-width:800px;'>
+					<table class="table table-hover table-sm" style=''>
 						<thead class='sticky-top'>
 							<tr class="table-info">
 								<th scope="col" class='text-center sticky-left'>大中項目</th>
