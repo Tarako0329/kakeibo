@@ -997,6 +997,35 @@ const summary_bunseki = (Where_to_use) => createApp({
 			});
 
 		}
+		const summary_totals = computed(() => {
+				const totals = {
+						m1: 0, m2: 0, m3: 0, m4: 0, m5: 0, m6: 0,
+						m7: 0, m8: 0, m9: 0, m10: 0, m11: 0, m12: 0
+				};
+				if (!readdata_summary.value.data || readdata_summary.value.data.length === 0) {
+						return totals;
+				}
+				const processed_daikoumoku = [];
+				readdata_summary.value.data.forEach(row => {
+						if (!processed_daikoumoku.includes(row.daikoumoku)) {
+								totals.m1  += Number(row.m1d || 0);
+								totals.m2  += Number(row.m2d || 0);
+								totals.m3  += Number(row.m3d || 0);
+								totals.m4  += Number(row.m4d || 0);
+								totals.m5  += Number(row.m5d || 0);
+								totals.m6  += Number(row.m6d || 0);
+								totals.m7  += Number(row.m7d || 0);
+								totals.m8  += Number(row.m8d || 0);
+								totals.m9  += Number(row.m9d || 0);
+								totals.m10 += Number(row.m10d || 0);
+								totals.m11 += Number(row.m11d || 0);
+								totals.m12 += Number(row.m12d || 0);
+								processed_daikoumoku.push(row.daikoumoku);
+						}
+				});
+				return totals;
+		});
+		
 		return{
 			readdata_summary,
 			readdata_monthly_summary,
@@ -1015,6 +1044,7 @@ const summary_bunseki = (Where_to_use) => createApp({
 			get_meisai,
 			popup_meisai,
 			modal_label,
+			summary_totals,
 		}
 	}
 });

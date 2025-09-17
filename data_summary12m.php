@@ -71,74 +71,42 @@
 
 
 		<MAIN class='container-fluid' style='color:#fff;'>
-		<div class='row' style='height:420px;'>
-			<!--<div class='col-xl-6' style='height:420px;display:flex;justify-content: center;'>-->
+		<div class='row' style=''>
 			<div class='col-xl-7' style='height:calc(100vh - 110px);display:flex;justify-content: center;'>
 				<div style="position:relative;max-width:900px;width:90%;height:420px;">
 					<canvas id="myChart"></canvas>
 				</div>
 			</div>
-		<!--</div>
-		<div class='row' style='height:calc(100vh - 530px);overflow: hidden;'>
-			<div class='col-xl-12' style='height:100%;'>-->
-			<!--<div class='col-xl-6' style='height:calc(100vh - 530px);overflow: hidden;'>-->
-			<div class='col-xl-5' style='height:calc(100vh - 110px);overflow: hidden;'>
-				<div class="table-responsive " style='width:100%;height:100%;'>
-					<table class="table table-hover table-sm" style='table-layout: auto;width:800px;'>
+			<div class='col-xl-5'>
+				<div style='height:calc(100vh - 110px);overflow: auto;'>
+				<table class="table table-hover table-sm" style='table-layout: auto;width:800px;' id='meisai_table'>
 						<thead class='sticky-top'>
-							<tr class="table-info">
-								<th scope="col" class='text-center sticky-left' style='width:150px;'>大中項目</th>
-								<th scope="col" class='text-center'>{{readdata_summary.label[0]}}</th>
-								<th scope="col" class='text-center'>{{readdata_summary.label[1]}}</th>
-								<th scope="col" class='text-center'>{{readdata_summary.label[2]}}</th>
-								<th scope="col" class='text-center'>{{readdata_summary.label[3]}}</th>
-								<th scope="col" class='text-center'>{{readdata_summary.label[4]}}</th>
-								<th scope="col" class='text-center'>{{readdata_summary.label[5]}}</th>
-								<th scope="col" class='text-center'>{{readdata_summary.label[6]}}</th>
-								<th scope="col" class='text-center'>{{readdata_summary.label[7]}}</th>
-								<th scope="col" class='text-center'>{{readdata_summary.label[8]}}</th>
-								<th scope="col" class='text-center'>{{readdata_summary.label[9]}}</th>
-								<th scope="col" class='text-center'>{{readdata_summary.label[10]}}</th>
-								<th scope="col" class='text-center'>{{readdata_summary.label[11]}}</th>
-							</tr>
+								<tr class="table-info">
+										<th scope="col" class='text-center sticky-left' style='width:150px;'>大中項目</th>
+										<th v-for="label in readdata_summary.label" scope="col" class='text-center'>{{label}}</th>
+								</tr>
 						</thead>
 						<tbody>
-							<template v-for='(list,index) in readdata_summary.data' :key="list.sort+list.chuukoumoku">
-								<template v-if='index===0 || (index!==0 && list["daikoumoku"]!==readdata_summary.data[index -1]["daikoumoku"])'>
-									<tr class="table-info" role='button' @click='open_utiwake(list.daikoumoku)'>
-										<td class='sticky-left' style='width:150px;'>{{list["daikoumoku"]}}</td>
-										<td class='text-end'>{{Number(list.m12d).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m11d).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m10d).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m9d).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m8d).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m7d).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m6d).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m5d).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m4d).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m3d).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m2d).toLocaleString()}}</td>
-										<td class='text-end'>{{Number(list.m1d).toLocaleString()}}</td>
-									</tr>
+								<template v-for='(list,index) in readdata_summary.data' :key="list.sort+list.chuukoumoku">
+										<template v-if='index===0 || (index!==0 && list["daikoumoku"]!==readdata_summary.data[index -1]["daikoumoku"])'>
+												<tr class="table-info" role='button' @click='open_utiwake(list.daikoumoku)'>
+														<td class='sticky-left' style='width:100px;'>{{list["daikoumoku"]}}</td>
+														<td v-for="(label, i) in readdata_summary.label" class='text-end'>{{Number(list['m'+(12-i)+'d']).toLocaleString()}}</td>
+												</tr>
+										</template>
+										<tr v-if='list.daikoumoku===open_fil' class='fadein'>
+												<td class='sticky-left' style='width:100px;'>　{{list["chuukoumoku"]}}</td>
+												<td v-for="(label, i) in readdata_summary.label" class='text-end' role='button' @click='get_meisai(label,list["daikoumoku"],list["chuukoumoku"])'>{{Number(list['m'+(12-i)+'c']).toLocaleString()}}</td>
+										</tr>
 								</template>
-								<tr v-if='list.daikoumoku===open_fil' class='fadein'>
-										<td class='sticky-left' style='width:150px;'>　{{list["chuukoumoku"]}}</td>
-										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[0],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m12c).toLocaleString()}}</td>
-										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[1],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m11c).toLocaleString()}}</td>
-										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[2],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m10c).toLocaleString()}}</td>
-										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[3],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m9c).toLocaleString()}}</td>
-										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[4],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m8c).toLocaleString()}}</td>
-										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[5],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m7c).toLocaleString()}}</td>
-										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[6],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m6c).toLocaleString()}}</td>
-										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[7],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m5c).toLocaleString()}}</td>
-										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[8],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m4c).toLocaleString()}}</td>
-										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[9],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m3c).toLocaleString()}}</td>
-										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[10],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m2c).toLocaleString()}}</td>
-										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[11],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m1c).toLocaleString()}}</td>
-									</tr>
-							</template>
 						</tbody>
-					</table>
+						<tfoot class='sticky-bottom'>
+								<tr class='table-success'>
+										<td class='text-center sticky-left' style='width:100px;'>合計</td>
+										<td v-for="(label, i) in readdata_summary.label" class='text-end'>{{Number(summary_totals['m'+(12-i)]).toLocaleString()}}</td>
+								</tr>
+						</tfoot>
+				</table>
 				</div>
 			</div>
 		</div>
