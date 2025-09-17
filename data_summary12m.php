@@ -72,14 +72,14 @@
 
 		<MAIN class='container-fluid' style='color:#fff;'>
 		<div class='row' style=''>
-			<div class='col-xl-7' style='height:calc(100vh - 110px);display:flex;justify-content: center;'>
+			<div class='col-xl-6' style='height:calc(100vh - 110px);display:flex;justify-content: center;'>
 				<div style="position:relative;max-width:900px;width:90%;height:420px;">
 					<canvas id="myChart"></canvas>
 				</div>
 			</div>
-			<div class='col-xl-5'>
+			<div class='col-xl-6'>
 				<div style='height:calc(100vh - 110px);overflow: auto;'>
-				<table class="table table-hover table-sm" style='table-layout: auto;width:800px;' id='meisai_table'>
+				<table class="table table-hover table-sm" style='table-layout: auto;min-width:800px;' id='meisai_table'>
 						<thead class='sticky-top'>
 								<tr class="table-info">
 										<th scope="col" class='text-center sticky-left' style='width:150px;'>大中項目</th>
