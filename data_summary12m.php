@@ -70,21 +70,24 @@
 		</HEADER>
 
 
-		<MAIN class='container' style='color:#fff;'>
+		<MAIN class='container-fluid' style='color:#fff;'>
 		<div class='row' style='height:420px;'>
-			<div class='col-xl-12' style='height:420px;display:flex;justify-content: center;'>
+			<!--<div class='col-xl-6' style='height:420px;display:flex;justify-content: center;'>-->
+			<div class='col-xl-7' style='height:calc(100vh - 110px);display:flex;justify-content: center;'>
 				<div style="position:relative;max-width:900px;width:90%;height:420px;">
 					<canvas id="myChart"></canvas>
 				</div>
 			</div>
-		</div>
+		<!--</div>
 		<div class='row' style='height:calc(100vh - 530px);overflow: hidden;'>
-			<div class='col-xl-12' style='height:100%;'>
+			<div class='col-xl-12' style='height:100%;'>-->
+			<!--<div class='col-xl-6' style='height:calc(100vh - 530px);overflow: hidden;'>-->
+			<div class='col-xl-5' style='height:calc(100vh - 110px);overflow: hidden;'>
 				<div class="table-responsive " style='width:100%;height:100%;'>
-					<table class="table table-hover table-sm" style=''>
+					<table class="table table-hover table-sm" style='table-layout: auto;width:800px;'>
 						<thead class='sticky-top'>
 							<tr class="table-info">
-								<th scope="col" class='text-center sticky-left'>大中項目</th>
+								<th scope="col" class='text-center sticky-left' style='width:150px;'>大中項目</th>
 								<th scope="col" class='text-center'>{{readdata_summary.label[0]}}</th>
 								<th scope="col" class='text-center'>{{readdata_summary.label[1]}}</th>
 								<th scope="col" class='text-center'>{{readdata_summary.label[2]}}</th>
@@ -103,7 +106,7 @@
 							<template v-for='(list,index) in readdata_summary.data' :key="list.sort+list.chuukoumoku">
 								<template v-if='index===0 || (index!==0 && list["daikoumoku"]!==readdata_summary.data[index -1]["daikoumoku"])'>
 									<tr class="table-info" role='button' @click='open_utiwake(list.daikoumoku)'>
-										<td class='sticky-left'>{{list["daikoumoku"]}}</td>
+										<td class='sticky-left' style='width:150px;'>{{list["daikoumoku"]}}</td>
 										<td class='text-end'>{{Number(list.m12d).toLocaleString()}}</td>
 										<td class='text-end'>{{Number(list.m11d).toLocaleString()}}</td>
 										<td class='text-end'>{{Number(list.m10d).toLocaleString()}}</td>
@@ -119,7 +122,7 @@
 									</tr>
 								</template>
 								<tr v-if='list.daikoumoku===open_fil' class='fadein'>
-										<td class='sticky-left'>　{{list["chuukoumoku"]}}</td>
+										<td class='sticky-left' style='width:150px;'>　{{list["chuukoumoku"]}}</td>
 										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[0],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m12c).toLocaleString()}}</td>
 										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[1],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m11c).toLocaleString()}}</td>
 										<td class='text-end' role='button' @click='get_meisai(readdata_summary.label[2],list["daikoumoku"],list["chuukoumoku"])'>{{Number(list.m10c).toLocaleString()}}</td>

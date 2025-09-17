@@ -34,10 +34,13 @@ ver1.12.0:レコード分割機能-commited
 ver1.12.1:icon変更-commited
 ver1.12.2:bugfix-commited
 ver1.12.3:レイアウト調整-commited
+ver1.13.0:推移画面の大項目用グラフとレイアウト変更-commited
+
 
 
 
 【Issues】
+平均関連
 
 ローカルからテスト環境へ
 cd /home/pcntfsrg/public_html/kakeibo
