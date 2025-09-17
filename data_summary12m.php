@@ -73,7 +73,7 @@
 		<MAIN class='container-fluid' style='color:#fff;'>
 		<div class='row' style=''>
 			<div class='col-xl-6' style='height:calc(100vh - 110px);display:flex;justify-content: center;'>
-				<div style="position:relative;max-width:900px;width:90%;height:420px;">
+				<div style="position:relative;max-width:900px;width:100%;min-height:420px;">
 					<canvas id="myChart"></canvas>
 				</div>
 			</div>
@@ -103,7 +103,11 @@
 						<tfoot class='sticky-bottom'>
 								<tr class='table-success'>
 										<td class='text-center sticky-left' style='width:100px;'>合計</td>
-										<td v-for="(label, i) in readdata_summary.label" class='text-end'>{{Number(summary_totals['m'+(12-i)]).toLocaleString()}}</td>
+										<!--<td v-for="(label, i) in readdata_summary.label" class='text-end'>{{Number(summary_totals['m'+(12-i)]).toLocaleString()}}</td>-->
+										<td v-for="(label, i) in readdata_summary.label" class='text-end' :style="{color: Number(summary_totals['m'+(12-i)]) > 0 ? 'blue' : (Number(summary_totals['m'+(12-i)]) < 0 ? 'red' : '')}">
+											{{Number(summary_totals['m'+(12-i)]).toLocaleString()}}
+										</td>
+
 								</tr>
 						</tfoot>
 				</table>
