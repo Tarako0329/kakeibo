@@ -46,11 +46,11 @@
 								</li>
 							</ul>
 							<div class="d-flex" style='padding:5px;'>
-								<input v-model='from' :disabled='search_disable' @change='read_db_summary_long' type="number" class='form-control' placeholder="期間FROM YYYYMM" style='margin-right:10px;'>
+								<input v-model='from' :disabled='search_disable' @change='read_db_summary_long' type="number" class='form-control' placeholder="期間FROM YYYYMM" style='margin-right:0px;'>
 							</div>
 							<div class="d-flex" style='padding:5px;'>
 								<button class='btn btn-outline-primary lbtn' style='margin-right:5px;' @click='from_back'>前月</button>
-								<button class='btn btn-outline-primary rbtn' style='margin-right:50px;' @click='from_next'>次月</button>
+								<button class='btn btn-outline-primary rbtn' style='margin-right:30px;' @click='from_next'>次月</button>
 							</div>
 							<div class="d-flex" style='padding:5px;'>
 								<select v-model='hanni' class='form-select' @change='read_db_summary_long'>
@@ -71,6 +71,12 @@
 
 
 		<MAIN class='container-fluid' style='color:#fff;'>
+		<div class='row'>
+			<div class='col-12 text-center'>
+				<input type='checkbox' id='special_flg' class='form-checkbox' v-model='special_flg' :true-value="1" :false-value="0" @change='read_db_summary_long'>
+				<label for='special_flg' class='form-label ms-1 orange'>臨時収入・臨時出費を含む</label>
+			</div>
+		</div>
 		<div class='row' style=''>
 			<div class='col-xl-6' style='height:calc(100vh - 110px);display:flex;justify-content: center;'>
 				<div style="position:relative;max-width:900px;width:100%;min-height:420px;">
@@ -91,23 +97,27 @@
 										<template v-if='index===0 || (index!==0 && list["daikoumoku"]!==readdata_summary.data[index -1]["daikoumoku"])'>
 												<tr class="table-info" role='button' @click='open_utiwake(list.daikoumoku)'>
 														<td class='sticky-left' style='width:100px;'>{{list["daikoumoku"]}}</td>
-														<td v-for="(label, i) in readdata_summary.label" class='text-end'>{{Number(list['m'+(12-i)+'d']).toLocaleString()}}</td>
+														<td v-for="(label, i) in readdata_summary.label" class='text-end'>
+															<span v-if="list['m'+(12-i)+'dflg']==0" >{{Number(list['m'+(12-i)+'d']).toLocaleString()}}</span>
+															<span v-else class='orange'><strong>{{Number(list['m'+(12-i)+'d']).toLocaleString()}}<strong></span>
+														</td>
 												</tr>
 										</template>
 										<tr v-if='list.daikoumoku===open_fil' class='fadein'>
 												<td class='sticky-left' style='width:100px;'>　{{list["chuukoumoku"]}}</td>
-												<td v-for="(label, i) in readdata_summary.label" class='text-end' role='button' @click='get_meisai(label,list["daikoumoku"],list["chuukoumoku"])'>{{Number(list['m'+(12-i)+'c']).toLocaleString()}}</td>
+												<td v-for="(label, i) in readdata_summary.label" class='text-end' role='button' @click='get_meisai(label,list["daikoumoku"],list["chuukoumoku"])'>
+													<span v-if="list['m'+(12-i)+'sflg']==0" >{{Number(list['m'+(12-i)+'c']).toLocaleString()}}</span>
+													<span v-else class='orange'><strong>{{Number(list['m'+(12-i)+'c']).toLocaleString()}}</strong></span>
+												</td>
 										</tr>
 								</template>
 						</tbody>
 						<tfoot class='sticky-bottom'>
 								<tr class='table-success'>
 										<td class='text-center sticky-left' style='width:100px;'>合計</td>
-										<!--<td v-for="(label, i) in readdata_summary.label" class='text-end'>{{Number(summary_totals['m'+(12-i)]).toLocaleString()}}</td>-->
 										<td v-for="(label, i) in readdata_summary.label" class='text-end' :style="{color: Number(summary_totals['m'+(12-i)]) > 0 ? 'blue' : (Number(summary_totals['m'+(12-i)]) < 0 ? 'red' : '')}">
 											{{Number(summary_totals['m'+(12-i)]).toLocaleString()}}
 										</td>
-
 								</tr>
 						</tfoot>
 				</table>
@@ -129,20 +139,22 @@
                 <table class="table table-sm">
                   <thead>
                     <tr>
-                    <th>日付</th>
-                    <th>入出金元</th>
-                    <th>明細</th>
-                    <th>金額</th>
-                    <th>メモ</th>
+											<th>特</th>
+                    	<th>日付</th>
+                    	<th>入出金元</th>
+                    	<th>明細</th>
+                    	<th>金額</th>
+                    	<th>メモ</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for='(list,index) in popup_meisai' :key='list.date+list.guid'>
-                    <td>{{list.date}}</td>
-                    <td>{{list.shuppimoto}}</td>
-                    <td>{{list.meisai}}</td>
-                    <td class='text-end'>{{Number(list.kin).toLocaleString()}}</td>
-                    <td>{{list.memo}}</td>
+                    	<td><input type='checkbox' class='form-check' v-model='list.Special' :true-value="1" :false-value="0" @click='upd_special(list.SEQ)'></td>
+                    	<td>{{list.date}}</td>
+                    	<td>{{list.shuppimoto}}</td>
+                    	<td>{{list.meisai}}</td>
+                    	<td class='text-end'>{{Number(list.kin).toLocaleString()}}</td>
+                    	<td>{{list.memo}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -154,7 +166,8 @@
 			</div>
 		</div>	</div>
 	
-	<script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>
+	<!--<script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>-->
+	<script src="script/summary_bunseki_vue3.js?<?php echo $time; ?>"></script>
 	<script>
 		summary_bunseki('<?php echo basename(__FILE__);?>').mount('#app');
 	</script>

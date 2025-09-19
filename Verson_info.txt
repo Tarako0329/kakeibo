@@ -35,12 +35,16 @@ ver1.12.1:icon変更-commited
 ver1.12.2:bugfix-commited
 ver1.12.3:レイアウト調整-commited
 ver1.13.0:推移画面の大項目用グラフとレイアウト変更-commited
+ver1.14.0:臨時入出金checkと集計時に含む含めない機能
+  ALTER TABLE `kakeibo` ADD `Special` TINYINT NOT NULL DEFAULT '0' COMMENT '特別費' AFTER `b_pair_no`;
 
 
 
 
 【Issues】
 平均関連
+臨時入出金checkと集計時に含む含めない機能
+仕入先・入金先追加セット
 
 ローカルからテスト環境へ
 cd /home/pcntfsrg/public_html/kakeibo

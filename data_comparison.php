@@ -141,7 +141,8 @@
     </MAIN>
   </div>
   
-  <script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>
+  <!--<script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>-->
+  <script src="script/summary_bunseki_vue3.js?<?php echo $time; ?>"></script>
   <script>
     summary_bunseki('<?php echo basename(__FILE__);?>').mount('#app');
   </script>

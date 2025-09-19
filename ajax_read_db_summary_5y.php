@@ -13,37 +13,48 @@
     $kikan[] = date("Y/m", strtotime($_GET["fm"]."01"." -".(60-$i)." month"));
   }
 
-  $sql = "select COALESCE(ms.sort,999) as sort ,temp.daikoumoku ,temp.chuukoumoku 
-    ,sum(m5) as m12c
-    ,sum(sum(m5)) over(PARTITION BY daikoumoku) as m12d 
-    ,sum(m4) as m11c
-    ,sum(sum(m4)) over(PARTITION BY daikoumoku) as m11d 
-    ,sum(m3) as m10c
-    ,sum(sum(m3)) over(PARTITION BY daikoumoku) as m10d 
-    ,sum(m2) as m9c
-    ,sum(sum(m2)) over(PARTITION BY daikoumoku) as m9d 
-    ,sum(m1) as m8c
-    ,sum(sum(m1)) over(PARTITION BY daikoumoku) as m8d 
+  $special = $_GET["special"];
+  $sql = "SELECT COALESCE(ms.sort,999) as sort ,temp.daikoumoku ,temp.chuukoumoku 
+    ,sum(IF(Special<=$special,m5,0)) as m12c
+    ,sum(sum(IF(Special<=$special,m5,0))) over(PARTITION BY daikoumoku) as m12d 
+    ,sum(IF(m5<>0,Special,0)) as m12sflg
+    ,sum(sum(IF(m5<>0,Special,0))) over(PARTITION BY daikoumoku) as m12dflg 
+    ,sum(IF(Special<=$special,m4,0)) as m11c
+    ,sum(sum(IF(Special<=$special,m4,0))) over(PARTITION BY daikoumoku) as m11d 
+    ,sum(IF(m4<>0,Special,0)) as m11sflg
+    ,sum(sum(IF(m4<>0,Special,0))) over(PARTITION BY daikoumoku) as m11dflg 
+    ,sum(IF(Special<=$special,m3,0)) as m10c
+    ,sum(sum(IF(Special<=$special,m3,0))) over(PARTITION BY daikoumoku) as m10d 
+    ,sum(IF(m3<>0,Special,0)) as m10sflg
+    ,sum(sum(IF(m3<>0,Special,0))) over(PARTITION BY daikoumoku) as m10dflg 
+    ,sum(IF(Special<=$special,m2,0)) as m9c
+    ,sum(sum(IF(Special<=$special,m2,0))) over(PARTITION BY daikoumoku) as m9d 
+    ,sum(IF(m2<>0,Special,0)) as m9sflg
+    ,sum(sum(IF(m2<>0,Special,0))) over(PARTITION BY daikoumoku) as m9dflg 
+    ,sum(IF(Special<=$special,m1,0)) as m8c
+    ,sum(sum(IF(Special<=$special,m1,0))) over(PARTITION BY daikoumoku) as m8d 
+    ,sum(IF(m1<>0,Special,0)) as m8sflg
+    ,sum(sum(IF(m1<>0,Special,0))) over(PARTITION BY daikoumoku) as m8dflg 
     from (
-      select uid,daikoumoku,chuukoumoku ,0 as m5,0 as m4,0 as m3,0 as m2,kin as m1
-      from kakeibo
-      where uid = :uid1 and getudo between :baseYM1 and :baseYM2
-      UNION ALL 
-      select uid,daikoumoku,chuukoumoku ,0 as m5,0 as m4,0 as m3,kin as m2,0 as m1
-      from kakeibo
-      where uid = :uid2 and getudo between :baseYM3 and :baseYM4
-      UNION ALL 
-      select uid,daikoumoku,chuukoumoku ,0 as m5,0 as m4,kin as m3,0 as m2,0 as m1
-      from kakeibo
-      where uid = :uid3 and getudo between :baseYM5 and :baseYM6
-      UNION ALL 
-      select uid,daikoumoku,chuukoumoku ,0 as m5,kin as m4,0 as m3,0 as m2,0 as m1
-      from kakeibo
-      where uid = :uid4 and getudo between :baseYM7 and :baseYM8
-      UNION ALL 
-      select uid,daikoumoku,chuukoumoku ,kin as m5,0 as m4,0 as m3,0 as m2,0 as m1
-      from kakeibo
-      where uid = :uid5 and getudo between :baseYM9 and :baseYM10
+      SELECT
+        uid,
+        daikoumoku,
+        chuukoumoku,
+        SUM(CASE WHEN getudo BETWEEN :baseYM9 AND :baseYM10 THEN kin ELSE 0 END) AS m5,
+        SUM(CASE WHEN getudo BETWEEN :baseYM7 AND :baseYM8 THEN kin ELSE 0 END) AS m4,
+        SUM(CASE WHEN getudo BETWEEN :baseYM5 AND :baseYM6 THEN kin ELSE 0 END) AS m3,
+        SUM(CASE WHEN getudo BETWEEN :baseYM3 AND :baseYM4 THEN kin ELSE 0 END) AS m2,
+        SUM(CASE WHEN getudo BETWEEN :baseYM1 AND :baseYM2 THEN kin ELSE 0 END) AS m1,
+        Special
+      FROM
+        kakeibo
+      WHERE
+        (uid = :uid1 AND getudo BETWEEN :YMFROM AND :YMTO) 
+      GROUP BY
+        uid,
+        daikoumoku,
+        chuukoumoku,
+        Special
     ) as temp
     left join daikoumoku_ms as ms
     on temp.daikoumoku=ms.daikoumoku
@@ -52,12 +63,33 @@
     having temp.daikoumoku <> ''
     order by COALESCE(ms.sort,999),chuukoumoku 
     ";
+    /*
+      select uid,daikoumoku,chuukoumoku ,0 as m5,0 as m4,0 as m3,0 as m2,kin as m1, Special
+      from kakeibo
+      where uid = :uid1 and getudo between :baseYM1 and :baseYM2
+      UNION ALL 
+      select uid,daikoumoku,chuukoumoku ,0 as m5,0 as m4,0 as m3,kin as m2,0 as m1, Special
+      from kakeibo
+      where uid = :uid2 and getudo between :baseYM3 and :baseYM4
+      UNION ALL 
+      select uid,daikoumoku,chuukoumoku ,0 as m5,0 as m4,kin as m3,0 as m2,0 as m1, Special
+      from kakeibo
+      where uid = :uid3 and getudo between :baseYM5 and :baseYM6
+      UNION ALL 
+      select uid,daikoumoku,chuukoumoku ,0 as m5,kin as m4,0 as m3,0 as m2,0 as m1, Special
+      from kakeibo
+      where uid = :uid4 and getudo between :baseYM7 and :baseYM8
+      UNION ALL 
+      select uid,daikoumoku,chuukoumoku ,kin as m5,0 as m4,0 as m3,0 as m2,0 as m1, Special
+      from kakeibo
+      where uid = :uid5 and getudo between :baseYM9 and :baseYM10
+    */
 	$stmt = $pdo_h->prepare($sql);
 	$stmt->bindValue("uid1", $_SESSION["uid"], PDO::PARAM_STR);
-	$stmt->bindValue("uid2", $_SESSION["uid"], PDO::PARAM_STR);
+	/*$stmt->bindValue("uid2", $_SESSION["uid"], PDO::PARAM_STR);
 	$stmt->bindValue("uid3", $_SESSION["uid"], PDO::PARAM_STR);
 	$stmt->bindValue("uid4", $_SESSION["uid"], PDO::PARAM_STR);
-	$stmt->bindValue("uid5", $_SESSION["uid"], PDO::PARAM_STR);
+	$stmt->bindValue("uid5", $_SESSION["uid"], PDO::PARAM_STR);*/
   $stmt->bindValue("baseYM1",  date("Ym", strtotime($_GET["fm"]."01"." -11 month")), PDO::PARAM_STR);
   $stmt->bindValue("baseYM2",  $_GET["fm"], PDO::PARAM_STR);
   $stmt->bindValue("baseYM3",  date("Ym", strtotime($_GET["fm"]."01"." -23 month")), PDO::PARAM_STR);
@@ -68,6 +100,10 @@
   $stmt->bindValue("baseYM8",  date("Ym", strtotime($_GET["fm"]."01"." -36 month")), PDO::PARAM_STR);
   $stmt->bindValue("baseYM9",  date("Ym", strtotime($_GET["fm"]."01"." -59 month")), PDO::PARAM_STR);
   $stmt->bindValue("baseYM10", date("Ym", strtotime($_GET["fm"]."01"." -48 month")), PDO::PARAM_STR);
+
+  $stmt->bindValue("YMFROM",  date("Ym", strtotime($_GET["fm"]."01"." -59 month")), PDO::PARAM_STR);
+  $stmt->bindValue("YMTO",  $_GET["fm"], PDO::PARAM_STR);
+  //$stmt->bindValue("special",  $_GET["special"], PDO::PARAM_INT);
 	$stmt->execute();
 	$dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
 /*

@@ -4,7 +4,7 @@
   if(empty($_GET)){
     exit();
   }
-  //log_writer("\$_GET",$_GET);
+  log_writer("\$_GET",$_GET);
   /*
   if($_GET["to"]==="m"){
     $to = date("Ym", strtotime($_GET["fm"]."01"." -1 month"));
@@ -23,11 +23,11 @@
     $i = $i+1;
     $kikan[] = date("Y/m", strtotime($_GET["fm"]."01"." -".(12-$i)." month"));
   }
-
+  $special = $_GET["special"];
   //log_writer("\$kikan",$kikan);
   //log_writer("\$_SESSION[uid]",$_SESSION["uid"]);
-
-  $sql = "select COALESCE(ms.sort,999) as sort ,temp.daikoumoku ,temp.chuukoumoku 
+  /*
+  $sql = "SELECT COALESCE(ms.sort,999) as sort ,temp.daikoumoku ,temp.chuukoumoku 
     ,sum(m12) as m12c 
     ,sum(sum(m12)) over(PARTITION BY daikoumoku) as m12d
     ,sum(m11) as m11c
@@ -53,63 +53,164 @@
     ,sum(m1) as m1c
     ,sum(sum(m1)) over(PARTITION BY daikoumoku) as m1d 
     from (
-      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,kin as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,kin as m1, Special
       from kakeibo
       where uid = :uid1 and getudo = :baseYM1
       UNION ALL 
-      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,kin as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,kin as m2,0 as m1, Special
       from kakeibo
       where uid = :uid2 and getudo = :baseYM2
       UNION ALL 
-      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,kin as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,kin as m3,0 as m2,0 as m1, Special
       from kakeibo
       where uid = :uid3 and getudo = :baseYM3
       UNION ALL 
-      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,kin as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,kin as m4,0 as m3,0 as m2,0 as m1, Special
       from kakeibo
       where uid = :uid4 and getudo = :baseYM4
       UNION ALL 
-      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,kin as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,kin as m5,0 as m4,0 as m3,0 as m2,0 as m1, Special
       from kakeibo
       where uid = :uid5 and getudo = :baseYM5
       UNION ALL 
-      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,kin as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,kin as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1, Special
       from kakeibo
       where uid = :uid6 and getudo = :baseYM6
       UNION ALL 
-      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,kin as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,0 as m8,kin as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1, Special
       from kakeibo
       where uid = :uid7 and getudo = :baseYM7
       UNION ALL 
-      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,kin as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,0 as m9,kin as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1, Special
       from kakeibo
       where uid = :uid8 and getudo = :baseYM8
       UNION ALL 
-      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,kin as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,0 as m10,kin as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1, Special
       from kakeibo
       where uid = :uid9 and getudo = :baseYM9
       UNION ALL 
-      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,kin as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,0 as m11,kin as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1, Special
       from kakeibo
       where uid = :uid10 and getudo = :baseYM10
       UNION ALL 
-      select uid,daikoumoku,chuukoumoku ,0 as m12,kin as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,0 as m12,kin as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1, Special
       from kakeibo
       where uid = :uid11 and getudo = :baseYM11
       UNION ALL 
-      select uid,daikoumoku,chuukoumoku ,kin as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1
+      select uid,daikoumoku,chuukoumoku ,kin as m12,0 as m11,0 as m10,0 as m9,0 as m8,0 as m7,0 as m6,0 as m5,0 as m4,0 as m3,0 as m2,0 as m1, Special
       from kakeibo
       where uid = :uid12 and getudo = :baseYM12
     ) as temp
     left join daikoumoku_ms as ms
     on temp.daikoumoku=ms.daikoumoku
     and temp.uid = ms.uid
+    where temp.Special <= :special
     group by COALESCE(ms.sort,999),temp.daikoumoku,temp.chuukoumoku
     having temp.daikoumoku <> ''
     order by COALESCE(ms.sort,999),chuukoumoku 
     ";
-	$stmt = $pdo_h->prepare($sql);
+  */
+  $sql = "SELECT COALESCE(ms.sort,999) as sort ,temp.daikoumoku ,temp.chuukoumoku 
+  ,sum(IF(Special<=$special,m12,0)) as m12c 
+  
+  ,sum(sum(IF(Special<=$special,m12,0))) over(PARTITION BY daikoumoku) as m12d 
+  ,sum(IF(m12<>0,Special,0)) as m12sflg
+  ,sum(sum(IF(m12<>0,Special,0))) over(PARTITION BY daikoumoku) as m12dflg 
+
+  ,sum(IF(Special<=$special,m11,0)) as m11c
+  ,sum(sum(IF(Special<=$special,m11,0))) over(PARTITION BY daikoumoku) as m11d 
+  ,sum(IF(m11<>0,Special,0)) as m11sflg
+  ,sum(sum(IF(m11<>0,Special,0))) over(PARTITION BY daikoumoku) as m11dflg 
+
+  ,sum(IF(Special<=$special,m10,0)) as m10c
+  ,sum(sum(IF(Special<=$special,m10,0))) over(PARTITION BY daikoumoku) as m10d 
+  ,sum(IF(m10<>0,Special,0)) as m10sflg
+  ,sum(sum(IF(m10<>0,Special,0))) over(PARTITION BY daikoumoku) as m10dflg 
+
+  ,sum(IF(Special<=$special,m9,0)) as m9c
+  ,sum(sum(IF(Special<=$special,m9,0))) over(PARTITION BY daikoumoku) as m9d 
+  ,sum(IF(m9<>0,Special,0)) as m9sflg
+  ,sum(sum(IF(m9<>0,Special,0))) over(PARTITION BY daikoumoku) as m9dflg 
+
+  ,sum(IF(Special<=$special,m8,0)) as m8c
+  ,sum(sum(IF(Special<=$special,m8,0))) over(PARTITION BY daikoumoku) as m8d 
+  ,sum(IF(m8<>0,Special,0)) as m8sflg
+  ,sum(sum(IF(m8<>0,Special,0))) over(PARTITION BY daikoumoku) as m8dflg 
+
+  ,sum(IF(Special<=$special,m7,0)) as m7c
+  ,sum(sum(IF(Special<=$special,m7,0))) over(PARTITION BY daikoumoku) as m7d 
+  ,sum(IF(m7<>0,Special,0)) as m7sflg
+  ,sum(sum(IF(m7<>0,Special,0))) over(PARTITION BY daikoumoku) as m7dflg 
+
+  ,sum(IF(Special<=$special,m6,0)) as m6c
+  ,sum(sum(IF(Special<=$special,m6,0))) over(PARTITION BY daikoumoku) as m6d 
+  ,sum(IF(m6<>0,Special,0)) as m6sflg
+  ,sum(sum(IF(m6<>0,Special,0))) over(PARTITION BY daikoumoku) as m6dflg 
+
+  ,sum(IF(Special<=$special,m5,0)) as m5c
+  ,sum(sum(IF(Special<=$special,m5,0))) over(PARTITION BY daikoumoku) as m5d 
+  ,sum(IF(m5<>0,Special,0)) as m5sflg
+  ,sum(sum(IF(m5<>0,Special,0))) over(PARTITION BY daikoumoku) as m5dflg 
+
+  ,sum(IF(Special<=$special,m4,0)) as m4c
+  ,sum(sum(IF(Special<=$special,m4,0))) over(PARTITION BY daikoumoku) as m4d 
+  ,sum(IF(m4<>0,Special,0)) as m4sflg
+  ,sum(sum(IF(m4<>0,Special,0))) over(PARTITION BY daikoumoku) as m4dflg 
+
+  ,sum(IF(Special<=$special,m3,0)) as m3c
+  ,sum(sum(IF(Special<=$special,m3,0))) over(PARTITION BY daikoumoku) as m3d 
+  ,sum(IF(m3<>0,Special,0)) as m3sflg
+  ,sum(sum(IF(m3<>0,Special,0))) over(PARTITION BY daikoumoku) as m3dflg 
+
+  ,sum(IF(Special<=$special,m2,0)) as m2c
+  ,sum(sum(IF(Special<=$special,m2,0))) over(PARTITION BY daikoumoku) as m2d 
+  ,sum(IF(m2<>0,Special,0)) as m2sflg
+  ,sum(sum(IF(m2<>0,Special,0))) over(PARTITION BY daikoumoku) as m2dflg 
+
+  ,sum(IF(Special<=$special,m1,0)) as m1c
+  ,sum(sum(IF(Special<=$special,m1,0))) over(PARTITION BY daikoumoku) as m1d 
+  ,sum(IF(m1<>0,Special,0)) as m1sflg
+  ,sum(sum(IF(m1<>0,Special,0))) over(PARTITION BY daikoumoku) as m1dflg 
+
+  from (
+    SELECT
+      uid,
+      daikoumoku,
+      chuukoumoku,
+      SUM(CASE WHEN getudo = :baseYM12 THEN kin ELSE 0 END) AS m12,
+      SUM(CASE WHEN getudo = :baseYM11 THEN kin ELSE 0 END) AS m11,
+      SUM(CASE WHEN getudo = :baseYM10 THEN kin ELSE 0 END) AS m10,
+      SUM(CASE WHEN getudo = :baseYM9 THEN kin ELSE 0 END) AS m9,
+      SUM(CASE WHEN getudo = :baseYM8 THEN kin ELSE 0 END) AS m8,
+      SUM(CASE WHEN getudo = :baseYM7 THEN kin ELSE 0 END) AS m7,
+      SUM(CASE WHEN getudo = :baseYM6 THEN kin ELSE 0 END) AS m6,
+      SUM(CASE WHEN getudo = :baseYM5 THEN kin ELSE 0 END) AS m5,
+      SUM(CASE WHEN getudo = :baseYM4 THEN kin ELSE 0 END) AS m4,
+      SUM(CASE WHEN getudo = :baseYM3 THEN kin ELSE 0 END) AS m3,
+      SUM(CASE WHEN getudo = :baseYM2 THEN kin ELSE 0 END) AS m2,
+      SUM(CASE WHEN getudo = :baseYM1 THEN kin ELSE 0 END) AS m1,
+      Special
+    FROM
+      kakeibo
+    WHERE
+      (uid = :uid1 AND getudo between :YMFROM and :YMTO)
+    GROUP BY
+      uid,
+      daikoumoku,
+      chuukoumoku,
+      Special
+  ) as temp
+  left join daikoumoku_ms as ms
+  on temp.daikoumoku=ms.daikoumoku
+  and temp.uid = ms.uid
+  
+  group by COALESCE(ms.sort,999),temp.daikoumoku,temp.chuukoumoku
+  having temp.daikoumoku <> ''
+  order by COALESCE(ms.sort,999),chuukoumoku 
+  ";
+  $stmt = $pdo_h->prepare($sql);
 	$stmt->bindValue("uid1", $_SESSION["uid"], PDO::PARAM_STR);
+  /*
 	$stmt->bindValue("uid2", $_SESSION["uid"], PDO::PARAM_STR);
 	$stmt->bindValue("uid3", $_SESSION["uid"], PDO::PARAM_STR);
 	$stmt->bindValue("uid4", $_SESSION["uid"], PDO::PARAM_STR);
@@ -121,6 +222,7 @@
 	$stmt->bindValue("uid10", $_SESSION["uid"], PDO::PARAM_STR);
 	$stmt->bindValue("uid11", $_SESSION["uid"], PDO::PARAM_STR);
 	$stmt->bindValue("uid12", $_SESSION["uid"], PDO::PARAM_STR);
+  */
   $stmt->bindValue("baseYM1",  $_GET["fm"], PDO::PARAM_STR);
   $stmt->bindValue("baseYM2",  date("Ym", strtotime($_GET["fm"]."01"." -1 month")), PDO::PARAM_STR);
   $stmt->bindValue("baseYM3",  date("Ym", strtotime($_GET["fm"]."01"." -2 month")), PDO::PARAM_STR);
@@ -133,6 +235,10 @@
   $stmt->bindValue("baseYM10", date("Ym", strtotime($_GET["fm"]."01"." -9 month")), PDO::PARAM_STR);
   $stmt->bindValue("baseYM11", date("Ym", strtotime($_GET["fm"]."01"." -10 month")), PDO::PARAM_STR);
   $stmt->bindValue("baseYM12", date("Ym", strtotime($_GET["fm"]."01"." -11 month")), PDO::PARAM_STR);
+  //$stmt->bindValue("special",  $_GET["special"], PDO::PARAM_INT);
+
+  $stmt->bindValue("YMFROM", date("Ym", strtotime($_GET["fm"]."01"." -11 month")), PDO::PARAM_STR);
+  $stmt->bindValue("YMTO",  $_GET["fm"], PDO::PARAM_STR);
 	$stmt->execute();
 	$dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

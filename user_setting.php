@@ -181,7 +181,8 @@
 	  </div>
 	</div>
 	
-	<script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>
+	<!--<script src="script/dataset_vue3.js?<?php echo $time; ?>"></script>-->
+	<script src="script/user_setting_vue3.js?<?php echo $time; ?>"></script>
 	<script>
 		user_setting('<?php echo $_SESSION["mail"];?>').mount('#app');
 	</script>

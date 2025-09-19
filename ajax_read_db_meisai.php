@@ -29,6 +29,7 @@
       ,b_moto
       ,b_pair_no
       ,SEQ
+      ,Special
     from kakeibo as kake
     left join daikoumoku_ms as ms
     on kake.daikoumoku=ms.daikoumoku

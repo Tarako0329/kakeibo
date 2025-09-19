@@ -661,7 +661,7 @@ const dataset = (Where_to_use) => createApp({
 	}
 });
 
-const summary_bunseki = (Where_to_use) => createApp({
+/*const summary_bunseki = (Where_to_use) => createApp({
 	setup() {
 		const pagename = ref(Where_to_use)
 		const readdata_summary = ref([])
@@ -748,12 +748,14 @@ const summary_bunseki = (Where_to_use) => createApp({
 			})
 			.catch((error) => console.log(error));
 		}
-		
+
+		const special_flg = ref(0)	//臨時入出金含む
+
 		const hanni = ref('12m')
 		const read_db_summary_long = () => {
 			console_log('read_db_summary_long start')
 			axios
-			.get(`ajax_read_db_summary_${hanni.value}.php?fm=${from.value}`)
+			.get(`ajax_read_db_summary_${hanni.value}.php?fm=${from.value}&special=${special_flg.value}`)
 			.then((response) => {
 				readdata_summary.value = []
 				console_log(response.data)
@@ -963,6 +965,7 @@ const summary_bunseki = (Where_to_use) => createApp({
 
 		const popup_meisai = ref([])
 		const modal_label = ref('')
+
 		const get_meisai = (p_ymd,dk,ck) =>{
 			modal_label.value = `${p_ymd} ${dk} > ${ck}`
 
@@ -1025,7 +1028,32 @@ const summary_bunseki = (Where_to_use) => createApp({
 				});
 				return totals;
 		});
-		
+		const upd_special = (p_SEQ) =>{
+			//ajax_upd_db_meisai_special.phpをPOSTで呼び出し。POST[SEQ]にp_SEQを設定
+			const params = new FormData();
+			params.append('SEQ', p_SEQ);
+			axios.post("ajax_upd_db_meisai_special.php", params)
+				.then((response) => {
+					console_log(response.data);
+					if (response.data.status === 'success') {
+						//alert("更新しました");
+						// Optionally, refresh the data after update
+						if (pagename.value === "data_summary12m.php") {
+							read_db_summary_long();
+						} else if (pagename.value === "data_comparison.php") {
+							read_db_comparison();
+						}
+					} else {
+						alert("更新できませんでした");
+					}
+				})
+				.catch((error) => {
+					console_log('upd_special error');
+					console_log(error);
+					alert("リターンエラー：更新できませんでした");
+				});
+				
+		}
 		return{
 			readdata_summary,
 			readdata_monthly_summary,
@@ -1045,11 +1073,13 @@ const summary_bunseki = (Where_to_use) => createApp({
 			popup_meisai,
 			modal_label,
 			summary_totals,
+			upd_special,
+			special_flg,
 		}
 	}
-});
+});*/
 
-const user_setting = () => createApp({
+/*const user_setting = () => createApp({
 	setup() {
 		const kisanbi = ref('')
 		const shukuzitu = ref('')
@@ -1256,4 +1286,4 @@ const user_setting = () => createApp({
 			bunrui_ms_del,
 		}
 	}
-});
+});*/
