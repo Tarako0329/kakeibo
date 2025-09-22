@@ -23,6 +23,9 @@
     $i = $i+1;
     $kikan[] = date("Y/m", strtotime($_GET["fm"]."01"." -".(12-$i)." month"));
   }
+  $kikan[] = "平均";
+  $kikan[] = "合計";
+
   $special = $_GET["special"];
   //log_writer("\$kikan",$kikan);
   //log_writer("\$_SESSION[uid]",$_SESSION["uid"]);

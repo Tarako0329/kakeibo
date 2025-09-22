@@ -180,27 +180,45 @@ const summary_bunseki = (Where_to_use) => createApp({
 					return (row.daikoumoku.includes(daikoumoku))
 				})
 				//console_log(data)
-				data.forEach((row)=>{
-					return_data.push({
-						label : row.chuukoumoku
-						,data : [row.m12c,row.m11c,row.m10c,row.m9c,row.m8c,row.m7c,row.m6c,row.m5c,row.m4c,row.m3c,row.m2c,row.m1c]
-						,backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+				if(hanni.value==='5y'){
+					data.forEach((row)=>{
+						return_data.push({
+							label : row.chuukoumoku
+							,data : [row.m12c,row.m11c,row.m10c,row.m9c,row.m8c,row.m7c]
+							,backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+						})
 					})
-				})
+				}else{
+					data.forEach((row)=>{
+						return_data.push({
+							label : row.chuukoumoku
+							,data : [row.m12c,row.m11c,row.m10c,row.m9c,row.m8c,row.m7c,row.m6c,row.m5c,row.m4c,row.m3c,row.m2c,row.m1c]
+							,backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+						})
+					})
+				}
 			}else{
 				readdata_summary.value.data.forEach((row,index)=>{
 					console_log(row)
 					console_log(index)
 					if(index !== 0){
 						if(row.daikoumoku === readdata_summary.value.data[index-1].daikoumoku){
-						return //前回と大項目が同じ場合はスキップ
+							return //前回と大項目が同じ場合はスキップ
 						}
 					}
-					return_data.push({
-						label : row.daikoumoku
-						,data : [row.m12d,row.m11d,row.m10d,row.m9d,row.m8d,row.m7d,row.m6d,row.m5d,row.m4d,row.m3d,row.m2d,row.m1d]
-						,backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
-					})
+					if(hanni.value==='5y'){
+						return_data.push({
+							label : row.daikoumoku
+							,data : [row.m12d,row.m11d,row.m10d,row.m9d,row.m8d,row.m7d]
+							,backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+						})
+					}else{
+						return_data.push({
+							label : row.daikoumoku
+							,data : [row.m12d,row.m11d,row.m10d,row.m9d,row.m8d,row.m7d,row.m6d,row.m5d,row.m4d,row.m3d,row.m2d,row.m1d]
+							,backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+						})
+					}
 				})
 			}
 			return return_data
@@ -234,7 +252,7 @@ const summary_bunseki = (Where_to_use) => createApp({
 			console_log("create_graph : graph_data")
 			
 			const graph_data = {
-				labels    : readdata_summary.value.label
+				labels    : readdata_summary.value.label.slice(0, -3)
 				,datasets : get_graph_data(open_fil.value)
 			}
 
@@ -308,7 +326,7 @@ const summary_bunseki = (Where_to_use) => createApp({
 		const get_meisai = (p_ymd,dk,ck) =>{
 			modal_label.value = `${p_ymd} ${dk} > ${ck}`
 
-			let ymd = p_ymd.replace("/","")
+			let ymd = p_ymd.replace("-","")
 			let ymd_from
 			if(hanni.value==='5y'){
 				let y = (Number(String(p_ymd).slice(0,4)) - 1) * 100

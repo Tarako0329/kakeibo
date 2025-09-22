@@ -78,34 +78,62 @@
 			</div>
 		</div>
 		<div class='row' style=''>
-			<div class='col-xl-6' style='height:calc(100vh - 110px);display:flex;justify-content: center;'>
+			<div class='col-xl-6' style='height:auto;display:flex;justify-content: center;'>
 				<div style="position:relative;max-width:900px;width:100%;min-height:420px;">
 					<canvas id="myChart"></canvas>
 				</div>
 			</div>
 			<div class='col-xl-6'>
-				<div style='height:calc(100vh - 110px);overflow: auto;'>
+				<div style='height:calc(100vh - 120px);overflow: auto;'>
 				<table class="table table-hover table-sm" style='table-layout: auto;min-width:800px;' id='meisai_table'>
 						<thead class='sticky-top'>
 								<tr class="table-info">
 										<th scope="col" class='text-center sticky-left' style='width:150px;'>大中項目</th>
-										<th v-for="label in readdata_summary.label" scope="col" class='text-center'>{{label}}</th>
+										<template v-for="(label,index) in readdata_summary.label" >
+											<th v-if='index>=5 && hanni==="5y"' scope="col" class='text-center table-primary'>{{label}}</th>
+											<th v-else-if='index===6 && hanni==="5y"' scope="col" class='text-center table-primary'>{{label}}</th>
+											<th v-else scope="col" class='text-center'>{{label}}</th>
+										</template>
 								</tr>
 						</thead>
-						<tbody>
+						<tbody class="table-group-divider">
 								<template v-for='(list,index) in readdata_summary.data' :key="list.sort+list.chuukoumoku">
 										<template v-if='index===0 || (index!==0 && list["daikoumoku"]!==readdata_summary.data[index -1]["daikoumoku"])'>
-												<tr class="table-info" role='button' @click='open_utiwake(list.daikoumoku)'>
+												<tr :class="['table-info']" role='button' @click='open_utiwake(list.daikoumoku)'>
 														<td class='sticky-left' style='width:100px;'>{{list["daikoumoku"]}}</td>
-														<td v-for="(label, i) in readdata_summary.label" class='text-end'>
+														<td v-for="(label, i) in readdata_summary.label" :class="['text-end','pe-2',{ 'table-primary': ((i >= 5 ) && hanni == '5y') }]">
+														<template v-if="i == 5 && hanni == '5y'">
+																<i v-if="list.d_color == 'Red'" class="bi bi-arrow-down-left pe-2 text-danger"></i>
+																<i v-if="list.d_color == 'Blue'" class="bi bi-arrow-up-left pe-2 text-success"></i>
+																<i v-if="list.d_color == 'uRed'" class="bi bi-arrow-up-left pe-2 text-danger"></i>
+																<i v-if="list.d_color == 'dBlue'" class="bi bi-arrow-down-left pe-2 text-success"></i>
+															</template>
+															<template v-if="i == 7 && hanni == '5y'">
+																<i v-if="list.d_color2 == 'Red'" class="bi bi-arrow-down-left pe-2 text-danger"></i>
+																<i v-if="list.d_color2 == 'Blue'" class="bi bi-arrow-up-left pe-2 text-success"></i>
+																<i v-if="list.d_color2 == 'uRed'" class="bi bi-arrow-up-left pe-2 text-danger"></i>
+																<i v-if="list.d_color2 == 'dBlue'" class="bi bi-arrow-down-left pe-2 text-success"></i>
+															</template>
 															<span v-if="list['m'+(12-i)+'dflg']==0" >{{Number(list['m'+(12-i)+'d']).toLocaleString()}}</span>
-															<span v-else class='orange'><strong>{{Number(list['m'+(12-i)+'d']).toLocaleString()}}<strong></span>
+															<span v-else class='orange'><strong>{{Number(list['m'+(12-i)+'d']).toLocaleString()}}</strong></span>
 														</td>
 												</tr>
 										</template>
 										<tr v-if='list.daikoumoku===open_fil' class='fadein'>
 												<td class='sticky-left' style='width:100px;'>　{{list["chuukoumoku"]}}</td>
-												<td v-for="(label, i) in readdata_summary.label" class='text-end' role='button' @click='get_meisai(label,list["daikoumoku"],list["chuukoumoku"])'>
+												<td v-for="(label, i) in readdata_summary.label" class='text-end pe-2' role='button' @click='get_meisai(label,list["daikoumoku"],list["chuukoumoku"])'>
+												<template v-if="i == 5 && hanni == '5y'">
+														<i v-if="list.c_color == 'Red'" class="bi bi-arrow-down-left pe-2 text-danger"></i>
+														<i v-if="list.c_color == 'Blue'" class="bi bi-arrow-up-left pe-2 text-success"></i>
+														<i v-if="list.c_color == 'uRed'" class="bi bi-arrow-up-left pe-2 text-danger"></i>
+														<i v-if="list.c_color == 'dBlue'" class="bi bi-arrow-down-left pe-2 text-success"></i>
+													</template>
+													<template v-if="i == 7 && hanni == '5y'">
+														<i v-if="list.c_color2 == 'Red'" class="bi bi-arrow-down-left pe-2 text-danger"></i>
+														<i v-if="list.c_color2 == 'Blue'" class="bi bi-arrow-up-left pe-2 text-success"></i>
+														<i v-if="list.c_color2 == 'uRed'" class="bi bi-arrow-up-left pe-2 text-danger"></i>
+														<i v-if="list.c_color2 == 'dBlue'" class="bi bi-arrow-down-left pe-2 text-success"></i>
+													</template>
 													<span v-if="list['m'+(12-i)+'sflg']==0" >{{Number(list['m'+(12-i)+'c']).toLocaleString()}}</span>
 													<span v-else class='orange'><strong>{{Number(list['m'+(12-i)+'c']).toLocaleString()}}</strong></span>
 												</td>
@@ -115,9 +143,24 @@
 						<tfoot class='sticky-bottom'>
 								<tr class='table-success'>
 										<td class='text-center sticky-left' style='width:100px;'>合計</td>
-										<td v-for="(label, i) in readdata_summary.label" class='text-end' :style="{color: Number(summary_totals['m'+(12-i)]) > 0 ? 'blue' : (Number(summary_totals['m'+(12-i)]) < 0 ? 'red' : '')}">
-											{{Number(summary_totals['m'+(12-i)]).toLocaleString()}}
-										</td>
+											<template v-if='hanni==="5y"'>
+												<template v-for="(label, i) in readdata_summary.label">
+												<td v-if="i !== 5 && i !== 7" :class="['text-end','pe-2',{'table-primary':(i===6)}]" :style="{color: Number(summary_totals['m'+(12-i)]) > 0 ? 'blue' : (Number(summary_totals['m'+(12-i)]) < 0 ? 'red' : '')}">
+													{{Number(summary_totals['m'+(12-i)]).toLocaleString()}}
+												</td>
+												<td v-else-if="i === 5" class='text-end pe-2 table-primary' :style="{color: Number(summary_totals['m8'])-Number(summary_totals['m9']) > 0 ? 'blue' : (Number(summary_totals['m8'])-Number(summary_totals['m9'])  < 0 ? 'red' : '')}">
+													{{(Number(summary_totals['m8']) - Number(summary_totals['m9'])).toLocaleString()}}
+												</td>
+												<td v-else class='text-end pe-2 table-primary' :style="{color: Number(summary_totals['m8'])-Number(summary_totals['m6']) > 0 ? 'blue' : (Number(summary_totals['m8'])-Number(summary_totals['m6'])  < 0 ? 'red' : '')}">
+													{{(Number(summary_totals['m8']) - Number(summary_totals['m6'])).toLocaleString()}}
+												</td>
+											</template>
+										</template>
+										<template v-if='hanni==="12m"'>
+											<td v-for="(label, i) in readdata_summary.label" class='text-end pe-2' :style="{color: Number(summary_totals['m'+(12-i)]) > 0 ? 'blue' : (Number(summary_totals['m'+(12-i)]) < 0 ? 'red' : '')}">
+												{{Number(summary_totals['m'+(12-i)]).toLocaleString()}}
+											</td>
+										</template>
 								</tr>
 						</tfoot>
 				</table>
