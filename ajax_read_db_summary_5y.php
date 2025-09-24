@@ -15,9 +15,9 @@
     $kikan[] = date("Y-m", strtotime($_GET["fm"]."01"." -".(60-$i)." month"));
     $j++;
   }
-  $kikan[] = "去年±万";
-  $kikan[] = "過去4年avg";
-  $kikan[] = "平均±万";
+  $kikan[] = "去年±";
+  $kikan[] = "過去4年平均";
+  $kikan[] = "平均±";
 
   $special = $_GET["special"];
   $sql = "SELECT 

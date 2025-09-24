@@ -175,6 +175,16 @@
   ,sum(IF(m1<>0,Special,0)) as m1sflg
   ,sum(sum(IF(m1<>0,Special,0))) over(PARTITION BY daikoumoku) as m1dflg 
 
+  ,sum(IF(Special<=$special,total,0)) as total
+  ,sum(sum(IF(Special<=$special,total,0))) over(PARTITION BY daikoumoku) as total_d 
+  ,sum(IF(total<>0,Special,0)) as total_sflg
+  ,sum(sum(IF(total<>0,Special,0))) over(PARTITION BY daikoumoku) as total_dflg 
+
+  ,ROUND(sum(IF(Special<=$special,total,0))/12,0) as average
+  ,ROUND(sum(sum(IF(Special<=$special,total,0))) over(PARTITION BY daikoumoku)/12,0) as average_d 
+  ,sum(IF(total<>0,Special,0)) as average_sflg
+  ,sum(sum(IF(total<>0,Special,0))) over(PARTITION BY daikoumoku) as average_dflg 
+
   from (
     SELECT
       uid,
@@ -192,6 +202,7 @@
       SUM(CASE WHEN getudo = :baseYM3 THEN kin ELSE 0 END) AS m3,
       SUM(CASE WHEN getudo = :baseYM2 THEN kin ELSE 0 END) AS m2,
       SUM(CASE WHEN getudo = :baseYM1 THEN kin ELSE 0 END) AS m1,
+      SUM(kin) AS total,
       Special
     FROM
       kakeibo
