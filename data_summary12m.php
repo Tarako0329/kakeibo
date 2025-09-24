@@ -91,7 +91,7 @@
 											<th scope="col" class='text-center sticky-left' style='width:150px;'>大中項目</th>
 											<template v-for="(label,index) in readdata_summary.label" >
 												<th v-if='index>=5 && hanni==="5y"' scope="col" class='text-center table-primary'>{{label}}</th>
-												<th v-else-if='index===6 && hanni==="5y"' scope="col" class='text-center table-primary'>{{label}}</th>
+												<th v-else-if='index>=12 && hanni==="12m"' scope="col" class='text-center table-primary'>{{label}}</th>
 												<th v-else scope="col" class='text-center'>{{label}}</th>
 											</template>
 									</tr>
@@ -101,7 +101,7 @@
 											<template v-if='index===0 || (index!==0 && list["daikoumoku"]!==readdata_summary.data[index -1]["daikoumoku"])'>
 													<tr :class="['table-info']" role='button' @click='open_utiwake(list.daikoumoku)'>
 															<td class='sticky-left' style='width:100px;'>{{list["daikoumoku"]}}</td>
-															<td v-for="(label, i) in readdata_summary.label" :class="['text-end','pe-2',{ 'table-primary': ((i >= 5 ) && hanni == '5y') }]" style='position:relative;'>
+															<td v-for="(label, i) in readdata_summary.label" :class="['text-end','pe-2',{ 'table-primary': ((i >= 5 ) && hanni == '5y') || ((i >= 12 ) && hanni == '12m') }]" style='position:relative;'>
 															<template v-if="i == 5 && hanni == '5y'">
 																	<i v-if="list.d_color == 'Red'" class="bi bi-arrow-down-left pe-2 text-danger" style='position:absolute;left:20px;'></i>
 																	<i v-if="list.d_color == 'Blue'" class="bi bi-arrow-up-left pe-2 text-success" style='position:absolute;left:20px;'></i>
@@ -171,8 +171,8 @@
 							<tfoot class='sticky-bottom'>
 									<tr class='table-success'>
 											<td class='text-center sticky-left' style='width:100px;'>合計</td>
-												<template v-if='hanni==="5y"'>
-													<template v-for="(label, i) in readdata_summary.label">
+											<template v-if='hanni==="5y"'>
+												<template v-for="(label, i) in readdata_summary.label">
 													<td v-if="i !== 5 && i !== 7" :class="['text-end','pe-2',{'table-primary':(i===6)}]" :style="{color: Number(summary_totals['m'+(12-i)]) > 0 ? 'blue' : (Number(summary_totals['m'+(12-i)]) < 0 ? 'red' : '')}">
 														{{Number(summary_totals['m'+(12-i)]).toLocaleString()}}
 													</td>
