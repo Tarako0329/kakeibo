@@ -368,6 +368,7 @@ const summary_bunseki = (Where_to_use) => createApp({
 				const processed_daikoumoku = [];
 				readdata_summary.value.data.forEach(row => {
 						if (!processed_daikoumoku.includes(row.daikoumoku)) {
+								/*
 								totals.m1  += Number(row.m1d || 0);
 								totals.m2  += Number(row.m2d || 0);
 								totals.m3  += Number(row.m3d || 0);
@@ -380,6 +381,21 @@ const summary_bunseki = (Where_to_use) => createApp({
 								totals.m10 += Number(row.m10d || 0);
 								totals.m11 += Number(row.m11d || 0);
 								totals.m12 += Number(row.m12d || 0);
+								*/
+								totals.m1  += Number(row.total_d || 0);
+								totals.m2  += Number(row.average_d || 0);
+								totals.m3  += Number(row.m1d || 0);
+								totals.m4  += Number(row.m2d || 0);
+								totals.m5  += Number(row.m3d || 0);
+								totals.m6  += Number(row.m4d || 0);
+								totals.m7  += Number(row.m5d || 0);
+								totals.m8  += Number(row.m6d || 0);
+								totals.m9  += Number(row.m7d || 0);
+								totals.m10 += Number(row.m8d || 0);
+								totals.m11 += Number(row.m9d || 0);
+								totals.m12 += Number(row.m10d || 0);
+								totals.m13 += Number(row.m11d || 0);
+								totals.m14 += Number(row.m12d || 0);
 								processed_daikoumoku.push(row.daikoumoku);
 						}
 				});

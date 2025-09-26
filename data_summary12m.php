@@ -185,8 +185,8 @@
 												</template>
 											</template>
 											<template v-if='hanni==="12m"'>
-												<td v-for="(label, i) in readdata_summary.label" class='text-end pe-2' :style="{color: Number(summary_totals['m'+(12-i)]) > 0 ? 'blue' : (Number(summary_totals['m'+(12-i)]) < 0 ? 'red' : '')}">
-													{{Number(summary_totals['m'+(12-i)]).toLocaleString()}}
+												<td v-for="(label, i) in readdata_summary.label" class='text-end pe-2' :style="{color: Number(summary_totals['m'+(14-i)]) > 0 ? 'blue' : (Number(summary_totals['m'+(14-i)]) < 0 ? 'red' : '')}">
+													{{Number(summary_totals['m'+(14-i)]).toLocaleString()}}
 												</td>
 											</template>
 									</tr>
