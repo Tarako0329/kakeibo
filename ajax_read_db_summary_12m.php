@@ -18,10 +18,10 @@
 
   //$kikan[] = "月度";
   $i=1;
-  $kikan[] = date("Y/m", strtotime($_GET["fm"]."01"." -".(12-$i)." month"));
+  $kikan[] = date("Y-m", strtotime($_GET["fm"]."01"." -".(12-$i)." month"));
   while($i<12){
     $i = $i+1;
-    $kikan[] = date("Y/m", strtotime($_GET["fm"]."01"." -".(12-$i)." month"));
+    $kikan[] = date("Y-m", strtotime($_GET["fm"]."01"." -".(12-$i)." month"));
   }
   $kikan[] = "平均";
   $kikan[] = "合計";
