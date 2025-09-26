@@ -78,12 +78,12 @@
 				</div>
 			</div>
 			<div class='row' style=''>
-				<div class='col-xl-6' style='height:auto;display:flex;justify-content: center;'>
+				<div :class='[(hanni==="5y")?"col-xl-6":"col-xl-5"]' style='height:auto;display:flex;justify-content: center;'>
 					<div style="position:relative;max-width:900px;width:100%;min-height:420px;">
 						<canvas id="myChart"></canvas>
 					</div>
 				</div>
-				<div class='col-xl-6'>
+				<div :class='[(hanni==="5y")?"col-xl-6":"col-xl-7","pe-4"]'>
 					<div style='height:calc(100vh - 120px);overflow: auto;'>
 					<table class="table table-hover table-sm" style='table-layout: auto;min-width:800px;' id='meisai_table'>
 							<thead class='sticky-top'>
