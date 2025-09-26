@@ -173,18 +173,18 @@
 											<td class='text-center sticky-left' style='width:100px;'>合計</td>
 											<template v-if='hanni==="5y"'>
 												<template v-for="(label, i) in readdata_summary.label">
-													<td v-if="i !== 5 && i !== 7" :class="['text-end','pe-2',{'table-primary':(i===6)}]" :style="{color: Number(summary_totals['m'+(12-i)]) > 0 ? 'blue' : (Number(summary_totals['m'+(12-i)]) < 0 ? 'red' : '')}">
-														{{Number(summary_totals['m'+(12-i)]).toLocaleString()}}
+													<td v-if="i !== 5 && i !== 7" :class="['text-end','pe-2',{'table-primary':(i===6)}]" :style="{color: Number(summary_totals['m'+(14-i)]) > 0 ? 'blue' : (Number(summary_totals['m'+(14-i)]) < 0 ? 'red' : '')}">
+														{{Number(summary_totals['m'+(14-i)]).toLocaleString()}}
 													</td>
 													<td v-else-if="i === 5" class='text-end pe-2 table-primary' :style="{color: Number(summary_totals['m8'])-Number(summary_totals['m9']) > 0 ? 'blue' : (Number(summary_totals['m8'])-Number(summary_totals['m9'])  < 0 ? 'red' : '')}">
-														{{(Number(summary_totals['m8']) - Number(summary_totals['m9'])).toLocaleString()}}
+														{{(Number(summary_totals['m10']) - Number(summary_totals['m11'])).toLocaleString()}}
 													</td>
 													<td v-else class='text-end pe-2 table-primary' :style="{color: Number(summary_totals['m8'])-Number(summary_totals['m6']) > 0 ? 'blue' : (Number(summary_totals['m8'])-Number(summary_totals['m6'])  < 0 ? 'red' : '')}">
-														{{(Number(summary_totals['m8']) - Number(summary_totals['m6'])).toLocaleString()}}
+														{{(Number(summary_totals['m10']) - Number(summary_totals['m8'])).toLocaleString()}}
 													</td>
 												</template>
 											</template>
-											<template v-if='hanni==="12m"'>
+											<template v-else-if='hanni==="12m"'>
 												<td v-for="(label, i) in readdata_summary.label" class='text-end pe-2' :style="{color: Number(summary_totals['m'+(14-i)]) > 0 ? 'blue' : (Number(summary_totals['m'+(14-i)]) < 0 ? 'red' : '')}">
 													{{Number(summary_totals['m'+(14-i)]).toLocaleString()}}
 												</td>

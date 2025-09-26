@@ -19,7 +19,7 @@ if(MAIN_DOMAIN==="localhost:81"){
 	$id="green.green.midori@gmail.com";
 	$pass="000000";
 }else{
-	$time="ver.1.15.3";
+	$time="ver.1.15.10";
 	$id="";
 	$pass="";
 }
