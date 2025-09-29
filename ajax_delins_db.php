@@ -28,7 +28,7 @@
   
     $stmt->execute();
     
-    $sql = "insert into kakeibo(uid,guid,date,meisai,kin,shuppimoto,daikoumoku,chuukoumoku,memo,b_moto,b_pair_no) values(:uid,:guid,:date,:meisai,:kin,:shuppimoto,:daikoumoku,:chuukoumoku,:memo,:b_moto,:b_pair_no)";
+    $sql = "insert into kakeibo(uid,guid,date,meisai,kin,shuppimoto,daikoumoku,chuukoumoku,memo,b_moto,b_pair_no,Special) values(:uid,:guid,:date,:meisai,:kin,:shuppimoto,:daikoumoku,:chuukoumoku,:memo,:b_moto,:b_pair_no,:Special)";
     $stmt = $pdo_h->prepare($sql);
     foreach($dataset as $row){
       //log_writer("\$row[date]",$row[0]);
@@ -48,6 +48,7 @@
       $stmt->bindValue("memo", empty($row["memo"])?"":$row["memo"], PDO::PARAM_STR);
       $stmt->bindValue("b_moto", $row["b_moto"], PDO::PARAM_INT);
       $stmt->bindValue("b_pair_no", $row["b_pair_no"], PDO::PARAM_INT);
+      $stmt->bindValue("Special", $row["Special"], PDO::PARAM_INT);
       $stmt->execute();
     }
     
